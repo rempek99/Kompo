@@ -1,0 +1,31 @@
+import javax.swing.*;
+
+public class MojaKlasa {
+
+	public static void main(String[] args) {
+		System.out.println("Hello world!!!");
+		System.out.println("Inny napis");
+		
+		double a=4;
+		double b=5;
+		System.out.println(a+b);
+		
+		if(b!=0)
+			System.out.println(a/b);
+		else
+			System.out.println("Nie dzielimy przez zero!");
+	
+		System.out.println(25-7);
+		System.out.println(2*6);
+		
+		String txt1, txt2;
+		txt1 = JOptionPane.showInputDialog("Wprowadz pierwsza liczbe");
+		txt2 = JOptionPane.showInputDialog("Wprowadz druga liczbe");
+	
+		System.out.println("Gdy podane liczby s¹ typu string: " + txt1 + txt2);
+		double liczba1 = Double.parseDouble(txt1);
+		int liczba2 = Integer.parseInt(txt2);
+		System.out.println("Po konwersji: " + liczba1 + liczba2);
+	}
+
+}

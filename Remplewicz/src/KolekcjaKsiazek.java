@@ -1,22 +1,14 @@
-import java.util.Arrays;
-import java.util.Comparator;
 
-public class KolekcjaKsiazek{
+public class KolekcjaKsiazek
+implements Cloneable{
 	int rozmiar;
 	Ksiazka ksiazki [];
-	int miejsce;
 	
-	public int getMiejsce() {
-		return miejsce;
-	}
 	public int getRozmiar() {
 		return rozmiar;
 	}
 	public Ksiazka[] getKsiazki() {
 		return ksiazki;
-	}
-	public void setMiejsce(int miejsce) {
-		this.miejsce = miejsce;
 	}
 	public void setRozmiar(int rozmiar) {
 		this.rozmiar = rozmiar;
@@ -28,42 +20,33 @@ public class KolekcjaKsiazek{
 	
 	public KolekcjaKsiazek() 
 	{
-		miejsce = 0;
 		this.rozmiar = 10;
 		ksiazki = new Ksiazka[rozmiar];
 	}
 	public KolekcjaKsiazek(int rozmiar)
 	{
-		miejsce = 0;
 		this.rozmiar = rozmiar;
 		ksiazki = new Ksiazka[rozmiar];
-	}
-	public void dodaj(Ksiazka ksiazka)
-	{
-		if(miejsce == rozmiar)
-		{
-			System.out.println("Brak miejsca w kolekcji");
-			return;
-		}
-		this.ksiazki[miejsce] = ksiazka;
-		miejsce ++;
 	}
 	public String toString()
 	{
 		String output = "";
-		for(int i = 0; i < miejsce; i++)
+		for(int i = 0; i < rozmiar; i++)
 		{
 			output += this.ksiazki[i].toString();
 		}
 		return output;
 	}
-	int compare()
+	public Object clone() throws CloneNotSupportedException
 	{
+		KolekcjaKsiazek klon = (KolekcjaKsiazek)super.clone();
+		Ksiazka tmp[] = klon.getKsiazki();
+		klon.ksiazki = new Ksiazka[klon.getRozmiar()];
+		for(int i = 0; i < klon.getRozmiar(); i++)
+		{
+			klon.getKsiazki()[i] = (Ksiazka) tmp[i].clone();
+		}
 		
-		return 0;
-	}
-	public void sortuj()
-	{
-		Arrays.sort(ksiazki);
+		return klon;
 	}
 }

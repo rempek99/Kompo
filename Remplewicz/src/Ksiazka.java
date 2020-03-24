@@ -1,7 +1,5 @@
-import java.util.Comparator;
-
 public class Ksiazka 
-implements Comparable<Ksiazka>{
+implements Comparable<Ksiazka>, Cloneable{
 	int strony;
 	String nazwa;
 	String autor;
@@ -69,5 +67,12 @@ implements Comparable<Ksiazka>{
 		else
 			return -1;
 	}
+	public Object clone()
+	throws CloneNotSupportedException
+	{
+		Ksiazka tmp =  (Ksiazka)super.clone();
+		return tmp;
+	}
+	
 
 }

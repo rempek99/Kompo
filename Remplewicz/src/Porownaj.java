@@ -1,37 +1,37 @@
 import java.util.Comparator;
 public class Porownaj 
-implements Comparator<Ksiazka>{
+implements Comparator<Podroz>{
 	String klucz;
 	Porownaj(String klucz)
 	{
 		this.klucz = klucz;
 	}
 	@Override
-	public int compare(Ksiazka o1, Ksiazka o2) {
+	public int compare(Podroz o1, Podroz o2) {
 		// TODO Auto-generated method stub
-		if(klucz == "strony")
+		if(klucz == "czas")
 		{
-			if(o1.getStrony()==o2.getStrony())
+			if(o1.getCzas()==o2.getCzas())
 				return 0;
-			else if(o1.getStrony() > o2.getStrony())
+			else if(o1.getCzas() > o2.getCzas())
 				return 1;
 			else
 				return -1;
 		}
-		else if(klucz == "autor")
+		else if(klucz == "dlugosc")
 		{
-			if(o1.getAutor().compareTo(o2.getAutor())==0)
+			if(o1.getDlugosc() == o2.getDlugosc())
 				return 0;
-			else if(o1.getAutor().compareTo(o2.getAutor())>0)
+			else if(o1.getDlugosc() > o2.getDlugosc())
 				return 1;
 			else
 				return -1;
 		}
 		else
 		{
-			if(o1.getNazwa().compareTo(o2.getNazwa())==0)
+			if(o1.getSrednia_predkosc() == o2.getSrednia_predkosc())
 				return 0;
-			else if(o1.getNazwa().compareTo(o2.getNazwa())>0)
+			else if(o1.getSrednia_predkosc() > o2.getSrednia_predkosc())
 				return 1;
 			else
 				return -1;

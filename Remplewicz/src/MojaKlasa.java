@@ -1,46 +1,58 @@
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 
 
 public class MojaKlasa {
-	
-	
+
+
 	public static void main(String[] args) throws CloneNotSupportedException {
-	//metofa clone moze rzucic ww. wyjatkiem
-	//////////////////// 		TYDZIEN 03 		////////////////////////////////////////////
-		
-		KolekcjaKsiazek regal = new KolekcjaKsiazek(10);
-		regal.getKsiazki()[0] = new Ksiazka("Dziady","Mickiewicz Adam",333);
-		regal.getKsiazki()[1] = new Ksiazka("Sonety Krymskie","Mickiewicz Adam",150);
-		regal.getKsiazki()[2] = new Ksiazka("Chlopi","Reymont Wladyslaw Stanislaw",550);
-		regal.getKsiazki()[3] = new Ksiazka("Potop","Sienkiewicz Henryk",620);
-		regal.getKsiazki()[4] = new Ksiazka("XDziady","Nickiewicz Adam",112);
-		regal.getKsiazki()[5] = new Ksiazka("Zonety Krymskie","Wiewicz Adam",100);
-		regal.getKsiazki()[6] = new Ksiazka("Hlopi","Reymon Stanislaw",5780);
-		regal.getKsiazki()[7] = new Ksiazka("Potop","Sewicz Henryk",62);
-		regal.getKsiazki()[8] = new Ksiazka("Ksiazka 1","Nowak Adam",10);
-		regal.getKsiazki()[9] = new Ksiazka("Kronika","Gal Anonim",12);
+		//metoda clone moze rzucic ww. wyjatkiem
+		//////////////////// 		TYDZIEN 04 		////////////////////////////////////////////
+
+		//Przyk³ad z wykorzystaniem stosu
+
+		Stack<Podroz> stosik = new Stack<Podroz>();
+		System.out.println("Czy stos jest pusty?: " + stosik.empty());
+		stosik.push(new Podroz(20,3000));
+		stosik.push(new Podroz(20,6420));
+		stosik.push(new Podroz(120,5231));
+		System.out.println("Czy stos jest pusty?: " + stosik.empty());
+		System.out.println(stosik);
+		Podroz pobrana = stosik.pop();
+		System.out.println(stosik);
+		System.out.println("Pobrany przejazd: " + pobrana);
+		//Instrukcja pop() pobra³a ze stosu ostatni element (lezacy na wierzcho³ku stosu)
+
+		//// Dalsza czêœæ bazuje na wykorzystaniu Listy
+		System.out.println("---------------------------\n---------------------------\n---------------------------\n");
+		ArrayList<Podroz> przejazdy = new ArrayList<Podroz>();
+		przejazdy.add(new Podroz(100,7200));
+		przejazdy.add(new Podroz(50,3100));
+		przejazdy.add(new Podroz(42,5210));
+		przejazdy.add(new Podroz(74,4182));
+		przejazdy.add(new Podroz(15,4127));
+		przejazdy.add(new Podroz(81,1002));
+		przejazdy.add(new Podroz(2,114));
+		przejazdy.add(new Podroz(210,10032));
+		przejazdy.add(new Podroz(30,1802));
+		przejazdy.add(new Podroz(40,2004));
 		System.out.println("---------------------------");
 		System.out.println("Tablica przed sortowaniem");
 		System.out.println("---------------------------");
-		System.out.print(regal);
+		System.out.print(przejazdy);
 		//sortowanie z wykorzystaniem interfejsu Comparable
-		Arrays.sort(regal.getKsiazki());
+		Collections.sort(przejazdy);
 		System.out.println("---------------------------");
 		System.out.println("Tablica po sortowaniu domyœlnym");
 		System.out.println("---------------------------");
-		System.out.print(regal);
+		System.out.print(przejazdy);
 		System.out.println("---------------------------");
-		System.out.println("Tablica po sortowaniu wg stron");
+		System.out.println("Tablica po sortowaniu wg sredniej predkosci");
 		System.out.println("---------------------------");
-		Porownaj comp = new Porownaj("strony");
+		Porownaj comp = new Porownaj("srednia_predkosc");
 		//sortowanie z wykorzystaniem interfejsu Comparator
-		Arrays.sort(regal.getKsiazki(), comp);
-		System.out.print(regal);
-		
-		Object proba2 = regal.clone();
-		//Sprawdzenie nowy obiekt (jego tablica) nie wskazuje na ten sam adres
-		System.out.println(((KolekcjaKsiazek) proba2).getKsiazki()!=regal.getKsiazki());
-		System.out.println(proba2!=regal);
+		Collections.sort(przejazdy, comp);
+		System.out.print(przejazdy);
 	}
-
 }

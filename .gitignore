@@ -1,3 +1,12 @@
 .metadata
 .metadata\*
+Remplewicz\.idea
+Remplewicz\.settings
+Remplewicz\bin
+Remplewicz\.classpath
+Remplewicz\.project
+Remplewicz\plik.txt
+Remplewicz\przejazdy.o
+Remplewicz\Remplewicz.iml
+Remplewicz\tablica.bin
 debug.log

@@ -1,28 +1,4 @@
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
-public class Podroz
-implements Comparable<Podroz>, Cloneable, Serializable {
-	float dlugosc; //km
-	float srednia_predkosc; //km/h
-	long czas; //sekundy
-	LocalDateTime data_rozpoczecia, data_zakonczenia;
-
-	public LocalDateTime getData_rozpoczecia() {
-		return data_rozpoczecia;
-	}
-
-	public float getDlugosc()
-	{
-		return this.dlugosc;
-	}
-	public float getSrednia_predkosc()
-	{
-		return this.srednia_predkosc;
-	}
-	public long getCzas()import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.io.Serializable;

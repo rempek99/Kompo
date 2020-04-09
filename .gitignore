@@ -1,5 +1,6 @@
 .metadata
 .metadata\*
+debug.log
 Remplewicz\.idea
 Remplewicz\.settings
 Remplewicz\bin
@@ -9,4 +10,3 @@ Remplewicz\plik.txt
 Remplewicz\przejazdy.o
 Remplewicz\Remplewicz.iml
 Remplewicz\tablica.bin
-debug.log

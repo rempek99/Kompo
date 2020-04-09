@@ -1,5 +1,5 @@
 import java.util.Comparator;
-public class Porownaj 
+public class Porownaj
 implements Comparator<Podroz>{
 	String klucz;
 	Porownaj(String klucz)

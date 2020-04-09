@@ -27,6 +27,15 @@ implements Comparator<Podroz>{
 			else
 				return -1;
 		}
+		else if(klucz == "data")
+		{
+			if(o1.getData_rozpoczecia().compareTo(o2.getData_rozpoczecia())==0)
+				return 0;
+			else if(o1.getData_rozpoczecia().compareTo(o2.getData_rozpoczecia())>0)
+				return 1;
+			else
+				return -1;
+		}
 		else
 		{
 			if(o1.getSrednia_predkosc() == o2.getSrednia_predkosc())

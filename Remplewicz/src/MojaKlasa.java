@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.io.*;
+import java.util.Date;
 
 
 public class MojaKlasa {
@@ -15,18 +16,6 @@ public class MojaKlasa {
 	public static void main(String[] args) throws CloneNotSupportedException {
 		//metoda clone moze rzucic ww. wyjatkiem
 		//////////////////// 		TYDZIEN 06 		////////////////////////////////////////////
-
-		ArrayList<Podroz> przejazdy = new ArrayList<Podroz>();
-		przejazdy.add(new Podroz(100, LocalDateTime.of(2020,01,01,22,10,10), LocalDateTime.of(2020,01,01,22,20,10)));
-		przejazdy.add(new Podroz(50,LocalDateTime.of(2020,01,04,21,20,10), LocalDateTime.of(2020,01,04,22,20,10)));
-		przejazdy.add(new Podroz(42,LocalDateTime.of(2020,02,01,20,20,10), LocalDateTime.of(2020,02,01,22,20,10)));
-		przejazdy.add(new Podroz(74, LocalDateTime.of(2019,11,01,22,20,10), LocalDateTime.of(2019,11,01,23,42,10)));
-		przejazdy.add(new Podroz(15,LocalDateTime.of(2019,11,01,22,20,10), LocalDateTime.of(2019,11,02,11,42,10)));
-		przejazdy.add(new Podroz(81,LocalDateTime.of(2016,02,22,10,20,10), LocalDateTime.of(2016,02,22,14,42,10)));
-		przejazdy.add(new Podroz(2, LocalDateTime.of(2019,11,01,12,20,10), LocalDateTime.of(2019,11,01,12,25,10)));
-		przejazdy.add(new Podroz(210, LocalDateTime.of(2019,01,01,22,20,10), LocalDateTime.of(2019,1,3,1,42,10)));
-		przejazdy.add(new Podroz(30,LocalDateTime.of(2020,02,11,10,20,10), LocalDateTime.of(2020,02,11,13,42,10)));
-		przejazdy.add(new Podroz(40,LocalDateTime.of(2019,12,01,21,20,10), LocalDateTime.of(2019,12,01,23,42,10)));
 		Licznik licznik1 = new Licznik(false);
 		try {
 			licznik1.reset(); //Wywołanie wyjątku bibliotecznego
@@ -63,5 +52,22 @@ public class MojaKlasa {
 		finally {
 			System.out.println("Licznik 2: " + licznik2);
 		}
+		Samochod auto = new Samochod(200,150,150);
+		auto.uruchom_silnik();
+		auto.gaz();
+		auto.gaz();
+		auto.gaz();
+		/*try {
+			Thread.sleep(20000);
+		}
+		catch (InterruptedException ex)
+		{
+			System.out.println(ex);
+		}*/
+		auto.gaz();
+		auto.hamulec();
+		auto.zgas_silnik();
+		System.out.print(auto.przejazdy);
+
 	}
 }

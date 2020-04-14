@@ -2,8 +2,8 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.time.Duration;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Podroz
@@ -51,11 +51,10 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 	}
 
 
-	public Podroz(float dlugosc, LocalDateTime data_rozpoczecia, LocalDateTime data_zakonczenia)
+	public Podroz(float dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
 	{
 		this.dlugosc = dlugosc;
-		Duration duration = Duration.between(data_rozpoczecia,data_zakonczenia);
-		this.czas = Math.abs(duration.toSeconds());
+		this.czas = (data_zakonczenia.getTime()-data_rozpoczecia.getTime())/1000;
 		this.srednia_predkosc = dlugosc / czas * 3600 ;
 		this.data_rozpoczecia = data_rozpoczecia.toString();
 		this.data_zakonczenia = data_zakonczenia.toString();

@@ -8,6 +8,19 @@ public class Samochod implements Prowadzenie{
     int moc_hamulcow;
     Chwilowy_odczyt_predkosci temp;
     Licznik licznik1;
+
+    public Predkosciomierz getPredkosciomierz() {
+        return predkosciomierz1;
+    }
+
+    public int getMoc_silnika() {
+        return moc_silnika;
+    }
+
+    public int getMoc_hamulcow() {
+        return moc_hamulcow;
+    }
+
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
 
@@ -46,7 +59,7 @@ public class Samochod implements Prowadzenie{
             System.out.println(ex);
         }
         try {
-            predkosciomierz1.zmniejsz_predkosc((float) (moc_hamulcow * 0.3));
+            predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * predkosciomierz1.getMax_predkosc())/100);
         }
         catch(UjemnaWartosc ex)
         {

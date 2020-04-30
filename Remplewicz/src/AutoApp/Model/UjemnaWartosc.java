@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 public class UjemnaWartosc extends Exception{
     UjemnaWartosc(int wartosc)
     {

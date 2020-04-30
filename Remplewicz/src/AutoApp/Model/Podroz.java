@@ -1,10 +1,7 @@
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+package AutoApp.Model;
 
 import java.io.Serializable;
-import java.time.Duration;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class Podroz
 implements Comparable<Podroz>, Cloneable, Serializable {
@@ -100,7 +97,7 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 		Podroz tmp =  (Podroz)super.clone();
 		return tmp;
 	}
-//	public String podroz2Xml(Podroz podroz)
+//	public String podroz2Xml(Samochod.logika.Podroz podroz)
 //	{
 //		XStream mapping=new XStream(new DomDriver());
 //		String xml=mapping.toXML(podroz);
@@ -109,11 +106,11 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 //	public String podroz2Xml()
 //	{
 //		XStream mapping=new XStream(new DomDriver());
-//		String xml=mapping.toXML((Podroz)this);
+//		String xml=mapping.toXML((Samochod.logika.Podroz)this);
 //		return xml;
 //	}
-//	public Podroz xml2Podroz(String xml) {
+//	public Samochod.logika.Podroz xml2Podroz(String xml) {
 //		XStream mapping = new XStream(new DomDriver());
-//		return (Podroz) mapping.fromXML(xml);
+//		return (Samochod.logika.Podroz) mapping.fromXML(xml);
 //	}
 }

@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 public interface Prowadzenie {
     void gaz();
     void hamulec();

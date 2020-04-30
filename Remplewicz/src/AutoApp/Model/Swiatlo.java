@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 public class Swiatlo implements Obsluga_Swiatla{
     boolean wlaczone;
     String barwa;

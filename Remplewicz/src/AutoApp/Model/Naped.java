@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 public interface Naped {
     int predkosc = 0;
     int max_predkosc = 0;

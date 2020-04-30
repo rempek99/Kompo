@@ -1,4 +1,6 @@
-public class Predkosciomierz implements Naped,Resetowalny{
+package AutoApp.Model;
+
+public class Predkosciomierz implements Naped, Resetowalny {
     int max_predkosc;
     float predkosc;//  km/h
     public Predkosciomierz(int max_predkosc)

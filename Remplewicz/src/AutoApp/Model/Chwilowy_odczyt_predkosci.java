@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 import java.util.Date;
 
 public class Chwilowy_odczyt_predkosci {

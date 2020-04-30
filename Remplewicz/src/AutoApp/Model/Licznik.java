@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 import java.util.Date;
 
 public class Licznik implements Resetowalny {
@@ -31,7 +33,7 @@ public class Licznik implements Resetowalny {
     public void reset() throws Exception
     {
         if(this.dystans == 0)
-            throw new Exception("Licznik zostal juz zresetowany");
+            throw new Exception("Samochod.logika.Licznik zostal juz zresetowany");
         if(this.staly == true)
             throw new LicznikStaly();
         this.dystans = 0;

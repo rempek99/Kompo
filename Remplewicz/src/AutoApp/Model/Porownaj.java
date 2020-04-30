@@ -1,3 +1,5 @@
+package AutoApp.Model;
+
 import java.util.Comparator;
 public class Porownaj
 implements Comparator<Podroz>{

@@ -1,7 +1,10 @@
-package AutoApp.Model;
+package AutoApp.Data;
+
+import AutoApp.Logic.Resetowalny;
+import AutoApp.Logic.UjemnaWartosc;
 
 import java.util.Date;
-
+//Klasa odpowiadajaca za liczniki dystansow w samochodzie
 public class Licznik implements Resetowalny {
     float dystans; //metry
     boolean staly;

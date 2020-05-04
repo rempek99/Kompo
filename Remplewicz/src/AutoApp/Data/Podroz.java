@@ -1,11 +1,11 @@
-package AutoApp.Model;
+package AutoApp.Data;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Podroz
-implements Comparable<Podroz>, Cloneable, Serializable {
+		implements Comparable<Podroz>, Cloneable, Serializable {
 	float dlugosc; //km
 	float srednia_predkosc; //km/h
 	long czas; //sekundy
@@ -58,7 +58,7 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 		this.data_rozpoczecia = data_rozpoczecia.toString();
 		this.data_zakonczenia = data_zakonczenia.toString();
 	}
-	
+
 	public String toString()
 	{
 		String output = "";
@@ -91,10 +91,10 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 			return 1;
 		else
 			return -1;
-		}
+	}
 
 	public Object clone()
-	throws CloneNotSupportedException
+			throws CloneNotSupportedException
 	{
 		Podroz tmp =  (Podroz)super.clone();
 		return tmp;

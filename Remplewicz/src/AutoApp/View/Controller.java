@@ -1,23 +1,19 @@
 package AutoApp.View;
 
-import AutoApp.Model.Nieuruchomiony;
-import AutoApp.Model.Samochod;
+import AutoApp.Logic.Nieuruchomiony;
+import AutoApp.Logic.Samochod;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.File;
-import java.io.IOException;
 
-public class Controller {
+//
+public class Controller implements ActionListener{
 
     private Samochod auto;
     private Okienko okno;
@@ -26,15 +22,17 @@ public class Controller {
         this.auto = auto;
         this.okno = okno;
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
-        //this.okno.addGazListener(new GazListener());
-        //this.okno.addHamulecListener(new HamulecListener());
         this.okno.addKeyListener(new KeyboarListner());
         this.okno.setFocusable(true);
-        okno.setInfoLabel(auto.getMoc_silnika(), auto.getMoc_hamulcow(), auto.getPredkosciomierz().getMax_predkosc());
-        okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
+        this.okno.setInfoLabel(auto.getMoc_silnika(), auto.getMoc_hamulcow(), auto.getPredkosciomierz().getMax_predkosc());
+        this.okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
+        this.okno.menuOProgramie.addActionListener(this);
+        this.okno.menuWyjscie.addActionListener(this);
+        this.okno.menuWczytajPodroze.addActionListener(this);
+        this.okno.menuZapiszPodroze.addActionListener(this);
     }
 
-    class KeyboarListner implements KeyListener {
+    class KeyboarListner implements KeyListener{
         public KeyboarListner() {
         }
 
@@ -46,69 +44,155 @@ public class Controller {
         @Override
         public void keyPressed(KeyEvent e) {
 
-            if (e.getKeyCode() == KeyEvent.VK_UP) {
+            if(e.getKeyCode()==KeyEvent.VK_UP)
+            {
                 try {
                     auto.gaz();
-                } catch (Nieuruchomiony ex) {
-                    okno.getZaplonCB().setBackground(Color.red);
+
+                }catch(Nieuruchomiony ex)
+                {
+                    JOptionPane.showMessageDialog(okno,"Najpierw uruchom silnik (E)\n");
                 }
-                //okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
             }
-            if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            if(e.getKeyCode()==KeyEvent.VK_DOWN)
+            {
                 auto.hamulec();
-                //okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
             }
-            if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                auto.skret(false);
+            if(e.getKeyCode()==KeyEvent.VK_LEFT)
+            {
+                if(okno.getZaplonCB().isSelected()) {
+                    auto.skret(false);
+                }else
+                {
+                    JOptionPane.showMessageDialog(okno,"Najpierw uruchom silnik (E)\n");
+                }
             }
-            if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                auto.skret(true);
+            if(e.getKeyCode()==KeyEvent.VK_RIGHT)
+            {
+                if(okno.getZaplonCB().isSelected()) {
+                    auto.skret(true);
+                }else
+                {
+                    JOptionPane.showMessageDialog(okno,"Najpierw uruchom silnik (E)\n");
+                }
             }
 
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            if ((e.getKeyChar() == 'E') || (e.getKeyChar() == 'e')) {
+            if((e.getKeyChar()=='E')||(e.getKeyChar()=='e'))
+            {
                 okno.changeZaplonRB();
                 if (auto.isZaplon()) {
                     auto.zgas_silnik();
                     okno.getZaplonCB().setText("ZAP£ON [E]");
                     okno.getPrzejazdyText().setText(okno.getPrzejazdyText().getText() +
                             auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
+                    System.out.println(auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
                 } else {
                     okno.getZaplonCB().setBackground(new Color(0,0,0,0));
                     okno.getZaplonCB().setText("ZGAŒ SILNIK [E]");
                     auto.uruchom_silnik();
                 }
             }
-            if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+            if(e.getKeyChar()==KeyEvent.VK_ESCAPE)
+            {
                 okno.dispose();
             }
         }
     }
 
-    class GazListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
+    public void actionPerformed(ActionEvent e) {
+        Object source = e.getSource();
+        if (source == okno.menuOProgramie) {
+            JOptionPane.showMessageDialog(this.okno, "strza³ka do góry-przyspieszanie\n" +
+                    "strza³ka w dó³-hamowanie\n" +
+                    "strza³ka w lewo/prawo-skrêcanie\n" +
+                    "E-zgaœ/uruchom silnik");
+        }
+        if (source == okno.menuWczytajPodroze) {
+            String[] opt={"TAK","NIE"};
+            int x = JOptionPane.showOptionDialog(okno, "Wczytanie innej historii podró¿y spowoduje utratê niezapisanej," +
+                             "\n aktualnej historii podró¿y. Kontynuowaæ?","Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+            if(x==0) {
+            JFileChooser file = new JFileChooser();
+            file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+            file.showDialog(okno,"Wybór pliku do odczytu");
             try {
-                auto.gaz();
-            } catch (Nieuruchomiony ex) {
-                okno.getZaplonCB().setBackground(Color.YELLOW);
+                auto.wczytajPodroze(file.getSelectedFile().getAbsolutePath().toString());
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
+            }}
+        }
+        if (source == okno.menuZapiszPodroze) {
+            JFileChooser file = new JFileChooser();
+            file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            file.showDialog(okno,"Wybór folderu do zapisu");
+            auto.zapiszPodroze(file.getSelectedFile().getAbsolutePath().toString());
+            }
+        if (source == okno.menuWyjscie) {
+            String[] opt={"TAK","NIE"};
+            int x = JOptionPane.showOptionDialog(okno, "Na pewno chcesz zamkn¹æ program? Wszelkie niezapisane dane przepadn¹.","Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+            if(x==0) {
+                okno.dispose();}
+            }
+        class PredkoscListener implements PropertyChangeListener{
+
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
             }
         }
+//        if (source == okno.menuWczytajAuto) {
+//            String[] opt={"TAK","NIE"};
+//            int x = JOptionPane.showOptionDialog(okno, "Wczytanie ustawieñ auta z pliku spowoduje utratê aktualnych danych. Kontynuowaæ?",
+//                    "Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
+//            if(x==0) {
+//                JFileChooser file = new JFileChooser();
+//                file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+//                file.showDialog(okno,"Wybór pliku do odczytu");
+//                try {
+//                        File out=new File(file.getSelectedFile().getAbsolutePath().toString());
+//                        if(!out.exists())
+//                        {
+//                            JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
+//                        }
+//                        FileInputStream input=new FileInputStream(out);
+//                        XMLDecoder decoder=new XMLDecoder(input);
+//                        auto=(Samochod) decoder.readObject();
+//                        decoder.close();
+//                        input.close();
+//                    } catch (IOException ex) {
+//                        ex.printStackTrace();
+//                    }
+//
+//            }
+//        }
+//
+//            if (source == okno.menuZapiszAuto) {
+//                JFileChooser file = new JFileChooser();
+//                file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//                file.showDialog(okno,"Wybór folderu do zapisu");
+//                try {
+//                    File out=new File(file.getSelectedFile().getAbsolutePath().toString()+"auto.xml");
+//                        if(!out.exists())
+//                    {
+//                        out.createNewFile();
+//                    }
+//                    FileOutputStream output=new FileOutputStream(out);
+//                    XMLEncoder encoder=new XMLEncoder(output);
+//                    encoder.writeObject(auto);
+//                    encoder.close();
+//                    output.close();
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//        }
+
     }
 
-    class HamulecListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            auto.hamulec();
-        }
-    }
-
-    class PredkoscListener implements PropertyChangeListener{
+    class PredkoscListener implements PropertyChangeListener {
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {

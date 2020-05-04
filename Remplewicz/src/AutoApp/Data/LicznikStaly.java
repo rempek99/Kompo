@@ -1,4 +1,4 @@
-package AutoApp.Model;
+package AutoApp.Data;
 
 public class LicznikStaly extends Exception {
     LicznikStaly()

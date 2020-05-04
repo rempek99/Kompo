@@ -1,8 +1,8 @@
-package AutoApp.Model;
+package AutoApp.Logic;
 
-import java.util.Comparator;
 import AutoApp.Data.Podroz;
 
+import java.util.Comparator;
 public class Porownaj
 implements Comparator<Podroz>{
 	String klucz;

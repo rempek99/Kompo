@@ -1,23 +1,31 @@
-package AutoApp.Model;
+package AutoApp.Logic;
 
 import AutoApp.Data.Licznik;
 import AutoApp.Data.Podroz;
-import java.beans.PropertyChangeListener;
+
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
-
+//klasa udostepnia funkcjonalnosci zwiekszania predkosci i hamowania,
+//uruchomienia i zgaszenia pojazdu
+//oraz zapis i odczyt z pliku listy podrozy
 public class Samochod implements Prowadzenie{
     int moc_silnika;
     int moc_hamulcow;
-
+    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
+    Chwilowy_odczyt_predkosci temp;
+    Licznik licznik1;
+    Predkosciomierz predkosciomierz1;
+    private boolean zaplon = false;
+    transient ArrayList<Podroz> przejazdy;
     public boolean isZaplon() {
         return zaplon;
     }
 
-    private boolean zaplon = false;
-    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
-    Chwilowy_odczyt_predkosci temp;
-    Licznik licznik1;
+
+
     public Predkosciomierz getPredkosciomierz() {
         return predkosciomierz1;
     }
@@ -30,12 +38,6 @@ public class Samochod implements Prowadzenie{
         return moc_hamulcow;
     }
 
-    Predkosciomierz predkosciomierz1;
-    ArrayList<Podroz> przejazdy;
-
-    public ArrayList<Podroz> getPrzejazdy() {
-        return przejazdy;
-    }
 
     public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
     {
@@ -46,13 +48,51 @@ public class Samochod implements Prowadzenie{
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
         przejazdy = new ArrayList<Podroz>();
     }
-
+    public ArrayList<Podroz> getPrzejazdy() {
+        return przejazdy;
+    }
+    public void zapiszPodroze (String fileDirectoryPath)
+    {
+        String dest=fileDirectoryPath+"/podroze.xml";
+        try {
+            File out=new File(dest);
+            if(!out.exists())
+            {
+                out.createNewFile();
+            }
+            FileOutputStream output=new FileOutputStream(out);
+            XMLEncoder encoder=new XMLEncoder(output);
+            encoder.writeObject(przejazdy);
+            encoder.close();
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void wczytajPodroze (String filePath) throws Exception
+    {
+        String dest=filePath;
+        try {
+            File out=new File(dest);
+            if(!out.exists())
+            {
+                throw new Exception("Błąd pliku");
+            }
+            FileInputStream input=new FileInputStream(out);
+            XMLDecoder decoder=new XMLDecoder(input);
+            przejazdy=(ArrayList<Podroz>)decoder.readObject();
+            decoder.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     @Override
     public void gaz() throws Nieuruchomiony{
         if(!isZaplon())
             throw new Nieuruchomiony();
         try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
+        catch(UjemnaWartosc ex)
         {
             System.out.println(ex);
         }
@@ -69,7 +109,7 @@ public class Samochod implements Prowadzenie{
     @Override
     public void hamulec() {
         try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
+        catch(UjemnaWartosc ex)
         {
             System.out.println(ex);
         }
@@ -93,8 +133,8 @@ public class Samochod implements Prowadzenie{
 
     @Override
     public void uruchom_silnik() {
-        zaplon = true;
         predkosciomierz1.reset();
+        zaplon=true;
         try {licznik1.reset();}
         catch (Exception ex)
         {
@@ -105,9 +145,9 @@ public class Samochod implements Prowadzenie{
 
     @Override
     public void zgas_silnik() {
-        zaplon = false;
+        zaplon=false;
         try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
+        catch(UjemnaWartosc ex)
         {
             System.out.println(ex);
         }
@@ -119,6 +159,4 @@ public class Samochod implements Prowadzenie{
             System.out.println(ex);
         }
     }
-
-
 }

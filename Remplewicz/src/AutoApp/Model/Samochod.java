@@ -1,14 +1,21 @@
 package AutoApp.Model;
 
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Samochod implements Prowadzenie{
     int moc_silnika;
     int moc_hamulcow;
+
+    public boolean isZaplon() {
+        return zaplon;
+    }
+
+    private boolean zaplon = false;
+    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
     Chwilowy_odczyt_predkosci temp;
     Licznik licznik1;
-
     public Predkosciomierz getPredkosciomierz() {
         return predkosciomierz1;
     }
@@ -24,7 +31,11 @@ public class Samochod implements Prowadzenie{
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
 
-    public Samochod(int moc_silnika,int moc_hamulcow, int max_predkosc)
+    public ArrayList<Podroz> getPrzejazdy() {
+        return przejazdy;
+    }
+
+    public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
     {
         this.moc_silnika = moc_silnika;
         this.moc_hamulcow = moc_hamulcow;
@@ -35,14 +46,16 @@ public class Samochod implements Prowadzenie{
     }
 
     @Override
-    public void gaz() {
+    public void gaz() throws Nieuruchomiony{
+        if(!isZaplon())
+            throw new Nieuruchomiony();
         try{licznik1.dodaj(temp.przejechane());}
         catch(UjemnaWartosc ex)
         {
             System.out.println(ex);
         }
         try {
-            predkosciomierz1.zwieksz_predkosc((float) (moc_silnika * 0.1));
+            predkosciomierz1.zwieksz_predkosc((float) ((moc_silnika * 0.01)-(predkosciomierz1.getPredkosc()*0.007)));
         }
         catch(UjemnaWartosc ex)
         {
@@ -59,7 +72,7 @@ public class Samochod implements Prowadzenie{
             System.out.println(ex);
         }
         try {
-            predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * predkosciomierz1.getMax_predkosc())/100);
+            predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 60/predkosciomierz1.getPredkosc()));
         }
         catch(UjemnaWartosc ex)
         {
@@ -78,6 +91,7 @@ public class Samochod implements Prowadzenie{
 
     @Override
     public void uruchom_silnik() {
+        zaplon = true;
         predkosciomierz1.reset();
         try {licznik1.reset();}
         catch (Exception ex)
@@ -89,6 +103,7 @@ public class Samochod implements Prowadzenie{
 
     @Override
     public void zgas_silnik() {
+        zaplon = false;
         try{licznik1.dodaj(temp.przejechane());}
         catch(UjemnaWartosc ex)
         {
@@ -102,4 +117,6 @@ public class Samochod implements Prowadzenie{
             System.out.println(ex);
         }
     }
+
+
 }

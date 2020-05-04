@@ -1,6 +1,7 @@
 package AutoApp.Model;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Date;
 
 public class Podroz
@@ -10,6 +11,7 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 	long czas; //sekundy
 	String data_rozpoczecia;
 	String data_zakonczenia;
+	private static DecimalFormat df = new DecimalFormat("0.00");
 
 	public String getData_rozpoczecia() {
 		return data_rozpoczecia;
@@ -60,7 +62,7 @@ implements Comparable<Podroz>, Cloneable, Serializable {
 	public String toString()
 	{
 		String output = "";
-		output +=data_rozpoczecia +" "+ data_zakonczenia + " Dystans: "+ getDlugosc() + "km, Srednia Predkosc: " + String.format("%.2f", getSrednia_predkosc()) + "km/h, Czas: " + String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60)+"\n";
+		output +="START: "+data_rozpoczecia +" STOP: "+ data_zakonczenia + " Dystans: "+ df.format(getDlugosc()) + "km, Srednia Predkosc: " + String.format("%.2f", getSrednia_predkosc()) + "km/h, Czas: " + String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60)+"\n";
 		return output;
 	}
 

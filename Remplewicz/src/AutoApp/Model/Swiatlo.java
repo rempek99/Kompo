@@ -1,9 +1,17 @@
 package AutoApp.Model;
 
+import java.awt.*;
+
 public class Swiatlo implements Obsluga_Swiatla{
     boolean wlaczone;
-    String barwa;
+    Color barwa;
+    public Color getBarwa() {
+        return barwa;
+    }
 
+    public void setBarwa(Color barwa) {
+        this.barwa = barwa;
+    }
     @Override
     public void wylacz() {
         this.wlaczone = false;

@@ -1,7 +1,7 @@
 package AutoApp.Model;
 
 public interface Prowadzenie {
-    void gaz();
+    void gaz() ;
     void hamulec();
     void skret(boolean prawo);
     void uruchom_silnik();

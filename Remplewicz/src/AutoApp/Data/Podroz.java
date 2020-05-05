@@ -10,6 +10,11 @@ public class Podroz
 	float srednia_predkosc; //km/h
 	long czas; //sekundy
 	String data_rozpoczecia;
+
+	public String getData_zakonczenia() {
+		return data_zakonczenia;
+	}
+
 	String data_zakonczenia;
 	private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -64,6 +69,12 @@ public class Podroz
 		String output = "";
 		output +="START: "+data_rozpoczecia +" STOP: "+ data_zakonczenia + " Dystans: "+ df.format(getDlugosc()) + "km, Srednia Predkosc: " + String.format("%.2f", getSrednia_predkosc()) + "km/h, Czas: " + String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60)+"\n";
 		return output;
+	}
+	public String stringData(int i)
+	{
+		String [] output = {data_rozpoczecia,data_zakonczenia, df.format(getDlugosc())+"km",String.format("%.2f", getSrednia_predkosc())+ "km/h",String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60) };
+
+		return output[i];
 	}
 
 	public int compareTo(Podroz ks)

@@ -5,6 +5,9 @@ import AutoApp.Data.Podroz;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
 
 public class Samochod implements Prowadzenie{
     int moc_silnika;
@@ -51,10 +54,10 @@ public class Samochod implements Prowadzenie{
     public void gaz() throws Nieuruchomiony{
         if(!isZaplon())
             throw new Nieuruchomiony();
-        try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
-        {
-            System.out.println(ex);
+        try {
+            licznik1.dodaj(temp.przejechane());
+        } catch (UjemnaWartosc ujemnaWartosc) {
+            ujemnaWartosc.printStackTrace();
         }
         try {
             predkosciomierz1.zwieksz_predkosc((float) ((moc_silnika * 0.01)-(predkosciomierz1.getPredkosc()*0.007)));
@@ -68,10 +71,10 @@ public class Samochod implements Prowadzenie{
 
     @Override
     public void hamulec() {
-        try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
-        {
-            System.out.println(ex);
+        try {
+            licznik1.dodaj(temp.przejechane());
+        } catch (UjemnaWartosc ujemnaWartosc) {
+            ujemnaWartosc.printStackTrace();
         }
         try {
             predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 60/predkosciomierz1.getPredkosc()));
@@ -81,6 +84,43 @@ public class Samochod implements Prowadzenie{
             System.out.print(ex);
         }
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+    }
+
+    public void zapiszPodroze (String fileDirectoryPath)
+    {
+        String dest=fileDirectoryPath+"/podroze.xml";
+        try {
+            File out=new File(dest);
+            if(!out.exists())
+            {
+                out.createNewFile();
+            }
+            FileOutputStream output=new FileOutputStream(out);
+            XMLEncoder encoder=new XMLEncoder(output);
+            encoder.writeObject(przejazdy);
+            encoder.close();
+            output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void wczytajPodroze (String filePath) throws Exception
+    {
+        String dest=filePath;
+        try {
+            File out=new File(dest);
+            if(!out.exists())
+            {
+                throw new Exception("Błąd pliku");
+            }
+            FileInputStream input=new FileInputStream(out);
+            XMLDecoder decoder=new XMLDecoder(input);
+            przejazdy=(ArrayList<Podroz>)decoder.readObject();
+            decoder.close();
+            input.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -94,7 +134,6 @@ public class Samochod implements Prowadzenie{
     @Override
     public void uruchom_silnik() {
         zaplon = true;
-        predkosciomierz1.reset();
         try {licznik1.reset();}
         catch (Exception ex)
         {
@@ -106,18 +145,13 @@ public class Samochod implements Prowadzenie{
     @Override
     public void zgas_silnik() {
         zaplon = false;
-        try{licznik1.dodaj(temp.przejechane());}
-        catch(AutoApp.Logic.UjemnaWartosc ex)
-        {
-            System.out.println(ex);
+        try {
+            licznik1.dodaj(temp.przejechane());
+        } catch (UjemnaWartosc ujemnaWartosc) {
+            ujemnaWartosc.printStackTrace();
         }
         przejazdy.add(new Podroz(licznik1.getDystans(),licznik1.getStart(),new Date()));
         predkosciomierz1.reset();
-        try {licznik1.reset();}
-        catch (Exception ex)
-        {
-            System.out.println(ex);
-        }
     }
 
 

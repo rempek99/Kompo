@@ -1,7 +1,7 @@
 package AutoApp.View;
 
-import AutoApp.Logic.Nieuruchomiony;
-import AutoApp.Logic.Samochod;
+import AutoApp.Model.Nieuruchomiony;
+import AutoApp.Model.Samochod;
 
 import javax.swing.*;
 import java.awt.*;
@@ -87,9 +87,15 @@ public class Controller implements ActionListener{
                 if (auto.isZaplon()) {
                     auto.zgas_silnik();
                     okno.getZaplonCB().setText("ZAP£ON [E]");
-                    okno.getPrzejazdyText().setText(okno.getPrzejazdyText().getText() +
-                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
-                    System.out.println(auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
+
+                    okno.getTabelaModel().addRow(new Object[]{auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(0),
+                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(1),
+                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(2),
+                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(3),
+                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(4)});
+
+//                    okno.getPrzejazdyText().setText(okno.getPrzejazdyText().getText() +
+//                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
                 } else {
                     okno.getZaplonCB().setBackground(new Color(0,0,0,0));
                     okno.getZaplonCB().setText("ZGAŒ SILNIK [E]");
@@ -144,52 +150,6 @@ public class Controller implements ActionListener{
                 okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
             }
         }
-//        if (source == okno.menuWczytajAuto) {
-//            String[] opt={"TAK","NIE"};
-//            int x = JOptionPane.showOptionDialog(okno, "Wczytanie ustawieñ auta z pliku spowoduje utratê aktualnych danych. Kontynuowaæ?",
-//                    "Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
-//            if(x==0) {
-//                JFileChooser file = new JFileChooser();
-//                file.setFileSelectionMode(JFileChooser.FILES_ONLY);
-//                file.showDialog(okno,"Wybór pliku do odczytu");
-//                try {
-//                        File out=new File(file.getSelectedFile().getAbsolutePath().toString());
-//                        if(!out.exists())
-//                        {
-//                            JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
-//                        }
-//                        FileInputStream input=new FileInputStream(out);
-//                        XMLDecoder decoder=new XMLDecoder(input);
-//                        auto=(Samochod) decoder.readObject();
-//                        decoder.close();
-//                        input.close();
-//                    } catch (IOException ex) {
-//                        ex.printStackTrace();
-//                    }
-//
-//            }
-//        }
-//
-//            if (source == okno.menuZapiszAuto) {
-//                JFileChooser file = new JFileChooser();
-//                file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//                file.showDialog(okno,"Wybór folderu do zapisu");
-//                try {
-//                    File out=new File(file.getSelectedFile().getAbsolutePath().toString()+"auto.xml");
-//                        if(!out.exists())
-//                    {
-//                        out.createNewFile();
-//                    }
-//                    FileOutputStream output=new FileOutputStream(out);
-//                    XMLEncoder encoder=new XMLEncoder(output);
-//                    encoder.writeObject(auto);
-//                    encoder.close();
-//                    output.close();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-//        }
-
     }
 
     class PredkoscListener implements PropertyChangeListener {

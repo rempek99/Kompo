@@ -1,6 +1,7 @@
 package AutoApp.View;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.text.DecimalFormat;
 
@@ -9,6 +10,11 @@ public class Okienko extends JFrame{
 
 
         private JTextArea przejazdyText;
+        String [] tytuly = {"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
+        Object przejazdyTabData[][];
+        private JTable przejazdyTab;
+        DefaultTableModel tabelaModel;
+        private JScrollPane tabelaPane;
         private JPanel bottomPanel;
         private JPanel topPanel;
         private JLabel infoLabel = new JLabel("Moc silnika: ");
@@ -45,6 +51,10 @@ public class Okienko extends JFrame{
         return przejazdyText;
     }
 
+    public DefaultTableModel getTabelaModel() {
+        return tabelaModel;
+    }
+
     public Okienko() {
             this.setTitle("AutoApp");
             img=new ImageIcon("background.png");
@@ -72,8 +82,6 @@ public class Okienko extends JFrame{
             menuPomoc=new JMenu("Pomoc");
             menuOProgramie=new JMenuItem("O Programie");
             menuPomoc.add(menuOProgramie);
-            //menuPlik.add(menuZapiszAuto);
-            //menuPlik.add(menuWczytajAuto);
             menuPlik.add(menuWczytajPodroze);
             menuPlik.add(menuZapiszPodroze);
             menuPlik.addSeparator();
@@ -83,13 +91,18 @@ public class Okienko extends JFrame{
             menuB.add(menuPomoc);
             this.add(topPanel,BorderLayout.NORTH);
             this.setJMenuBar(menuB);
-            //setVisible(true);
 			
 			bottomPanel = new JPanel();
             bottomPanel.setBackground(Color.white);
             przejazdyText = new JTextArea("Przejazdy:\n");
             przejazdyText.setEditable(false);
-            bottomPanel.add(przejazdyText);
+
+
+            tabelaModel = new DefaultTableModel(przejazdyTabData,tytuly);
+            przejazdyTab = new JTable(tabelaModel);
+            tabelaPane = new JScrollPane(przejazdyTab);
+            tabelaPane.setPreferredSize(new Dimension(800,80));
+            bottomPanel.add(tabelaPane);
             this.add(bottomPanel,BorderLayout.SOUTH);
 
             predkosciomierz = new JPanel();
@@ -97,14 +110,14 @@ public class Okienko extends JFrame{
             predkosciomierz.setLayout(null);
             img.setBounds(50,20,848,430);
             predkosciomierz.add(img);
-            predkoscLabel.setBounds(330,300,300,50);
-            predkoscLabel.setFont(new Font("Dialog",Font.BOLD,36));
+            predkoscLabel.setBounds(330,300,400,50);
+            predkoscLabel.setFont(new Font("Dialog",Font.BOLD,32));
             predkosciomierz.add(predkoscLabel,0);
             this.add(predkosciomierz,BorderLayout.CENTER);
         }
 
     public void setPredkoscLabel(float predkosc) {
-        this.predkoscLabel.setText("Predkosc: " + df.format(predkosc));
+        this.predkoscLabel.setText("Predkosc: " + df.format(predkosc)+" km/h");
     }
 
     public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {
@@ -112,14 +125,7 @@ public class Okienko extends JFrame{
                 " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
                 " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
     }
-//    void addGazListener(ActionListener gazListener)
-//    {
-//        gazButton.addActionListener(gazListener);
-//    }
-//    void addHamulecListener(ActionListener hamulecListener)
-//    {
-//        hamulecButton.addActionListener(hamulecListener);
-//    }
+
 
 
 

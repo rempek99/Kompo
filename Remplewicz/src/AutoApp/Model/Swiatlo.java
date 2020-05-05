@@ -32,8 +32,6 @@ public class Swiatlo implements Obsluga_Swiatla{
                 wlacz();
             else
                 wylacz();
-
-            //// źródło: https://stackoverflow.com/questions/24104313/how-do-i-make-a-delay-in-java
             try
             {
                 Thread.sleep(1000);
@@ -42,8 +40,6 @@ public class Swiatlo implements Obsluga_Swiatla{
             {
                 Thread.currentThread().interrupt();
             }
-            ////
-
         }
     }
 }

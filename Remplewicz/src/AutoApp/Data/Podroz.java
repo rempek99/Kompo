@@ -53,8 +53,6 @@ public class Podroz
 		this.srednia_predkosc = 0;
 		this.czas = 0;
 	}
-
-
 	public Podroz(float dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
 	{
 		this.dlugosc = dlugosc;
@@ -110,20 +108,4 @@ public class Podroz
 		Podroz tmp =  (Podroz)super.clone();
 		return tmp;
 	}
-//	public String podroz2Xml(Samochod.logika.Podroz podroz)
-//	{
-//		XStream mapping=new XStream(new DomDriver());
-//		String xml=mapping.toXML(podroz);
-//		return xml;
-//	}
-//	public String podroz2Xml()
-//	{
-//		XStream mapping=new XStream(new DomDriver());
-//		String xml=mapping.toXML((Samochod.logika.Podroz)this);
-//		return xml;
-//	}
-//	public Samochod.logika.Podroz xml2Podroz(String xml) {
-//		XStream mapping = new XStream(new DomDriver());
-//		return (Samochod.logika.Podroz) mapping.fromXML(xml);
-//	}
 }

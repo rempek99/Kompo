@@ -2,7 +2,6 @@ package AutoApp.Model;
 
 import AutoApp.Data.Licznik;
 import AutoApp.Data.Podroz;
-import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Date;
 import java.beans.XMLDecoder;
@@ -153,6 +152,4 @@ public class Samochod implements Prowadzenie{
         przejazdy.add(new Podroz(licznik1.getDystans(),licznik1.getStart(),new Date()));
         predkosciomierz1.reset();
     }
-
-
 }

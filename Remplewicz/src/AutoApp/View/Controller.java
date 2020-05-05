@@ -12,7 +12,6 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-//
 public class Controller implements ActionListener{
 
     private Samochod auto;
@@ -84,7 +83,8 @@ public class Controller implements ActionListener{
             if((e.getKeyChar()=='E')||(e.getKeyChar()=='e'))
             {
                 okno.changeZaplonRB();
-                if (auto.isZaplon()) {
+                if (auto.isZaplon())
+                {
                     auto.zgas_silnik();
                     okno.getZaplonCB().setText("ZAP£ON [E]");
 
@@ -94,9 +94,9 @@ public class Controller implements ActionListener{
                             auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(3),
                             auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).stringData(4)});
 
-//                    okno.getPrzejazdyText().setText(okno.getPrzejazdyText().getText() +
-//                            auto.getPrzejazdy().get(auto.getPrzejazdy().size()-1).toString());
-                } else {
+                }
+                else
+                {
                     okno.getZaplonCB().setBackground(new Color(0,0,0,0));
                     okno.getZaplonCB().setText("ZGAŒ SILNIK [E]");
                     auto.uruchom_silnik();

@@ -8,14 +8,15 @@ import java.text.DecimalFormat;
 
 public class Okienko extends JFrame{
 
-
-        private JTextArea przejazdyText;
+    // Spis przejazdów
         String [] tytuly = {"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
         Object przejazdyTabData[][];
         private JTable przejazdyTab;
         DefaultTableModel tabelaModel;
         private JScrollPane tabelaPane;
         private JPanel bottomPanel;
+
+        // Wyswietlanie Informacji
         private JPanel topPanel;
         private JLabel infoLabel = new JLabel("Moc silnika: ");
         private JLabel predkoscLabel = new JLabel("Predkoœæ: ");
@@ -45,10 +46,6 @@ public class Okienko extends JFrame{
             this.zaplonCB.setSelected(false);
         else
             this.zaplonCB.setSelected(true);
-    }
-
-    public JTextArea getPrzejazdyText() {
-        return przejazdyText;
     }
 
     public DefaultTableModel getTabelaModel() {
@@ -94,9 +91,6 @@ public class Okienko extends JFrame{
 			
 			bottomPanel = new JPanel();
             bottomPanel.setBackground(Color.white);
-            przejazdyText = new JTextArea("Przejazdy:\n");
-            przejazdyText.setEditable(false);
-
 
             tabelaModel = new DefaultTableModel(przejazdyTabData,tytuly);
             przejazdyTab = new JTable(tabelaModel);
@@ -125,8 +119,4 @@ public class Okienko extends JFrame{
                 " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
                 " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
     }
-
-
-
-
 }

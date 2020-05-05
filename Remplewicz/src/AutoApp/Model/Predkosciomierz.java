@@ -1,8 +1,5 @@
 package AutoApp.Model;
 
-
-import javax.swing.event.ChangeListener;
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 

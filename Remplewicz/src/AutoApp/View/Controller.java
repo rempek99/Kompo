@@ -29,6 +29,7 @@ public class Controller implements ActionListener{
         this.okno.menuWyjscie.addActionListener(this);
         this.okno.menuWczytajPodroze.addActionListener(this);
         this.okno.menuZapiszPodroze.addActionListener(this);
+        this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
     }
 
     class KeyboarListner implements KeyListener{
@@ -127,6 +128,7 @@ public class Controller implements ActionListener{
             file.showDialog(okno,"Wybór pliku do odczytu");
             try {
                 auto.wczytajPodroze(file.getSelectedFile().getAbsolutePath().toString());
+                ////////////////////////////////////// Wyswietlanie wczytanych wiadomosci do tabeli na dole okna ////////////////////////////////////////////////////////////////////////
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
             }}
@@ -157,6 +159,17 @@ public class Controller implements ActionListener{
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
+            okno.setPasekPredkosciValue(auto.getPredkosciomierz().getPredkosc());
         }
     }
+
+    class OsiagiButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            OsiagiOkienko okno2 = new OsiagiOkienko();
+            okno2.setVisible(true);
+        }
+    }
+
 }

@@ -3,10 +3,13 @@ package AutoApp.View;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 
 public class Okienko extends JFrame{
+
+        private JProgressBar pasekPredkosci;
 
     // Spis przejazdów
         String [] tytuly = {"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
@@ -29,6 +32,9 @@ public class Okienko extends JFrame{
         private static DecimalFormat df = new DecimalFormat("0.00");
         private ImageIcon img;
         private int angle;
+
+        //przycisk do okna do zmiany osiagow
+        private JButton osiagiButton;
 
     public int getAngle() {
         return angle;
@@ -60,13 +66,14 @@ public class Okienko extends JFrame{
             this.add(background);
             setLayout(new BorderLayout());
             JPanel topPanel = new JPanel();
-            setSize(1000,600);
+            setSize(1000,650);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             topPanel.add(infoLabel,BorderLayout.NORTH);
-            topPanel.add(predkoscLabel,BorderLayout.NORTH);
             zaplonCB.setBounds(450,280,50,20);
 			zaplonCB.setEnabled(false);
             topPanel.add(zaplonCB,BorderLayout.SOUTH);
+            osiagiButton = new JButton("Zmien Osiagi");
+            topPanel.add(osiagiButton);
             menuB=new JMenuBar();
             menuWyjscie=new JMenuItem("Wyjœcie");
             menuPlik=new JMenu("Plik");
@@ -107,11 +114,28 @@ public class Okienko extends JFrame{
             predkoscLabel.setBounds(330,300,400,50);
             predkoscLabel.setFont(new Font("Dialog",Font.BOLD,32));
             predkosciomierz.add(predkoscLabel,0);
+            pasekPredkosci = new JProgressBar(0,210);
+            pasekPredkosci.setValue(0);
+            pasekPredkosci.setStringPainted(true);
+            predkosciomierz.add(pasekPredkosci,0);
+            pasekPredkosci.setSize(new Dimension(600,30));
+            pasekPredkosci.setBounds(174,400,600,30);
+
             this.add(predkosciomierz,BorderLayout.CENTER);
         }
 
     public void setPredkoscLabel(float predkosc) {
         this.predkoscLabel.setText("Predkosc: " + df.format(predkosc)+" km/h");
+    }
+
+    void setPasekPredkosciValue(float value)
+    {
+        this.pasekPredkosci.setValue((int)value);
+    }
+
+    void addOsiagiButtonListener(ActionListener osiagiButtonListener)
+    {
+        this.osiagiButton.addActionListener(osiagiButtonListener);
     }
 
     public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {

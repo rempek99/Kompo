@@ -3,6 +3,8 @@ package AutoApp.Data;
 import AutoApp.Model.Resetowalny;
 import AutoApp.Model.UjemnaWartosc;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
 //Klasa odpowiadajaca za liczniki dystansow w samochodzie
@@ -10,6 +12,7 @@ public class Licznik implements Resetowalny {
     double dystans; //metry
     boolean staly;
     Date start;
+    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
     public Licznik()
     {
@@ -52,7 +55,10 @@ public class Licznik implements Resetowalny {
     {
         if(dystans<0)
             throw new UjemnaWartosc(dystans);
+        String oldValue = Double.toString(getDystans());
         this.dystans += dystans;
+        String newValue = Double.toString(getDystans());
+        pcs.firePropertyChange("dystans",oldValue,newValue);
     }
     public double getDystans() {
         return dystans;
@@ -62,5 +68,9 @@ public class Licznik implements Resetowalny {
         String output = "";
         output +="Pomiar od: "+ start + " Dystans: " + dystans +"m";
         return output;
+    }
+    public void addLicznikListener(PropertyChangeListener Listener)
+    {
+        pcs.addPropertyChangeListener(Listener);
     }
 }

@@ -2,6 +2,8 @@ package AutoApp.Model;
 
 import AutoApp.Data.Licznik;
 import AutoApp.Data.Podroz;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.beans.XMLDecoder;
@@ -9,23 +11,49 @@ import java.beans.XMLEncoder;
 import java.io.*;
 
 public class Samochod implements Prowadzenie{
+
     int moc_silnika;
     int moc_hamulcow;
-
     public boolean isZaplon() {
         return zaplon;
     }
-
     private boolean zaplon = false;
     Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
     Chwilowy_odczyt_predkosci temp;
     Licznik licznik1;
+    Licznik licznik2; //stały
+    Predkosciomierz predkosciomierz1;
+    ArrayList<Podroz> przejazdy;
+
+    public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
+    {
+        this.moc_silnika = moc_silnika;
+        this.moc_hamulcow = moc_hamulcow;
+        licznik1 = new Licznik(false);
+        licznik2 = new Licznik(true);
+        predkosciomierz1 = new Predkosciomierz(max_predkosc);
+        temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+        przejazdy = new ArrayList<Podroz>();
+        mijania = new Swiatlo(Color.yellow);
+        drogowe = new Swiatlo(Color.yellow);
+        lewyKierunkowskaz = new Swiatlo(Color.orange);
+        prawyKierunkowskaz = new Swiatlo(Color.orange);
+    }
+
+    public Licznik getLicznik1() {
+        return licznik1;
+    }
+
     public Predkosciomierz getPredkosciomierz() {
         return predkosciomierz1;
     }
 
     public void setMoc_hamulcow(int moc_hamulcow) {
         this.moc_hamulcow = moc_hamulcow;
+    }
+
+    public Licznik getLicznik2() {
+        return licznik2;
     }
 
     public void setMoc_silnika(int moc_silnika) {
@@ -40,21 +68,8 @@ public class Samochod implements Prowadzenie{
         return moc_hamulcow;
     }
 
-    Predkosciomierz predkosciomierz1;
-    ArrayList<Podroz> przejazdy;
-
     public ArrayList<Podroz> getPrzejazdy() {
         return przejazdy;
-    }
-
-    public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
-    {
-        this.moc_silnika = moc_silnika;
-        this.moc_hamulcow = moc_hamulcow;
-        licznik1 = new Licznik(false);
-        predkosciomierz1 = new Predkosciomierz(max_predkosc);
-        temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
-        przejazdy = new ArrayList<Podroz>();
     }
 
     @Override
@@ -63,6 +78,7 @@ public class Samochod implements Prowadzenie{
             throw new Nieuruchomiony();
         try {
             licznik1.dodaj(temp.przejechane());
+            licznik2.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
@@ -84,11 +100,12 @@ public class Samochod implements Prowadzenie{
     public void hamulec() {
         try {
             licznik1.dodaj(temp.przejechane());
+            licznik2.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
         try {
-            predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 60/predkosciomierz1.getPredkosc()));
+            predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 30/predkosciomierz1.getPredkosc()));
         }
         catch(UjemnaWartosc ex)
         {
@@ -100,6 +117,22 @@ public class Samochod implements Prowadzenie{
             temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
         }
 
+    }
+
+    public Swiatlo getMijania() {
+        return mijania;
+    }
+
+    public Swiatlo getDrogowe() {
+        return drogowe;
+    }
+
+    public Swiatlo getLewyKierunkowskaz() {
+        return lewyKierunkowskaz;
+    }
+
+    public Swiatlo getPrawyKierunkowskaz() {
+        return prawyKierunkowskaz;
     }
 
     public void zapiszPodroze (String fileDirectoryPath)
@@ -142,9 +175,17 @@ public class Samochod implements Prowadzenie{
     @Override
     public void skret(boolean prawo) {
         if(prawo)
-            System.out.println("Skrecam w prawo");
+        {
+            prawyKierunkowskaz.migaj();
+            prawyKierunkowskaz.wylacz();
+        }
+
         else
-            System.out.println("Skrecam w lewo");
+        {
+            lewyKierunkowskaz.migaj();
+            lewyKierunkowskaz.wylacz();
+        }
+
     }
 
     @Override
@@ -163,10 +204,12 @@ public class Samochod implements Prowadzenie{
         zaplon = false;
         try {
             licznik1.dodaj(temp.przejechane());
+            licznik2.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
         przejazdy.add(new Podroz(licznik1.getDystans(),licznik1.getStart(),new Date()));
         predkosciomierz1.reset();
+        temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }
 }

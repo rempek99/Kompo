@@ -25,27 +25,25 @@ public class Okienko extends JFrame{
         // Wyswietlanie Informacji
         private JPanel topPanel;
         private JLabel infoLabel = new JLabel("Moc silnika: ");
+        private JLabel licznik1Label = new JLabel("Licznik1");
+        private JLabel licznik2Label = new JLabel("Licznik2");
         private JLabel predkoscLabel = new JLabel("Predkoœæ: ");
-        private JLabel background;
         private JCheckBox zaplonCB = new JCheckBox("ZAP£ON [E]");
         private JMenuBar menuB;
         private JPanel predkosciomierz;
         private JMenu menuPlik,menuPomoc;
         public JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie;
         private static DecimalFormat df = new DecimalFormat("0.00");
-        private ImageIcon img;
-        private int angle;
+
+        JLabel swiatla_krotkie;
+        JLabel swiatla_dlugie;
+        JLabel kierunkowskaz_l;
+        JLabel kierunkowskaz_p;
+        JCheckBox przelacznik_swiatla_krotkie;
+        JCheckBox przelacznik_swiatla_dlugie;
 
         //przycisk do okna do zmiany osiagow
         private JButton osiagiButton;
-
-    public int getAngle() {
-        return angle;
-    }
-
-    public void setAngle(int angle) {
-        this.angle = angle;
-    }
 
     public JCheckBox getZaplonCB() {
         return zaplonCB;
@@ -57,16 +55,28 @@ public class Okienko extends JFrame{
             this.zaplonCB.setSelected(true);
     }
 
+    public JLabel getSwiatla_krotkie() {
+        return swiatla_krotkie;
+    }
+
+    public JLabel getSwiatla_dlugie() {
+        return swiatla_dlugie;
+    }
+
+    public JLabel getKierunkowskaz_l() {
+        return kierunkowskaz_l;
+    }
+
+    public JLabel getKierunkowskaz_p() {
+        return kierunkowskaz_p;
+    }
+
     public DefaultTableModel getTabelaModel() {
         return tabelaModel;
     }
 
     public Okienko() {
             this.setTitle("AutoApp");
-            img=new ImageIcon("background.png");
-            background=new JLabel("",img,JLabel.CENTER);
-            background.setBounds(0,50,848,430);
-            this.add(background);
             setLayout(new BorderLayout());
             JPanel topPanel = new JPanel();
             setSize(1000,650);
@@ -111,13 +121,44 @@ public class Okienko extends JFrame{
             this.add(bottomPanel,BorderLayout.SOUTH);
 
             predkosciomierz = new JPanel();
-            JLabel img = new JLabel(new ImageIcon("predkosciomierz.png"));
             predkosciomierz.setLayout(null);
-            img.setBounds(50,20,848,430);
-            predkosciomierz.add(img);
+            JLabel tarcza = new JLabel(new ImageIcon("tarcza.png"));
+            tarcza.setBounds(50,20,848,430);
+            swiatla_krotkie = new JLabel(new ImageIcon("krotkie.png"));
+            swiatla_krotkie.setBounds(380,150,75,60);
+            swiatla_dlugie = new JLabel(new ImageIcon("dlugie.png"));
+            swiatla_dlugie.setBounds(495,150,75,52);
+            kierunkowskaz_l = new JLabel(new ImageIcon("kier_l.png"));
+            kierunkowskaz_l.setBounds(250,150,46,46);
+            kierunkowskaz_p = new JLabel(new ImageIcon("kier_p.png"));
+            kierunkowskaz_p.setBounds(650,150,46,46);
+            kierunkowskaz_p.setVisible(false);
+            kierunkowskaz_l.setVisible(false);
+            swiatla_dlugie.setVisible(false);
+            swiatla_krotkie.setVisible(false);
+            przelacznik_swiatla_krotkie = new JCheckBox("Œwiat³a Mijania");
+            przelacznik_swiatla_dlugie = new JCheckBox("Œwiat³a Drogowe");
+            przelacznik_swiatla_krotkie.setBounds(320,120,125,20);
+            przelacznik_swiatla_dlugie.setBounds(495,120,125,20);
+            przelacznik_swiatla_dlugie.setFocusable(false);
+            przelacznik_swiatla_krotkie.setFocusable(false);
+
+            predkosciomierz.add(tarcza);
+            predkosciomierz.add(swiatla_krotkie,0);
+            predkosciomierz.add(swiatla_dlugie,0);
+            predkosciomierz.add(kierunkowskaz_l,0);
+            predkosciomierz.add(kierunkowskaz_p,0);
+            predkosciomierz.add(przelacznik_swiatla_krotkie,0);
+            predkosciomierz.add(przelacznik_swiatla_dlugie,0);
             predkoscLabel.setBounds(330,300,400,50);
             predkoscLabel.setFont(new Font("Dialog",Font.BOLD,32));
             predkosciomierz.add(predkoscLabel,0);
+            licznik1Label.setBounds(350,250,300,50);
+            licznik1Label.setFont(new Font("Dialog",Font.ITALIC,22));
+            predkosciomierz.add(licznik1Label,0);
+            licznik2Label.setBounds(370,230,300,25);
+            licznik2Label.setFont(new Font("Dialog",Font.ITALIC,18));
+            predkosciomierz.add(licznik2Label,0);
             pasekPredkosci = new JProgressBar(0,210);
             pasekPredkosci.setValue(0);
             pasekPredkosci.setStringPainted(true);
@@ -128,14 +169,31 @@ public class Okienko extends JFrame{
             this.add(predkosciomierz,BorderLayout.CENTER);
         }
 
+    public JCheckBox getPrzelacznik_swiatla_krotkie() {
+        return przelacznik_swiatla_krotkie;
+    }
+
+    public JCheckBox getPrzelacznik_swiatla_dlugie() {
+        return przelacznik_swiatla_dlugie;
+    }
+
     public void setPredkoscLabel(float predkosc) {
         this.predkoscLabel.setText("Prêdkoœæ: " + df.format(predkosc)+" km/h");
+    }
+
+    public void setLicznik1Label(double dystans) {
+        this.licznik1Label.setText("Aktualna podró¿: "+df.format(dystans)+"km");
+    }
+    public void setLicznik2Label(double dystans) {
+        this.licznik2Label.setText("Przebieg: "+df.format(dystans)+"km");
     }
 
     void setPasekPredkosciValue(float value)
     {
         this.pasekPredkosci.setValue((int)value);
     }
+
+    void setPasekPredkosciMaximum(int value){this.pasekPredkosci.setMaximum(value);}
 
     void addOsiagiButtonListener(ActionListener osiagiButtonListener)
     {

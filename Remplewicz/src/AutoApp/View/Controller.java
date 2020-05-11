@@ -19,6 +19,16 @@ public class Controller implements ActionListener{
         this.auto = auto;
         this.okno = okno;
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
+        this.auto.getLicznik1().addLicznikListener(new LicznikListener());
+        this.auto.getLicznik2().addLicznikListener(new LicznikListener());
+        this.okno.setLicznik1Label(auto.getLicznik1().getDystans());
+        this.okno.setLicznik2Label(auto.getLicznik2().getDystans());
+        this.okno.getPrzelacznik_swiatla_krotkie().addActionListener(this);
+        this.okno.getPrzelacznik_swiatla_dlugie().addActionListener(this);
+        this.auto.getMijania().addSwiatloListener(new SwiatloListener());
+        this.auto.getLewyKierunkowskaz().addSwiatloListener(new SwiatloListener());
+        this.auto.getPrawyKierunkowskaz().addSwiatloListener(new SwiatloListener());
+        this.auto.getDrogowe().addSwiatloListener(new SwiatloListener());
         this.okno.addKeyListener(new KeyboarListner());
         this.okno.setFocusable(true);
         this.okno.setInfoLabel(auto.getMoc_silnika(), auto.getMoc_hamulcow(), auto.getPredkosciomierz().getMax_predkosc());
@@ -144,13 +154,41 @@ public class Controller implements ActionListener{
             if(x==0) {
                 okno.dispose();}
             }
-        class PredkoscListener implements PropertyChangeListener{
-
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
+        if (source == okno.getPrzelacznik_swiatla_krotkie())
+        {
+            if(okno.getPrzelacznik_swiatla_krotkie().isSelected())
+            {
+                auto.getMijania().wlacz();
+                okno.getSwiatla_krotkie().setVisible(true);
+            }
+            else
+            {
+                auto.getMijania().wylacz();
+                okno.getSwiatla_krotkie().setVisible(false);
             }
         }
+        if (source == okno.getPrzelacznik_swiatla_dlugie())
+        {
+            if(okno.getPrzelacznik_swiatla_dlugie().isSelected())
+            {
+                auto.getDrogowe().wlacz();
+                okno.getSwiatla_dlugie().setVisible(true);
+            }
+            else
+            {
+                auto.getDrogowe().wylacz();
+                okno.getSwiatla_dlugie().setVisible(false);
+            }
+
+        }
+
+//        class PredkoscListener implements PropertyChangeListener{
+//
+//            @Override
+//            public void propertyChange(PropertyChangeEvent evt) {
+//                okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
+//            }
+//        }
     }
 
     class PredkoscListener implements PropertyChangeListener {
@@ -159,6 +197,38 @@ public class Controller implements ActionListener{
         public void propertyChange(PropertyChangeEvent evt) {
             okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
             okno.setPasekPredkosciValue(auto.getPredkosciomierz().getPredkosc());
+        }
+    }
+
+    class LicznikListener implements PropertyChangeListener{
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            okno.setLicznik1Label(auto.getLicznik1().getDystans());
+            okno.setLicznik2Label(auto.getLicznik2().getDystans());
+        }
+    }
+
+    class SwiatloListener implements  PropertyChangeListener{
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+            if(evt.getSource()==auto.getMijania())
+            {
+                okno.getSwiatla_krotkie().setVisible(auto.getMijania().isWlaczone());
+            }
+            else if(evt.getSource()==auto.getLewyKierunkowskaz())
+            {
+                okno.getKierunkowskaz_l().setVisible(auto.getLewyKierunkowskaz().isWlaczone());
+            }
+            else if(evt.getSource()==auto.getPrawyKierunkowskaz())
+            {
+                okno.getKierunkowskaz_p().setVisible(auto.getPrawyKierunkowskaz().isWlaczone());
+            }
+            else if(evt.getSource()==auto.getDrogowe())
+            {
+                okno.getSwiatla_dlugie().setVisible(auto.getDrogowe().isWlaczone());
+            }
         }
     }
 
@@ -181,6 +251,7 @@ public class Controller implements ActionListener{
             auto.setMoc_silnika(okno2.getMocSilnika());
             auto.setMoc_hamulcow(okno2.getMocHamulcow());
             auto.getPredkosciomierz().setMax_predkosc(okno2.getMaxPredkosc());
+            okno.setPasekPredkosciMaximum(okno2.getMaxPredkosc());
             okno2.dispose();
 
         }

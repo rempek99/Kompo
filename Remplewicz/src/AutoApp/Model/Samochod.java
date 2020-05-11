@@ -73,7 +73,11 @@ public class Samochod implements Prowadzenie{
         {
             System.out.print(ex);
         }
-        temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+        Date act = new Date();
+        if((act.getTime()-temp.getPoczatek_odczytu().getTime())>1000)
+        {
+            temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+        }
     }
 
     @Override
@@ -90,7 +94,12 @@ public class Samochod implements Prowadzenie{
         {
             System.out.print(ex);
         }
-        temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+        Date act = new Date();
+        if((act.getTime()-temp.getPoczatek_odczytu().getTime())>1000)
+        {
+            temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
+        }
+
     }
 
     public void zapiszPodroze (String fileDirectoryPath)

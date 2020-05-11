@@ -10,11 +10,16 @@ public class Chwilowy_odczyt_predkosci {
         return poczatek_odczytu;
     }
 
-    Chwilowy_odczyt_predkosci(float predkosc)
+    Chwilowy_odczyt_predkosci(double predkosc)
     {
         this.predkosc = predkosc;
         this.poczatek_odczytu = new Date();
     }
+
+    public void setPredkosc(double predkosc) {
+        this.predkosc = predkosc;
+    }
+
     double przejechane()
     {
         Date now = new Date();

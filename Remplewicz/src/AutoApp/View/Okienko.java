@@ -1,10 +1,13 @@
 package AutoApp.View;
 
+import AutoApp.Data.Podroz;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 
 public class Okienko extends JFrame{
@@ -72,7 +75,8 @@ public class Okienko extends JFrame{
             zaplonCB.setBounds(450,280,50,20);
 			zaplonCB.setEnabled(false);
             topPanel.add(zaplonCB,BorderLayout.SOUTH);
-            osiagiButton = new JButton("Zmien Osiagi");
+            osiagiButton = new JButton("Zmien Osi¹gi");
+            osiagiButton.setFocusable(false);
             topPanel.add(osiagiButton);
             menuB=new JMenuBar();
             menuWyjscie=new JMenuItem("Wyjœcie");
@@ -125,7 +129,7 @@ public class Okienko extends JFrame{
         }
 
     public void setPredkoscLabel(float predkosc) {
-        this.predkoscLabel.setText("Predkosc: " + df.format(predkosc)+" km/h");
+        this.predkoscLabel.setText("Prêdkoœæ: " + df.format(predkosc)+" km/h");
     }
 
     void setPasekPredkosciValue(float value)
@@ -137,10 +141,20 @@ public class Okienko extends JFrame{
     {
         this.osiagiButton.addActionListener(osiagiButtonListener);
     }
-
     public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {
         this.infoLabel.setText("Moc silnika: " + Integer.toString(moc) +
                 " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
                 " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
+    }
+    public void setTableData(ArrayList<Podroz> dane){
+        przejazdyTabData = new Object[dane.size()][5];
+        for(int i = 0; i<dane.size();i++)
+        {
+            for(int j = 0; j<5;j++)
+            {
+                przejazdyTabData[i][j] = dane.get(i).stringData(j);
+            }
+        }
+        tabelaModel.setDataVector(przejazdyTabData,tytuly);
     }
 }

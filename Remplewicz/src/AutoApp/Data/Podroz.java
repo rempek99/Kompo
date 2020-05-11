@@ -1,15 +1,18 @@
 package AutoApp.Data;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Podroz
 		implements Comparable<Podroz>, Cloneable, Serializable {
-	float dlugosc; //km
-	float srednia_predkosc; //km/h
+	double dlugosc; //km
+	double srednia_predkosc; //km/h
 	long czas; //sekundy
 	String data_rozpoczecia;
+	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public String getData_zakonczenia() {
 		return data_zakonczenia;
@@ -22,11 +25,11 @@ public class Podroz
 		return data_rozpoczecia;
 	}
 
-	public float getDlugosc()
+	public double getDlugosc()
 	{
 		return this.dlugosc;
 	}
-	public float getSrednia_predkosc()
+	public double getSrednia_predkosc()
 	{
 		return this.srednia_predkosc;
 	}
@@ -35,11 +38,11 @@ public class Podroz
 		return this.czas;
 	}
 
-	public void setDlugosc(float dlugosc) {
+	public void setDlugosc(double dlugosc) {
 		this.dlugosc = dlugosc;
 	}
 
-	public void setSrednia_predkosc(float srednia_predkosc) {
+	public void setSrednia_predkosc(double srednia_predkosc) {
 		this.srednia_predkosc = srednia_predkosc;
 	}
 
@@ -53,13 +56,13 @@ public class Podroz
 		this.srednia_predkosc = 0;
 		this.czas = 0;
 	}
-	public Podroz(float dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
+	public Podroz(double dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
 	{
 		this.dlugosc = dlugosc;
 		this.czas = (data_zakonczenia.getTime()-data_rozpoczecia.getTime())/1000;
 		this.srednia_predkosc = dlugosc / czas * 3600 ;
-		this.data_rozpoczecia = data_rozpoczecia.toString();
-		this.data_zakonczenia = data_zakonczenia.toString();
+		this.data_rozpoczecia = dateFormat.format(data_rozpoczecia);
+		this.data_zakonczenia = dateFormat.format(data_zakonczenia);
 	}
 
 	public String toString()

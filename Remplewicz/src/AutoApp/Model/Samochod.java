@@ -24,6 +24,14 @@ public class Samochod implements Prowadzenie{
         return predkosciomierz1;
     }
 
+    public void setMoc_hamulcow(int moc_hamulcow) {
+        this.moc_hamulcow = moc_hamulcow;
+    }
+
+    public void setMoc_silnika(int moc_silnika) {
+        this.moc_silnika = moc_silnika;
+    }
+
     public int getMoc_silnika() {
         return moc_silnika;
     }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class Chwilowy_odczyt_predkosci {
     Date poczatek_odczytu;
-    float predkosc;
+    double predkosc;
 
     public Date getPoczatek_odczytu() {
         return poczatek_odczytu;
@@ -15,10 +15,10 @@ public class Chwilowy_odczyt_predkosci {
         this.predkosc = predkosc;
         this.poczatek_odczytu = new Date();
     }
-    float przejechane()
+    double przejechane()
     {
         Date now = new Date();
-        float end = ((now.getTime()-poczatek_odczytu.getTime())/1000)*predkosc/3600;
+        double end = ((now.getTime()-poczatek_odczytu.getTime())/1000)*predkosc/3600;
         return end;
     }
 

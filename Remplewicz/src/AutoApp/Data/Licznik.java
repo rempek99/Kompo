@@ -7,7 +7,7 @@ import java.util.Date;
 
 //Klasa odpowiadajaca za liczniki dystansow w samochodzie
 public class Licznik implements Resetowalny {
-    float dystans; //metry
+    double dystans; //metry
     boolean staly;
     Date start;
 
@@ -36,25 +36,25 @@ public class Licznik implements Resetowalny {
     }
     public void reset() throws Exception
     {
+        this.start = new Date();
         if(this.dystans == 0)
             throw new Exception("Samochod.model.Licznik zostal juz zresetowany");
         if(this.staly == true)
             throw new LicznikStaly();
         this.dystans = 0;
-        this.start = new Date();
     }
 
     public Date getStart() {
         return start;
     }
 
-    public void dodaj(float dystans) throws UjemnaWartosc
+    public void dodaj(double dystans) throws UjemnaWartosc
     {
         if(dystans<0)
             throw new UjemnaWartosc(dystans);
         this.dystans += dystans;
     }
-    public float getDystans() {
+    public double getDystans() {
         return dystans;
     }
     public String toString()

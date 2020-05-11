@@ -18,6 +18,10 @@ public class Predkosciomierz implements Naped, Resetowalny{
         predkosc = 0;
     }
 
+    public void setMax_predkosc(int max_predkosc) {
+        this.max_predkosc = max_predkosc;
+    }
+
     public float getPredkosc() {
         return predkosc;
     }

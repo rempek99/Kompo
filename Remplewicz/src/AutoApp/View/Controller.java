@@ -5,10 +5,7 @@ import AutoApp.Model.Samochod;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -16,6 +13,7 @@ public class Controller implements ActionListener{
 
     private Samochod auto;
     private Okienko okno;
+    private OsiagiOkienko okno2;
 
     public Controller(Samochod auto, Okienko okno) {
         this.auto = auto;
@@ -128,6 +126,7 @@ public class Controller implements ActionListener{
             file.showDialog(okno,"Wybór pliku do odczytu");
             try {
                 auto.wczytajPodroze(file.getSelectedFile().getAbsolutePath().toString());
+                okno.setTableData(auto.getPrzejazdy());
                 ////////////////////////////////////// Wyswietlanie wczytanych wiadomosci do tabeli na dole okna ////////////////////////////////////////////////////////////////////////
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
@@ -167,9 +166,25 @@ public class Controller implements ActionListener{
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            OsiagiOkienko okno2 = new OsiagiOkienko();
+            okno2 = new OsiagiOkienko();
+            okno2.addZastosujButtonListener(new ZastosujButtonListener());
             okno2.setVisible(true);
         }
     }
+
+    class ZastosujButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            okno.setInfoLabel(okno2.getMocSilnika(),okno2.getMocHamulcow(),okno2.getMaxPredkosc());
+            auto.setMoc_silnika(okno2.getMocSilnika());
+            auto.setMoc_hamulcow(okno2.getMocHamulcow());
+            auto.getPredkosciomierz().setMax_predkosc(okno2.getMaxPredkosc());
+            okno2.dispose();
+
+        }
+    }
+
 
 }

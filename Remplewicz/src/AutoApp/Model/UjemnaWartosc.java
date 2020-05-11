@@ -5,7 +5,7 @@ public class UjemnaWartosc extends Exception{
     {
         super("Podales niepoprawna wartosc: "+ wartosc);
     }
-    public UjemnaWartosc(float wartosc)
+    public UjemnaWartosc(double wartosc)
     {
         super("Podales niepoprawna wartosc: "+ wartosc);
     }

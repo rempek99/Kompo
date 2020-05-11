@@ -12,7 +12,19 @@ public class Podroz
 	double srednia_predkosc; //km/h
 	long czas; //sekundy
 	String data_rozpoczecia;
-	DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	transient DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	public void setCzas(long czas) {
+		this.czas = czas;
+	}
+
+	public void setData_rozpoczecia(String data_rozpoczecia) {
+		this.data_rozpoczecia = data_rozpoczecia;
+	}
+
+	public void setData_zakonczenia(String data_zakonczenia) {
+		this.data_zakonczenia = data_zakonczenia;
+	}
 
 	public String getData_zakonczenia() {
 		return data_zakonczenia;

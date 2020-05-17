@@ -8,6 +8,7 @@ import java.util.Date;
 
 public class Podroz
 		implements Comparable<Podroz>, Cloneable, Serializable {
+	int id;
 	double dlugosc; //km
 	double srednia_predkosc; //km/h
 	long czas; //sekundy
@@ -62,17 +63,31 @@ public class Podroz
 		this.czas = czas;
 	}
 
+	public int getId() {
+		return id;
+	}
+
 	public Podroz() {
 		// TODO Auto-generated constructor stub
 		this.dlugosc = 0;
 		this.srednia_predkosc = 0;
 		this.czas = 0;
 	}
-	public Podroz(double dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
+	public Podroz(int id, double dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
 	{
+		this.id = id;
 		this.dlugosc = dlugosc;
 		this.czas = (data_zakonczenia.getTime()-data_rozpoczecia.getTime())/1000;
 		this.srednia_predkosc = dlugosc / czas * 3600 ;
+		this.data_rozpoczecia = dateFormat.format(data_rozpoczecia);
+		this.data_zakonczenia = dateFormat.format(data_zakonczenia);
+	}
+	public Podroz(int id,double dlugosc, Date data_rozpoczecia, Date data_zakonczenia, double srednia_predkosc)
+	{
+		this.id = id;
+		this.dlugosc = dlugosc;
+		this.czas = (data_zakonczenia.getTime()-data_rozpoczecia.getTime())/1000;
+		this.srednia_predkosc = srednia_predkosc ;
 		this.data_rozpoczecia = dateFormat.format(data_rozpoczecia);
 		this.data_zakonczenia = dateFormat.format(data_zakonczenia);
 	}

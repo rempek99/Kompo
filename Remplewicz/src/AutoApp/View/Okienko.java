@@ -22,6 +22,7 @@ public class Okienko extends JFrame{
         private JScrollPane tabelaPane;
         private JPanel bottomPanel;
 
+
         // Wyswietlanie Informacji
         private JPanel topPanel;
         private JLabel infoLabel = new JLabel("Moc silnika: ");
@@ -32,7 +33,7 @@ public class Okienko extends JFrame{
         private JMenuBar menuB;
         private JPanel predkosciomierz;
         private JMenu menuPlik,menuPomoc;
-        public JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie;
+        public JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie,menuWczytajPodrozeZBazyDanych,menuDodajPodrozeDoBazyDanych,menuWyczyscBazeDanych;
         private static DecimalFormat df = new DecimalFormat("0.00");
 
         JLabel swiatla_krotkie;
@@ -75,13 +76,17 @@ public class Okienko extends JFrame{
         return tabelaModel;
     }
 
+
+
     public Okienko() {
             this.setTitle("AutoApp");
             setLayout(new BorderLayout());
             JPanel topPanel = new JPanel();
-            setSize(1000,650);
+            setSize(1000,700);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
             topPanel.add(infoLabel,BorderLayout.NORTH);
+
             zaplonCB.setBounds(450,280,50,20);
 			zaplonCB.setEnabled(false);
             topPanel.add(zaplonCB,BorderLayout.SOUTH);
@@ -92,6 +97,9 @@ public class Okienko extends JFrame{
             menuWyjscie=new JMenuItem("Wyjœcie");
             menuPlik=new JMenu("Plik");
             menuWczytajPodroze =new JMenuItem("Wczytaj historiê podró¿y");
+            menuWczytajPodrozeZBazyDanych = new JMenuItem("Wczytaj Podró¿e Z Bazy Danych");
+            menuDodajPodrozeDoBazyDanych = new JMenuItem("Dodaj Podró¿e Do Bazy Danych");
+            menuWyczyscBazeDanych = new JMenuItem("Wyczysc baze danych");
             menuWczytajPodroze.setAccelerator(KeyStroke.getKeyStroke("ctrl O"));
             menuZapiszPodroze =new JMenuItem("Zapisz historiê podró¿y");
             menuWczytajAuto=new JMenuItem("Wczytaj",'O');
@@ -101,6 +109,9 @@ public class Okienko extends JFrame{
             menuOProgramie=new JMenuItem("O Programie");
             menuPomoc.add(menuOProgramie);
             menuPlik.add(menuWczytajPodroze);
+            menuPlik.add(menuWczytajPodrozeZBazyDanych);
+            menuPlik.add(menuDodajPodrozeDoBazyDanych);
+            menuPlik.add(menuWyczyscBazeDanych);
             menuPlik.add(menuZapiszPodroze);
             menuPlik.addSeparator();
             menuPlik.add(menuWyjscie);
@@ -112,6 +123,7 @@ public class Okienko extends JFrame{
 			
 			bottomPanel = new JPanel();
             bottomPanel.setBackground(Color.white);
+            bottomPanel.setPreferredSize(new Dimension(1000,150));
 
             tabelaModel = new DefaultTableModel(przejazdyTabData,tytuly);
             przejazdyTab = new JTable(tabelaModel);

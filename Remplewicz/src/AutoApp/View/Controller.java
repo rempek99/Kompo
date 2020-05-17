@@ -1,5 +1,6 @@
 package AutoApp.View;
 
+import AutoApp.Data.ObslugaBazy;
 import AutoApp.Model.Nieuruchomiony;
 import AutoApp.Model.Samochod;
 
@@ -8,12 +9,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.sql.SQLException;
 
 public class Controller implements ActionListener{
 
     private Samochod auto;
     private Okienko okno;
     private OsiagiOkienko okno2;
+    private OknoTextDataBase okno3;
 
     public Controller(Samochod auto, Okienko okno) {
         this.auto = auto;
@@ -36,7 +39,10 @@ public class Controller implements ActionListener{
         this.okno.menuOProgramie.addActionListener(this);
         this.okno.menuWyjscie.addActionListener(this);
         this.okno.menuWczytajPodroze.addActionListener(this);
+        this.okno.menuWczytajPodrozeZBazyDanych.addActionListener(this);
+        this.okno.menuDodajPodrozeDoBazyDanych.addActionListener(this);
         this.okno.menuZapiszPodroze.addActionListener(this);
+        this.okno.menuWyczyscBazeDanych.addActionListener(this);
         this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
     }
 
@@ -141,6 +147,57 @@ public class Controller implements ActionListener{
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
             }}
+        }
+        if (source == okno.menuWczytajPodrozeZBazyDanych)
+        {
+            okno3 = new OknoTextDataBase();
+            okno3.setMenu(0);
+            //okno3.addZastosujButtonListener(new ZastosujButtonListener());
+            okno3.setVisible(true);
+            okno3.getZastosujButton().addActionListener(this);
+        }
+        if (source == okno.menuDodajPodrozeDoBazyDanych)
+        {
+            okno3 = new OknoTextDataBase();
+            okno3.setMenu(1);
+            //okno3.addZastosujButtonListener(new ZastosujButtonListener());
+            okno3.setVisible(true);
+            okno3.getZastosujButton().addActionListener(this);
+        }
+        if (source == okno.menuWyczyscBazeDanych)
+        {
+            okno3 = new OknoTextDataBase();
+            okno3.setMenu(2);
+            //okno3.addZastosujButtonListener(new ZastosujButtonListener());
+            okno3.setVisible(true);
+            okno3.getZastosujButton().addActionListener(this);
+        }
+        if(source == okno3.getZastosujButton())
+        {
+            try {
+                if(okno3.getMenu()==1)
+                {
+                    ObslugaBazy tmp = new ObslugaBazy(okno3.getNazwa_bazy_danych());
+                    tmp.dodajDoBazy(auto.getPrzejazdy());
+                }
+                else if(okno3.getMenu()==0)
+                {
+                    auto.wczytajPodrozeZBazy(okno3.getNazwa_bazy_danych());
+                }
+                else if(okno3.getMenu()==2)
+                {
+                    try {
+                        ObslugaBazy tmp = new ObslugaBazy(okno3.getNazwa_bazy_danych());
+                        tmp.wyczyscBaze();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            okno3.dispose();
+            okno.setTableData(auto.getPrzejazdy());
         }
         if (source == okno.menuZapiszPodroze) {
             JFileChooser file = new JFileChooser();

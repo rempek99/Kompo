@@ -1,9 +1,11 @@
 package AutoApp.Model;
 
 import AutoApp.Data.Licznik;
+import AutoApp.Data.ObslugaBazy;
 import AutoApp.Data.Podroz;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.beans.XMLDecoder;
@@ -12,6 +14,7 @@ import java.io.*;
 
 public class Samochod implements Prowadzenie{
 
+    int counter = 1;
     int moc_silnika;
     int moc_hamulcow;
     public boolean isZaplon() {
@@ -171,6 +174,10 @@ public class Samochod implements Prowadzenie{
             e.printStackTrace();
         }
     }
+    public void wczytajPodrozeZBazy(String nazwa_bazy_danych) throws SQLException {
+        ObslugaBazy a = new ObslugaBazy(nazwa_bazy_danych);
+        przejazdy=a.wczytajBaze();
+    }
 
     @Override
     public void skret(boolean prawo) {
@@ -208,7 +215,8 @@ public class Samochod implements Prowadzenie{
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
-        przejazdy.add(new Podroz(licznik1.getDystans(),licznik1.getStart(),new Date()));
+        przejazdy.add(new Podroz(counter,licznik1.getDystans(),licznik1.getStart(),new Date()));
+        counter ++;
         predkosciomierz1.reset();
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }

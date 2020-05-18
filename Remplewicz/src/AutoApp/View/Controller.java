@@ -21,6 +21,7 @@ public class Controller implements ActionListener{
     public Controller(Samochod auto, Okienko okno) {
         this.auto = auto;
         this.okno = okno;
+        this.okno3 = new OknoTextDataBase();
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
         this.auto.getLicznik1().addLicznikListener(new LicznikListener());
         this.auto.getLicznik2().addLicznikListener(new LicznikListener());

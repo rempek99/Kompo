@@ -63,6 +63,10 @@ public class Podroz
 		this.czas = czas;
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public int getId() {
 		return id;
 	}

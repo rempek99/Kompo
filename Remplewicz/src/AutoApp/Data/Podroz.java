@@ -6,6 +6,9 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Klasa przechowywuj¹ca dane dotycz¹ce pojedynczej odbytej podró¿y
+ */
 public class Podroz
 		implements Comparable<Podroz>, Cloneable, Serializable {
 	int id;
@@ -71,12 +74,23 @@ public class Podroz
 		return id;
 	}
 
+	/**
+	 * Konstruktor domyœlny klasy Podroz
+	 */
 	public Podroz() {
 		// TODO Auto-generated constructor stub
 		this.dlugosc = 0;
 		this.srednia_predkosc = 0;
 		this.czas = 0;
 	}
+
+	/**
+	 * Konstruktor klasy Podroz (œrednia prêdkoœæ liczona jest automatycznie)
+	 * @param id identyfikator rekordu
+	 * @param dlugosc dlugoœæ podró¿y wyra¿ona w kilometrach
+	 * @param data_rozpoczecia data i czas rozpoczêcia podró¿y
+	 * @param data_zakonczenia data i czas zakoñczenia podró¿y
+	 */
 	public Podroz(int id, double dlugosc, Date data_rozpoczecia, Date data_zakonczenia)
 	{
 		this.id = id;
@@ -86,6 +100,15 @@ public class Podroz
 		this.data_rozpoczecia = dateFormat.format(data_rozpoczecia);
 		this.data_zakonczenia = dateFormat.format(data_zakonczenia);
 	}
+
+	/**
+	 * Konstruktor klasy Podroz
+	 * @param id identyfikator rekordu
+	 * @param dlugosc dlugoœæ podró¿y wyra¿ona w kilometrach
+	 * @param data_rozpoczecia data i czas rozpoczêcia podró¿y
+	 * @param data_zakonczenia data i czas zakoñczenia podró¿y
+	 * @param srednia_predkosc œrednia prêdkoœæ, z jak¹ porusza³ siê pomys³
+	 */
 	public Podroz(int id,double dlugosc, Date data_rozpoczecia, Date data_zakonczenia, double srednia_predkosc)
 	{
 		this.id = id;
@@ -102,6 +125,12 @@ public class Podroz
 		output +="START: "+data_rozpoczecia +" STOP: "+ data_zakonczenia + " Dystans: "+ df.format(getDlugosc()) + "km, Srednia Predkosc: " + String.format("%.2f", getSrednia_predkosc()) + "km/h, Czas: " + String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60)+"\n";
 		return output;
 	}
+
+	/**
+	 * Wartoœæ poszczególnych wartoœci w formie String
+	 * @param i numer porz¹dkowy odpowiadaj¹cy wartoœci: <br>0-data_rozpoczecia, <br>1-data_zakonczenia, <br>2-dlugosc, <br>3-srednia_predkosc, <br>4-czas
+	 * @return wartoœæ elementu zapisanego na i pozycji
+	 */
 	public String stringData(int i)
 	{
 		String [] output = {data_rozpoczecia,data_zakonczenia, df.format(getDlugosc())+"km",String.format("%.2f", getSrednia_predkosc())+ "km/h",String.format("%02d",czas/3600) + ":" + String.format("%02d",czas/60%60) + ":" + String.format("%02d",czas%60) };

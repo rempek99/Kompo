@@ -12,9 +12,12 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 
+/**
+ * Klasa przechowuje informacje o specyfikacji auta oraz udostêpnia klasy umo¿liwiaj¹ce jego obs³ugê
+ */
 public class Samochod implements Prowadzenie{
 
-    int counter = 1;
+    int counter = 1;//po wczytaniu rekordów, counter musi przestawic siê na wartoœæ rekordow wczytanych +1
     int moc_silnika;
     int moc_hamulcow;
     public boolean isZaplon() {
@@ -24,10 +27,16 @@ public class Samochod implements Prowadzenie{
     Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
     Chwilowy_odczyt_predkosci temp;
     Licznik licznik1;
-    Licznik licznik2; //staÅ‚y
+    Licznik licznik2; //sta³y
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
 
+    /**
+     * Konstruktor tworz¹cy obiekt klasy samochód o ustalonych prarametrach
+     * @param moc_silnika wp³ywa na prêdkoœæ, z jak¹ rozpêdza siê pojazd
+     * @param moc_hamulcow wp³ywa na mo¿liwoœæ zmniejszenia prêdkoœci
+     * @param max_predkosc ustala maksymaln¹ prêdkoœæ, z jak¹ mo¿e poruszaæ siê pojazd
+     */
     public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
     {
         this.moc_silnika = moc_silnika;
@@ -163,7 +172,7 @@ public class Samochod implements Prowadzenie{
             File out=new File(dest);
             if(!out.exists())
             {
-                throw new Exception("BÅ‚Ä…d pliku");
+                throw new Exception("B³¹d pliku");
             }
             FileInputStream input=new FileInputStream(out);
             XMLDecoder decoder=new XMLDecoder(input);

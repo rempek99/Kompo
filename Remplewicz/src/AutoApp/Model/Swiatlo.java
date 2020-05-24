@@ -11,7 +11,7 @@ public class Swiatlo implements Obsluga_Swiatla{
     boolean wlaczone;
     Color barwa;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-    Timer timer = new Timer(1000,new TimerListener());
+    Timer timer = new Timer(500,new TimerListener());
     int tempBlinks = 0;
 
     public Swiatlo(Color barwa)

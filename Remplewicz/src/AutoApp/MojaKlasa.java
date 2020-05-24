@@ -12,7 +12,6 @@ public class MojaKlasa {
 
 
 	public static void main(String[] args) throws CloneNotSupportedException, SQLException {
-
 		Okienko okno1 = new Okienko();
 		Samochod auto1 = new Samochod(150,12,210);
 		Controller cont1 = new Controller(auto1,okno1);

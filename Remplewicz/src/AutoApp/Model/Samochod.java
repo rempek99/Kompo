@@ -4,7 +4,10 @@ import AutoApp.Data.Licznik;
 import AutoApp.Data.ObslugaBazy;
 import AutoApp.Data.Podroz;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,37 +15,37 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 
-/**
- * Klasa przechowuje informacje o specyfikacji auta oraz udostêpnia klasy umo¿liwiaj¹ce jego obs³ugê
- */
 public class Samochod implements Prowadzenie{
 
-    int counter = 1;//po wczytaniu rekordów, counter musi przestawic siê na wartoœæ rekordow wczytanych +1
+    int counter = 1;
     int moc_silnika;
     int moc_hamulcow;
-    public boolean isZaplon() {
-        return zaplon;
-    }
-    private boolean zaplon = false;
+    private boolean zaplon;
+    private boolean gaz;
     Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
     Chwilowy_odczyt_predkosci temp;
     Licznik licznik1;
-    Licznik licznik2; //sta³y
+    Licznik licznikGlowny; //staÅ‚y
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
+    SymulatorUtratyPredkosci symulator;
 
-    /**
-     * Konstruktor tworz¹cy obiekt klasy samochód o ustalonych prarametrach
-     * @param moc_silnika wp³ywa na prêdkoœæ, z jak¹ rozpêdza siê pojazd
-     * @param moc_hamulcow wp³ywa na mo¿liwoœæ zmniejszenia prêdkoœci
-     * @param max_predkosc ustala maksymaln¹ prêdkoœæ, z jak¹ mo¿e poruszaæ siê pojazd
-     */
+    public boolean isZaplon() {
+        return zaplon;
+    }
+    public boolean isGaz() {
+        return gaz;
+    }
+
+    public void setGaz(boolean gaz) {
+        this.gaz = gaz;
+    }
     public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
     {
         this.moc_silnika = moc_silnika;
         this.moc_hamulcow = moc_hamulcow;
         licznik1 = new Licznik(false);
-        licznik2 = new Licznik(true);
+        licznikGlowny = new Licznik(true);
         predkosciomierz1 = new Predkosciomierz(max_predkosc);
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
         przejazdy = new ArrayList<Podroz>();
@@ -50,6 +53,9 @@ public class Samochod implements Prowadzenie{
         drogowe = new Swiatlo(Color.yellow);
         lewyKierunkowskaz = new Swiatlo(Color.orange);
         prawyKierunkowskaz = new Swiatlo(Color.orange);
+        gaz = false;
+        zaplon = false;
+        symulator=new SymulatorUtratyPredkosci(this);
     }
 
     public Licznik getLicznik1() {
@@ -64,8 +70,8 @@ public class Samochod implements Prowadzenie{
         this.moc_hamulcow = moc_hamulcow;
     }
 
-    public Licznik getLicznik2() {
-        return licznik2;
+    public Licznik getLicznikGlowny() {
+        return licznikGlowny;
     }
 
     public void setMoc_silnika(int moc_silnika) {
@@ -90,7 +96,7 @@ public class Samochod implements Prowadzenie{
             throw new Nieuruchomiony();
         try {
             licznik1.dodaj(temp.przejechane());
-            licznik2.dodaj(temp.przejechane());
+            licznikGlowny.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
@@ -112,7 +118,7 @@ public class Samochod implements Prowadzenie{
     public void hamulec() {
         try {
             licznik1.dodaj(temp.przejechane());
-            licznik2.dodaj(temp.przejechane());
+            licznikGlowny.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
@@ -172,7 +178,7 @@ public class Samochod implements Prowadzenie{
             File out=new File(dest);
             if(!out.exists())
             {
-                throw new Exception("B³¹d pliku");
+                throw new Exception("BÅ‚Ä…d pliku");
             }
             FileInputStream input=new FileInputStream(out);
             XMLDecoder decoder=new XMLDecoder(input);
@@ -220,7 +226,7 @@ public class Samochod implements Prowadzenie{
         zaplon = false;
         try {
             licznik1.dodaj(temp.przejechane());
-            licznik2.dodaj(temp.przejechane());
+            licznikGlowny.dodaj(temp.przejechane());
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
@@ -229,4 +235,5 @@ public class Samochod implements Prowadzenie{
         predkosciomierz1.reset();
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }
+
 }

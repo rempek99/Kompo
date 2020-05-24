@@ -11,22 +11,38 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.sql.SQLException;
 
+/**
+ *  Klasa odpowiadaj¹ca za synchronizacjê informacji wyœwietlanych przez Okienko oraz zawartych w Samochod.
+ *  Nas³uchuje akcji ze strony u¿ytkowinika dokonanych w Okienko i wywo³uje odpowiednie metody klas sk³adowych.
+ *
+ * @see Samochod
+ * @see Okienko
+ * @author Arkadiusz Remplewicz
+ * @author Dawid Jakubik
+ */
 public class Controller implements ActionListener{
-
     private Samochod auto;
+    /**
+     * G³ówne okno aplikacji
+     */
     private Okienko okno;
+    /**
+     * Okno modyfikacji parametrów Samochodu
+     */
     private OsiagiOkienko okno2;
+    /**
+     * Okno poœrednicz¹ce w nawi¹zywaniu po³¹czenia z baz¹ danych. Tutaj jest wprowadzana nazwa bazy danych.
+     */
     private OknoTextDataBase okno3;
 
     public Controller(Samochod auto, Okienko okno) {
         this.auto = auto;
         this.okno = okno;
-        this.okno3 = new OknoTextDataBase();
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
         this.auto.getLicznik1().addLicznikListener(new LicznikListener());
-        this.auto.getLicznik2().addLicznikListener(new LicznikListener());
+        this.auto.getLicznikGlowny().addLicznikListener(new LicznikListener());
         this.okno.setLicznik1Label(auto.getLicznik1().getDystans());
-        this.okno.setLicznik2Label(auto.getLicznik2().getDystans());
+        this.okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
         this.okno.getPrzelacznik_swiatla_krotkie().addActionListener(this);
         this.okno.getPrzelacznik_swiatla_dlugie().addActionListener(this);
         this.auto.getMijania().addSwiatloListener(new SwiatloListener());
@@ -47,6 +63,10 @@ public class Controller implements ActionListener{
         this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
     }
 
+    /**
+     * Odpowiada za wykrywanie zdarzeñ klawiatury (klawisze strza³ek, ESC oraz E) i wywo³anie odpowiednich metod do obs³ugi tych zdarzeñ.
+     * Mo¿e wyœwietlaæ uwagi w g³ównym oknie aplikacji
+     */
     class KeyboarListner implements KeyListener{
         public KeyboarListner() {
         }
@@ -63,6 +83,7 @@ public class Controller implements ActionListener{
             {
                 try {
                     auto.gaz();
+                    auto.setGaz(true);
 
                 }catch(Nieuruchomiony ex)
                 {
@@ -93,7 +114,6 @@ public class Controller implements ActionListener{
             }
 
         }
-
         @Override
         public void keyReleased(KeyEvent e) {
             if((e.getKeyChar()=='E')||(e.getKeyChar()=='e'))
@@ -122,9 +142,17 @@ public class Controller implements ActionListener{
             {
                 okno.dispose();
             }
+            if(e.getKeyCode()==KeyEvent.VK_UP)
+            {
+                    auto.setGaz(false);
+            }
         }
     }
 
+    /**
+     * Odpowiada za reakcje na akcje u¿ytkownika maj¹ce miejsce w obrêbie paska menu oraz w³¹czenie i wy³¹czenie œwiate³.
+     * @param e Zród³o zdarzenia
+     */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
         if (source == okno.menuOProgramie) {
@@ -263,7 +291,7 @@ public class Controller implements ActionListener{
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             okno.setLicznik1Label(auto.getLicznik1().getDystans());
-            okno.setLicznik2Label(auto.getLicznik2().getDystans());
+            okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
         }
     }
 

@@ -8,21 +8,63 @@ import java.awt.event.ActionListener;
 import java.util.Dictionary;
 
 
-public class OsiagiOkienko extends JFrame {
 
+/**
+ * Tworzy okno dialogowe, które umozliwia zmianê parametrów samochodu
+ * @author Arkadiusz Remplewicz
+ * @author Dawid Jakubik
+ *
+ */
+public class OsiagiOkienko extends JFrame {
+    /**
+     * Umo¿liwia zmianê mocy silnika Samochodu
+     */
     private JSlider mocSlider;
+    /**
+     * Umo¿liwia zmianê skutecznoœci hamulcy Samochodu
+     */
     private JSlider hamulceSlider;
+    /**
+     * Umo¿liwia zmianê maksymalnej prêdkoœci któr¹ mo¿e osi¹gn¹æ Samochód
+     */
     private JSlider maxPredkoscSlider;
+    /**
+     * Zawiera suwak do zmiany mocy silnika wraz z opisem
+     */
     private JPanel firstPanel;
+    /**
+     * Zawiera suwak do zmiany skutecznoœci hamulców wraz z opisem
+     */
     private JPanel secondPanel;
+    /**
+     * Zawiera suwak do zmiany maksymalnej prêdkoœci wraz z opisem
+     */
     private JPanel thirdPanel;
+    /**
+     * Panel z przyciskiem "ZASTOSUJ"
+     */
     private JPanel bottomPanel;
+    /**
+     * Odpowiada za wyswietlanie aktualnej wartoœci liczbowej wskazanej przez mocSlider
+     */
     private JLabel mocWartosc;
+    /**
+     * Odpowiada za wyswietlanie aktualnej wartoœci liczbowej wskazanej przez hamulceSlider
+     */
     private JLabel hamulceWartosc;
+    /**
+     * Odpowiada za wyswietlanie aktualnej wartoœci liczbowej wskazanej przez maxPredkoscSlider
+     */
     private JLabel maxPredkoscWartosc;
+    /**
+     * Przycisk s³u¿¹cy do akceptacji wprowadzonych zmian
+     */
     private JButton zastosujButton;
     private Dictionary<Integer,JLabel> mocLabel;
 
+    /**
+     * Konstruktor bezparametrowy. Inicjuje zawartoœæ okna.
+     */
     public OsiagiOkienko() {
         this.setTitle("Zmieñ osi¹gi samochodu");
         this.setSize(new Dimension(500,300));
@@ -85,6 +127,10 @@ public class OsiagiOkienko extends JFrame {
 
     }
 
+    /**
+     * Klasa odpowiadaj¹ca za reakcje na wprowadzenie zmian w interfejsie poprzez suwaki przez u¿ytkownika.
+     */
+
     class WartoscChangeListener implements ChangeListener{
 
         @Override
@@ -103,18 +149,39 @@ public class OsiagiOkienko extends JFrame {
             }
         }
     }
+
+    /**
+     * Umozliwia dodanie ActionListener do przycisku "zastosujButton"
+     * @see ActionListener
+     * @see JButton
+     * @param zastosujButtonListener-zostanie przypisany do przycisku reprezentowanego przez pole "zastosujButton"
+     */
     void addZastosujButtonListener(ActionListener zastosujButtonListener)
     {
         zastosujButton.addActionListener(zastosujButtonListener);
     }
+
+    /**
+     * Standardowy getter do wartosci wskazywanej przez mocSlider
+     * @return wartosc typu int zale¿n¹ od aktualnego ustawienia suwaka mocSlider
+     */
     public int getMocSilnika()
     {
         return mocSlider.getValue();
     }
+
+    /**
+     * Standardowy getter do wartosci wskazywanej przez hamulceSlider
+     * @return wartosc typu int zale¿n¹ od aktualnego ustawienia suwaka hamulceSlider
+     */
     public int getMocHamulcow()
     {
         return hamulceSlider.getValue();
     }
+    /**
+     * Standardowy getter do wartosci wskazywanej przez maxPredkoscSlider
+     * @return wartosc typu int zale¿n¹ od aktualnego ustawienia suwaka hamulceSlider
+     */
     public int getMaxPredkosc()
     {
         return maxPredkoscSlider.getValue();

@@ -9,30 +9,81 @@ import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-
+/**
+ * Okno symuluj¹ce deskê rozdzielcz¹.
+ * @author Arkadiusz Remplewicz
+ * @author Dawid Jakubik
+ * @see JFrame
+ */
 public class Okienko extends JFrame{
 
         private JProgressBar pasekPredkosci;
 
     // Spis przejazdów
+    /**
+     * Przechowuje nag³ówki tabeli w której wyœwietlane s¹ podró¿e.
+     */
         String [] tytuly = {"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
-        Object przejazdyTabData[][];
+    /**
+     *Zawiera tablice z danymi podró¿y które s¹ wyœwietlane w tabeli
+     */
+    Object przejazdyTabData[][];
+    /**
+     *Tablica w której prezentowany jest zapis podró¿y
+     */
         private JTable przejazdyTab;
+    /**
+     *
+     */
         DefaultTableModel tabelaModel;
+    /**
+     *Przy wiêkszej iloœci podró¿y w tabeli umo¿liwia scrollowanie po tabeli
+     */
         private JScrollPane tabelaPane;
+    /**
+     *
+     */
         private JPanel bottomPanel;
-
-
+    /**
+     *
+     */
         // Wyswietlanie Informacji
         private JPanel topPanel;
+    /**
+     *Informacje o mocy siilnika
+     */
         private JLabel infoLabel = new JLabel("Moc silnika: ");
+    /**
+     *Stan pierwszego licznika
+     */
         private JLabel licznik1Label = new JLabel("Licznik1");
+    /**
+     *Stan drugiego licznika
+     */
         private JLabel licznik2Label = new JLabel("Licznik2");
+    /**
+     *Aktualna prêdkoœæ
+     */
         private JLabel predkoscLabel = new JLabel("Predkoœæ: ");
+    /**
+     *Informuje o tym czy silnik jest uruchomiony czy te¿ nie
+     */
         private JCheckBox zaplonCB = new JCheckBox("ZAP£ON [E]");
+    /**
+     *
+     */
         private JMenuBar menuB;
+    /**
+     *
+     */
         private JPanel predkosciomierz;
+    /**
+     *Element sk³adowy menuBar
+     */
         private JMenu menuPlik,menuPomoc;
+    /**
+     *Element sk³adowy menuBar
+     */
         public JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie,menuWczytajPodrozeZBazyDanych,menuDodajPodrozeDoBazyDanych,menuWyczyscBazeDanych;
         private static DecimalFormat df = new DecimalFormat("0.00");
 
@@ -43,12 +94,22 @@ public class Okienko extends JFrame{
         JCheckBox przelacznik_swiatla_krotkie;
         JCheckBox przelacznik_swiatla_dlugie;
 
-        //przycisk do okna do zmiany osiagow
+    /**
+     *     Przycisk do okna do zmiany osiagow
+     */
         private JButton osiagiButton;
 
+    /**
+     * Umo¿liwia dostêp do check boxa informujacego o uruchomieniu silnika
+     * @return obiekt JCheckBox przechowuj¹cy stan silnika (uruchomiony kub nie)
+     */
     public JCheckBox getZaplonCB() {
         return zaplonCB;
     }
+
+    /**
+     * Umo¿liwia zmiane stanu silnika z uruchomiony na zgaszony i odwrotnie (w zale¿noœci od aktualnego stanu)
+     */
     public void changeZaplonRB() {
         if(this.zaplonCB.isSelected())
             this.zaplonCB.setSelected(false);
@@ -75,8 +136,6 @@ public class Okienko extends JFrame{
     public DefaultTableModel getTabelaModel() {
         return tabelaModel;
     }
-
-
 
     public Okienko() {
             this.setTitle("AutoApp");
@@ -211,11 +270,23 @@ public class Okienko extends JFrame{
     {
         this.osiagiButton.addActionListener(osiagiButtonListener);
     }
+
+    /**
+     * Zawiera podstawowe informacje o pojezdzie do wyœwietlenia
+     * @param moc-moc silnika
+     * @param mocHamulcow-skutecznosc hamulcow
+     * @param maxPredkosc-maksymalna do osiagniecia predkosc przez samochod
+     */
     public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {
         this.infoLabel.setText("Moc silnika: " + Integer.toString(moc) +
                 " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
                 " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
     }
+
+    /**
+     * Pozwala na zmianê aktualnego spisu podró¿y na innny
+     * @param dane lista podró¿y
+     */
     public void setTableData(ArrayList<Podroz> dane){
         przejazdyTabData = new Object[dane.size()][5];
         for(int i = 0; i<dane.size();i++)

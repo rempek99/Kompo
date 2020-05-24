@@ -21,11 +21,11 @@ public class AktualizatorLicznikow implements ActionListener {
     }
     @Override
     public void actionPerformed(ActionEvent e) {
-        double tmp=temp.przejechane(samochod.predkosciomierz1.getPredkosc());
+        double tmp=temp.przejechane(samochod.getPredkosciomierz().getPredkosc());
         try {
-            samochod.licznik1.dodaj(tmp);
-            samochod.licznikTymczasowy.dodaj(tmp);
-            samochod.licznikGlowny.dodaj(tmp);
+            samochod.getLicznikPodrozy().dodaj(tmp);
+            samochod.getLicznikGlowny().dodaj(tmp);
+            samochod.getLicznikUzytkownika().dodaj(tmp);
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }

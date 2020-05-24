@@ -4,10 +4,7 @@ import AutoApp.Data.Licznik;
 import AutoApp.Data.ObslugaBazy;
 import AutoApp.Data.Podroz;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,10 +20,11 @@ import java.io.*;
  */
 public class Samochod implements Prowadzenie{
 
+    private KalukulatorSpalania kalkulator;
     private AktualizatorLicznikow aktualizatorLicznikow;
-    int counter = 1;
-    int moc_silnika;
-    int moc_hamulcow;
+    private int counter = 1;
+    private int moc_silnika;
+    private  int moc_hamulcow;
     /**
      * Przechowuje o stanie silnika (uruchomiony/zgaszony)
      */
@@ -35,23 +33,20 @@ public class Samochod implements Prowadzenie{
      * Informacja dla SymulatorUtratyPredkosci czy pojazd jest napedzany by niwelowac utraty predkosci (i/lub przyspieszac) czy nie.
      */
     private boolean gaz;
-    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz,przeciwmgielne_przod,przeciwmgielne_tyl;
-    Chwilowy_odczyt_predkosci temp;
+    private Tempomat tempomat;
+    private Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz,przeciwmgielne_przod,przeciwmgielne_tyl;
+    private  Chwilowy_odczyt_predkosci temp;
     /**
      * Zlicza dystans pokonany podczas aktualnej podrozy czyli między zgaszeniem a odpaleniem silnika
      */
-    Licznik licznik1;
+    private  Licznik licznikPodrozy,licznikUzytkownika;
     /**
      * Przechowuje informacje o całkowitym przebiegu pojazdu
      */
-    Licznik licznikGlowny; //stały
-    /**
-     * Przechowuje informacje o tymczasowym przebiegu (od momentu ostatniego zresetowania przez użytkownika
-     */
-    Licznik licznikTymczasowy;
-    Predkosciomierz predkosciomierz1;
-    ArrayList<Podroz> przejazdy;
-    SymulatorUtratyPredkosci symulator;
+    private Licznik licznikGlowny; //stały
+    private  Predkosciomierz predkosciomierz1;
+    private  ArrayList<Podroz> przejazdy;
+    private SymulatorUtratyPredkosci symulator;
 
     public boolean isZaplon() {
         return zaplon;
@@ -63,13 +58,19 @@ public class Samochod implements Prowadzenie{
     public void setGaz(boolean gaz) {
         this.gaz = gaz;
     }
+
+
+
+
     public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
     {
+        tempomat=new Tempomat(this);
+        tempomat.wylacz();
         this.moc_silnika = moc_silnika;
         this.moc_hamulcow = moc_hamulcow;
-        licznik1 = new Licznik(false);
-        licznikTymczasowy = new Licznik(false);
+        licznikPodrozy = new Licznik(false);
         licznikGlowny = new Licznik(true);
+        licznikUzytkownika=new Licznik(false);
         predkosciomierz1 = new Predkosciomierz(max_predkosc);
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
         przejazdy = new ArrayList<Podroz>();
@@ -83,18 +84,19 @@ public class Samochod implements Prowadzenie{
         zaplon = false;
         symulator=new SymulatorUtratyPredkosci(this);
         aktualizatorLicznikow=new AktualizatorLicznikow(temp,this);
+        kalkulator=new KalukulatorSpalania(this);
     }
 
-    public Licznik getLicznik1() {
-        return licznik1;
+    public Tempomat getTempomat() {
+        return tempomat;
+    }
+
+    public Licznik getLicznikPodrozy() {
+        return licznikPodrozy;
     }
 
     public Predkosciomierz getPredkosciomierz() {
         return predkosciomierz1;
-    }
-
-    public Licznik getLicznikTymczasowy() {
-        return licznikTymczasowy;
     }
 
     public void setMoc_hamulcow(int moc_hamulcow) {
@@ -103,6 +105,9 @@ public class Samochod implements Prowadzenie{
 
     public Licznik getLicznikGlowny() {
         return licznikGlowny;
+    }
+    public Licznik getLicznikUzytkownika() {
+        return licznikUzytkownika;
     }
 
     public void setMoc_silnika(int moc_silnika) {
@@ -129,13 +134,6 @@ public class Samochod implements Prowadzenie{
     public void gaz() throws Nieuruchomiony{
         if(!isZaplon())
             throw new Nieuruchomiony();
-//        try {
-//            double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
-//            licznik1.dodaj(tmp);
-//            licznikGlowny.dodaj(tmp);
-//        } catch (UjemnaWartosc ujemnaWartosc) {
-//            ujemnaWartosc.printStackTrace();
-//        }
         try {
             predkosciomierz1.zwieksz_predkosc((float) ((moc_silnika * 0.01)-(predkosciomierz1.getPredkosc()*0.007)));
         }
@@ -155,13 +153,6 @@ public class Samochod implements Prowadzenie{
      */
     @Override
     public void hamulec() {
-//        try {
-//            double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
-//            licznik1.dodaj(tmp);
-//            licznikGlowny.dodaj(tmp);
-//        } catch (UjemnaWartosc ujemnaWartosc) {
-//            ujemnaWartosc.printStackTrace();
-//        }
         try {
             predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 30/predkosciomierz1.getPredkosc()));
         }
@@ -183,14 +174,6 @@ public class Samochod implements Prowadzenie{
 
     public Swiatlo getDrogowe() {
         return drogowe;
-    }
-
-    public Swiatlo getPrzeciwmgielne_przod() {
-        return przeciwmgielne_przod;
-    }
-
-    public Swiatlo getPrzeciwmgielne_tyl() {
-        return przeciwmgielne_tyl;
     }
 
     public Swiatlo getLewyKierunkowskaz() {
@@ -258,6 +241,10 @@ public class Samochod implements Prowadzenie{
         przejazdy=a.wczytajBaze();
     }
 
+    public KalukulatorSpalania getKalkulator() {
+        return kalkulator;
+    }
+
     /**
      * Uruchamia kierunkowskazy odpowiadajace kierunkowi dokonania skrętu
      * @param prawo Informuje czy skęt jest w prawo czy w lewo
@@ -284,7 +271,8 @@ public class Samochod implements Prowadzenie{
     @Override
     public void uruchom_silnik() {
         zaplon = true;
-        try {licznik1.reset();}
+        try {
+            licznikPodrozy.reset();}
         catch (Exception ex)
         {
             System.out.println(ex);
@@ -301,17 +289,23 @@ public class Samochod implements Prowadzenie{
         zaplon = false;
         try {
             double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
-            licznik1.dodaj(tmp);
-            licznikTymczasowy.dodaj(tmp);
+            licznikPodrozy.dodaj(tmp);
             licznikGlowny.dodaj(tmp);
+            licznikUzytkownika.dodaj(tmp);
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
-        przejazdy.add(new Podroz(counter,licznik1.getDystans(),licznik1.getStart(),new Date()));
+        przejazdy.add(new Podroz(counter, licznikPodrozy.getDystans(), licznikPodrozy.getStart(),new Date()));
         counter ++;
         //predkosciomierz1.reset();
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }
 
+    public Swiatlo getPrzeciwmgielne_przod() {
+        return przeciwmgielne_przod;
+    }
 
+    public Swiatlo getPrzeciwmgielne_tyl() {
+        return przeciwmgielne_tyl;
+    }
 }

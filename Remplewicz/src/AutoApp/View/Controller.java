@@ -36,16 +36,17 @@ public class Controller implements ActionListener{
     private OknoTextDataBase okno3;
 
     public Controller(Samochod auto, Okienko okno) {
+        new SpalanieRefresher();
         okno3=new OknoTextDataBase();
         this.auto = auto;
         this.okno = okno;
         this.okno3 = new OknoTextDataBase();
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
-        this.auto.getLicznik1().addLicznikListener(new LicznikListener());
+        this.auto.getLicznikPodrozy().addLicznikListener(new LicznikListener());
         this.auto.getLicznikGlowny().addLicznikListener(new LicznikListener());
-        this.auto.getLicznikTymczasowy().addLicznikListener(new LicznikListener());
-        this.okno.setLicznik1Label(auto.getLicznik1().getDystans());
+        this.okno.setLicznik1Label(auto.getLicznikPodrozy().getDystans());
         this.okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
+        this.okno.setLicznikUzytkownikaLabel(auto.getLicznikUzytkownika().getDystans());
         this.okno.getPrzelacznik_swiatla_krotkie().addActionListener(this);
         this.okno.getPrzelacznik_swiatla_dlugie().addActionListener(this);
         this.okno.getPrzelacznik_swiatla_przeciwmgielne_p().addActionListener(this);
@@ -60,15 +61,16 @@ public class Controller implements ActionListener{
         this.okno.setFocusable(true);
         this.okno.setInfoLabel(auto.getMoc_silnika(), auto.getMoc_hamulcow(), auto.getPredkosciomierz().getMax_predkosc());
         this.okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
-        this.okno.menuOProgramie.addActionListener(this);
-        this.okno.menuWyjscie.addActionListener(this);
-        this.okno.menuWczytajPodroze.addActionListener(this);
-        this.okno.menuWczytajPodrozeZBazyDanych.addActionListener(this);
-        this.okno.menuDodajPodrozeDoBazyDanych.addActionListener(this);
-        this.okno.menuZapiszPodroze.addActionListener(this);
-        this.okno.menuWyczyscBazeDanych.addActionListener(this);
+        this.okno.getMenuOProgramie().addActionListener(this);
+        this.okno.getMenuWyjscie().addActionListener(this);
+        this.okno.getMenuWczytajPodroze().addActionListener(this);
+        this.okno.getMenuWczytajPodrozeZBazyDanych().addActionListener(this);
+        this.okno.getMenuDodajPodrozeDoBazyDanych().addActionListener(this);
+        this.okno.getMenuZapiszPodroze().addActionListener(this);
+        this.okno.getMenuWyczyscBazeDanych().addActionListener(this);
         this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
-        this.okno.getResetButton().addActionListener(this);
+        this.okno.getResetPrzebiegButton().addActionListener(this);
+        this.okno.getTempomatButton().addActionListener(this);
     }
 
     /**
@@ -90,6 +92,9 @@ public class Controller implements ActionListener{
             if(e.getKeyCode()==KeyEvent.VK_UP)
             {
                 try {
+                    auto.getTempomat().wylacz();
+                    okno.getTempomatButton().setText("tempomat OFF");
+                    okno.getTempomatButton().setBackground(Color.decode("#db2416"));
                     auto.gaz();
                     auto.setGaz(true);
 
@@ -100,6 +105,9 @@ public class Controller implements ActionListener{
             }
             if(e.getKeyCode()==KeyEvent.VK_DOWN)
             {
+                auto.getTempomat().wylacz();
+                okno.getTempomatButton().setText("tempomat OFF");
+                okno.getTempomatButton().setBackground(Color.decode("#db2416"));
                 auto.hamulec();
             }
             if(e.getKeyCode()==KeyEvent.VK_LEFT)
@@ -180,13 +188,50 @@ public class Controller implements ActionListener{
      */
     public void actionPerformed(ActionEvent e) {
         Object source = e.getSource();
-        if (source == okno.menuOProgramie) {
+        if(source==okno.getTempomatButton())
+        {
+            try {
+                double pr;
+                String in="",ms="Ustaw predkosc";
+                in=JOptionPane.showInputDialog(ms);
+                pr=Double.parseDouble(in);
+                if (auto.getTempomat().isWlaczony()) {
+                    auto.getTempomat().wylacz();
+                    okno.getTempomatButton().setText("tempomat OFF");
+                    okno.getTempomatButton().setBackground(Color.decode("#db2416"));
+
+                } else if (((pr > auto.getPredkosciomierz().getMax_predkosc()) || ((pr <= 0)))) {
+                    JOptionPane.showMessageDialog(this.okno, "Niepoprawna wartoœæ!!\nPodaj wartoœæ z przedzia³u od 0 do V-max typu liczbowego", "WARNING", JOptionPane.WARNING_MESSAGE);
+                }else{
+                    if(!auto.isZaplon()) {
+                        auto.uruchom_silnik();
+                        okno.getZaplonCB().setText("ZGAŒ SILNIK [E]");
+                    }
+                    auto.getTempomat().wlacz(pr);
+                    okno.getTempomatButton().setBackground(Color.decode("#3f9a2a"));
+                    okno.getTempomatButton().setText("tempomat ON");
+                }
+            }catch(NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this.okno, "Niepoprawna wartoœæ!!\nPodaj wartoœæ z przedzia³u od 0 do V-max typu liczbowego", "WARNING", JOptionPane.WARNING_MESSAGE);
+            }
+
+        }
+        if(source==okno.getResetPrzebiegButton())
+        {
+            try {
+                auto.getLicznikUzytkownika().reset();
+                okno.setLicznikUzytkownikaLabel(0);
+            } catch (Exception ex) {
+               System.out.println (ex.getMessage());
+            }
+        }
+        if (source == okno.getMenuOProgramie()) {
             JOptionPane.showMessageDialog(this.okno, "strza³ka do góry-przyspieszanie\n" +
                     "strza³ka w dó³-hamowanie\n" +
                     "strza³ka w lewo/prawo-skrêcanie\n" +
                     "E-zgaœ/uruchom silnik");
         }
-        if (source == okno.menuWczytajPodroze) {
+        if (source == okno.getMenuWczytajPodroze()) {
             String[] opt={"TAK","NIE"};
             int x = JOptionPane.showOptionDialog(okno, "Wczytanie innej historii podró¿y spowoduje utratê niezapisanej," +
                              "\n aktualnej historii podró¿y. Kontynuowaæ?","Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
@@ -202,21 +247,21 @@ public class Controller implements ActionListener{
                 JOptionPane.showMessageDialog(okno,"B³¹d pliku","Error!",JOptionPane.ERROR_MESSAGE);
             }}
         }
-        if (source == okno.menuWczytajPodrozeZBazyDanych)
+        if (source == okno.getMenuWczytajPodrozeZBazyDanych())
         {
             okno3.setMenu(0);
             //okno3.addZastosujButtonListener(new ZastosujButtonListener());
             okno3.setVisible(true);
             okno3.getZastosujButton().addActionListener(this);
         }
-        if (source == okno.menuDodajPodrozeDoBazyDanych)
+        if (source == okno.getMenuDodajPodrozeDoBazyDanych())
         {
             okno3.setMenu(1);
             //okno3.addZastosujButtonListener(new ZastosujButtonListener());
             okno3.setVisible(true);
             okno3.getZastosujButton().addActionListener(this);
         }
-        if (source == okno.menuWyczyscBazeDanych)
+        if (source == okno.getMenuWyczyscBazeDanych())
         {
             okno3 = new OknoTextDataBase();
             okno3.setMenu(2);
@@ -251,13 +296,13 @@ public class Controller implements ActionListener{
             okno3.dispose();
             okno.setTableData(auto.getPrzejazdy());
         }
-        if (source == okno.menuZapiszPodroze) {
+        if (source == okno.getMenuZapiszPodroze()) {
             JFileChooser file = new JFileChooser();
             file.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             file.showDialog(okno,"Wybór folderu do zapisu");
             auto.zapiszPodroze(file.getSelectedFile().getAbsolutePath().toString());
             }
-        if (source == okno.menuWyjscie) {
+        if (source == okno.getMenuWyjscie()) {
             String[] opt={"TAK","NIE"};
             int x = JOptionPane.showOptionDialog(okno, "Na pewno chcesz zamkn¹æ program? Wszelkie niezapisane dane przepadn¹.","Uwaga", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, opt, opt[0]);
             if(x==0) {
@@ -334,14 +379,6 @@ public class Controller implements ActionListener{
                 okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(true);
             }
         }
-        if(source==okno.getResetButton())
-        {
-            try {
-                auto.getLicznikTymczasowy().reset();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
 
 //        class PredkoscListener implements PropertyChangeListener{
 //
@@ -350,6 +387,18 @@ public class Controller implements ActionListener{
 //                okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
 //            }
 //        }
+    }
+    private class SpalanieRefresher implements ActionListener
+    {
+        private Timer timer;
+        SpalanieRefresher(){
+            timer=new Timer(500,this);
+            timer.start();
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            okno.setSpalanieLabel(auto.getKalkulator().getSrednieSpalanie());
+        }
     }
 
     class PredkoscListener implements PropertyChangeListener {
@@ -365,9 +414,9 @@ public class Controller implements ActionListener{
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            okno.setLicznik3Label(auto.getLicznikTymczasowy().getDystans());
-            okno.setLicznik1Label(auto.getLicznik1().getDystans());
+            okno.setLicznik1Label(auto.getLicznikPodrozy().getDystans());
             okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
+            okno.setLicznikUzytkownikaLabel(auto.getLicznikUzytkownika().getDystans());
         }
     }
 
@@ -415,7 +464,7 @@ public class Controller implements ActionListener{
             auto.getPredkosciomierz().setMax_predkosc(okno2.getMaxPredkosc());
             auto.getMijania().setBarwa(okno2.getBarwaSwiatla());
             okno.setPasekPredkosciMaximum(okno2.getMaxPredkosc());
-            if(okno.przelacznik_swiatla_krotkie.isSelected())
+            if(okno.getPrzelacznik_swiatla_krotkie().isSelected())
                 okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
             okno2.dispose();
 

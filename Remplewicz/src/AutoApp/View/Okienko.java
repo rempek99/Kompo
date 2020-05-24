@@ -19,15 +19,24 @@ public class Okienko extends JFrame{
 
         private JProgressBar pasekPredkosci;
 
+
+    /**
+     * S³u¿y do resetowania przez u¿ytkownika jednego z przebiegów
+     */
+    private JButton resetPrzebiegButton;
+    /**
+     * S³u¿y do w³¹cznia i wy³¹czania tempomatu
+     */
+    private JButton tempomatButton;
     // Spis przejazdów
     /**
      * Przechowuje nag³ówki tabeli w której wyœwietlane s¹ podró¿e.
      */
-        String [] tytuly = {"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
+    private String [] tytuly;
     /**
      *Zawiera tablice z danymi podró¿y które s¹ wyœwietlane w tabeli
      */
-    Object przejazdyTabData[][];
+    private  Object przejazdyTabData[][];
     /**
      *Tablica w której prezentowany jest zapis podró¿y
      */
@@ -35,7 +44,7 @@ public class Okienko extends JFrame{
     /**
      *
      */
-        DefaultTableModel tabelaModel;
+    private  DefaultTableModel tabelaModel;
     /**
      *Przy wiêkszej iloœci podró¿y w tabeli umo¿liwia scrollowanie po tabeli
      */
@@ -52,27 +61,27 @@ public class Okienko extends JFrame{
     /**
      *Informacje o mocy siilnika
      */
-        private JLabel infoLabel = new JLabel("Moc silnika: ");
+        private JLabel infoLabel;
     /**
      *Stan pierwszego licznika
      */
-        private JLabel licznik1Label = new JLabel("Licznik1");
+        private JLabel licznik1Label;
     /**
      *Stan drugiego licznika
      */
-        private JLabel licznik2Label = new JLabel("Licznik2");
+        private JLabel licznik2Label;
     /**
-     * Stan trzeciego licznika
+     * Stan licznika który samodzielnie moze resetowan uzytkonik
      */
-       private JLabel licznik3Label;
-     /**
+        private JLabel licznikUzytkownikaLabel;
+    /**
      *Aktualna prêdkoœæ
      */
         private JLabel predkoscLabel;
     /**
      *Informuje o tym czy silnik jest uruchomiony czy te¿ nie
      */
-        private JCheckBox zaplonCB = new JCheckBox("ZAP£ON [E]");
+        private JCheckBox zaplonCB;
     /**
      *
      */
@@ -82,22 +91,22 @@ public class Okienko extends JFrame{
      */
         private JPanel predkosciomierz;
     /**
+     * Informacja o œrednim spalaniu
+     */
+    private JLabel spalanieLabel;
+    /**
      *Element sk³adowy menuBar
      */
         private JMenu menuPlik,menuPomoc;
     /**
      *Element sk³adowy menuBar
      */
-    /**
-     * Przycisk s³u¿¹cy do zresetowania licznika tymczasowego samochodu
-     */
-        private JButton resetButton;
-        public JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie,menuWczytajPodrozeZBazyDanych,menuDodajPodrozeDoBazyDanych,menuWyczyscBazeDanych;
-        private static DecimalFormat df2 = new DecimalFormat("0.00");
-        private static DecimalFormat df1 = new DecimalFormat("0.0");
+        private  JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie,menuWczytajPodrozeZBazyDanych,menuDodajPodrozeDoBazyDanych,menuWyczyscBazeDanych;
+        private static DecimalFormat df = new DecimalFormat("0.00");
 
-        JLabel swiatla_krotkie,swiatla_dlugie, kierunkowskaz_l,kierunkowskaz_p, swiatla_przeciwmgielne_p,swiatla_przeciwmgielne_t;
-        JCheckBox przelacznik_swiatla_krotkie, przelacznik_swiatla_dlugie, przelacznik_swiatla_przeciwmgielne_p, przelacznik_swiatla_przeciwmgielne_t;
+        private JLabel swiatla_krotkie,swiatla_dlugie, kierunkowskaz_l,kierunkowskaz_p, swiatla_przeciwmgielne_p,swiatla_przeciwmgielne_t;
+        private JCheckBox przelacznik_swiatla_krotkie, przelacznik_swiatla_dlugie, przelacznik_swiatla_przeciwmgielne_p, przelacznik_swiatla_przeciwmgielne_t;
+
 
     /**
      *     Przycisk do okna do zmiany osiagow
@@ -145,12 +154,16 @@ public class Okienko extends JFrame{
     public Okienko() {
 
             predkoscLabel = new JLabel("Predkoœæ: ");
+            spalanieLabel=new JLabel("Œrednie spalanie: --,--l/100km");
+
             this.setTitle("AutoApp");
             setLayout(new BorderLayout());
             topPanel = new JPanel();
             setSize(1000,700);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            infoLabel = new JLabel("Moc silnika: ");
             topPanel.add(infoLabel,BorderLayout.NORTH);
+            zaplonCB = new JCheckBox("ZAP£ON [E]");
             zaplonCB.setBounds(450,280,50,20);
 			zaplonCB.setEnabled(false);
             topPanel.add(zaplonCB,BorderLayout.SOUTH);
@@ -189,6 +202,7 @@ public class Okienko extends JFrame{
             bottomPanel.setBackground(Color.white);
             bottomPanel.setPreferredSize(new Dimension(1000,150));
 
+            tytuly = new String[]{"START","STOP","DYSTANS","ŒREDNIA PRÊDKOŒÆ", "CZAS"};
             tabelaModel = new DefaultTableModel(przejazdyTabData,tytuly);
             przejazdyTab = new JTable(tabelaModel);
             tabelaPane = new JScrollPane(przejazdyTab);
@@ -244,30 +258,41 @@ public class Okienko extends JFrame{
             predkosciomierz.add(przelacznik_swiatla_dlugie,0);
             predkosciomierz.add(przelacznik_swiatla_przeciwmgielne_p,0);
             predkosciomierz.add(przelacznik_swiatla_przeciwmgielne_t,0);
+            tempomatButton=new JButton();
+            tempomatButton.setBounds(150,300,120,25);
+            tempomatButton.setText("tempomat OFF");
+            tempomatButton.setBackground(Color.decode("#db2416"));
+            tempomatButton.setFocusable(false);
+            predkosciomierz.add(tempomatButton,0);
             predkoscLabel.setBounds(330,300,400,50);
             predkoscLabel.setFont(new Font("Dialog",Font.BOLD,32));
             predkosciomierz.add(predkoscLabel,0);
+            spalanieLabel.setBounds(350,340,400,50);
+            spalanieLabel.setFont(new Font("Dialog",Font.BOLD,18));
+            predkosciomierz.add(spalanieLabel,0);
+            resetPrzebiegButton =new JButton("reset");
+            resetPrzebiegButton.setFocusable(false);
+            resetPrzebiegButton.setBounds(600,200,100,25);
+            predkosciomierz.add(resetPrzebiegButton,0);
+            licznikUzytkownikaLabel=new JLabel("Przebieg: 0,00 km");
+            licznikUzytkownikaLabel.setBounds(390,200,210,25);
+            licznikUzytkownikaLabel.setFont(new Font("Dialog",Font.ITALIC,20));
+            predkosciomierz.add(licznikUzytkownikaLabel,0);
+            licznik1Label = new JLabel("Licznik1");
             licznik1Label.setBounds(350,250,300,50);
             licznik1Label.setFont(new Font("Dialog",Font.ITALIC,22));
             predkosciomierz.add(licznik1Label,0);
+            licznik2Label = new JLabel("Licznik2");
             licznik2Label.setBounds(370,230,300,25);
             licznik2Label.setFont(new Font("Dialog",Font.ITALIC,18));
             predkosciomierz.add(licznik2Label,0);
-            licznik3Label = new JLabel("Licznik 3");
-            this.setLicznik3Label(0);
-            licznik3Label.setBounds(380,380,200,25);
-            licznik3Label.setFont(new Font("Serif",Font.BOLD,16));
-            predkosciomierz.add(licznik3Label,0);
             pasekPredkosci = new JProgressBar(0,210);
             pasekPredkosci.setValue(0);
             pasekPredkosci.setStringPainted(true);
             predkosciomierz.add(pasekPredkosci,0);
             pasekPredkosci.setSize(new Dimension(600,30));
             pasekPredkosci.setBounds(174,400,600,30);
-            resetButton = new JButton("RESET");
-            resetButton.setBounds(660,380,100,20);
-            resetButton.setFocusable(false);
-            predkosciomierz.add(resetButton,0);
+
             this.add(predkosciomierz,BorderLayout.CENTER);
         }
 
@@ -283,6 +308,13 @@ public class Okienko extends JFrame{
         return swiatla_przeciwmgielne_p;
     }
 
+    public JButton getResetPrzebiegButton() {
+        return resetPrzebiegButton;
+    }
+    public void setLicznikUzytkownikaLabel(double wartosc) {
+        this.licznikUzytkownikaLabel.setText("Przebieg: "+df.format(wartosc)+" km");
+    }
+
     public JLabel getSwiatla_przeciwmgielne_t() {
         return swiatla_przeciwmgielne_t;
     }
@@ -291,27 +323,138 @@ public class Okienko extends JFrame{
         return przelacznik_swiatla_przeciwmgielne_p;
     }
 
+    public JButton getTempomatButton() {
+        return tempomatButton;
+    }
+
+    public JProgressBar getPasekPredkosci() {
+        return pasekPredkosci;
+    }
+
+    public String[] getTytuly() {
+        return tytuly;
+    }
+
+    public Object[][] getPrzejazdyTabData() {
+        return przejazdyTabData;
+    }
+
+    public JTable getPrzejazdyTab() {
+        return przejazdyTab;
+    }
+
+    public JScrollPane getTabelaPane() {
+        return tabelaPane;
+    }
+
+    public JPanel getBottomPanel() {
+        return bottomPanel;
+    }
+
+    public JPanel getTopPanel() {
+        return topPanel;
+    }
+
+    public JLabel getInfoLabel() {
+        return infoLabel;
+    }
+
+    public JLabel getLicznik1Label() {
+        return licznik1Label;
+    }
+
+    public JLabel getLicznik2Label() {
+        return licznik2Label;
+    }
+
+    public JLabel getPredkoscLabel() {
+        return predkoscLabel;
+    }
+
+    public JMenuBar getMenuB() {
+        return menuB;
+    }
+
+    public JPanel getPredkosciomierz() {
+        return predkosciomierz;
+    }
+
+    public JLabel getSpalanieLabel() {
+        return spalanieLabel;
+    }
+
+    public JMenu getMenuPlik() {
+        return menuPlik;
+    }
+
+    public JMenu getMenuPomoc() {
+        return menuPomoc;
+    }
+
+    public JMenuItem getMenuZapiszAuto() {
+        return menuZapiszAuto;
+    }
+
+    public JMenuItem getMenuWczytajAuto() {
+        return menuWczytajAuto;
+    }
+
+    public JMenuItem getMenuZapiszPodroze() {
+        return menuZapiszPodroze;
+    }
+
+    public JMenuItem getMenuWczytajPodroze() {
+        return menuWczytajPodroze;
+    }
+
+    public JMenuItem getMenuWyjscie() {
+        return menuWyjscie;
+    }
+
+    public JMenuItem getMenuOProgramie() {
+        return menuOProgramie;
+    }
+
+    public JMenuItem getMenuWczytajPodrozeZBazyDanych() {
+        return menuWczytajPodrozeZBazyDanych;
+    }
+
+    public JMenuItem getMenuDodajPodrozeDoBazyDanych() {
+        return menuDodajPodrozeDoBazyDanych;
+    }
+
+    public JMenuItem getMenuWyczyscBazeDanych() {
+        return menuWyczyscBazeDanych;
+    }
+
+    public static DecimalFormat getDf() {
+        return df;
+    }
+
+    public JButton getOsiagiButton() {
+        return osiagiButton;
+    }
+
     public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_t() {
         return przelacznik_swiatla_przeciwmgielne_t;
     }
 
     public void setPredkoscLabel(float predkosc) {
-        this.predkoscLabel.setText("Prêdkoœæ: " + df2.format(predkosc)+" km/h");
+        this.predkoscLabel.setText("Prêdkoœæ: " + df.format(predkosc)+" km/h");
     }
+    public void setSpalanieLabel(double spalanie){
+        if(spalanie==0) {
+            this.spalanieLabel.setText("Œrednie spalanie: --,-- l/100km");
+        }else{
+            this.spalanieLabel.setText("Œrednie spalanie: "+df.format(spalanie)+" l/100km");
+        }
 
-    public JButton getResetButton() {
-        return resetButton;
     }
-
     public void setLicznik1Label(double dystans) {
-        this.licznik1Label.setText("Aktualna podró¿: "+ df2.format(dystans)+"km");
+        this.licznik1Label.setText("Aktualna podró¿: "+df.format(dystans)+" km");
     }
     public void setLicznik2Label(double dystans) {
-        this.licznik2Label.setText("Przebieg: "+ df2.format(dystans)+"km");
-    }
-
-    public void setLicznik3Label(double dystans) {
-        this.licznik3Label.setText("Licznik Tymczasowy: " +df1.format(dystans) + " km");
+        this.licznik2Label.setText("Przebieg g³ówny: "+df.format(dystans)+" km");
     }
 
     void setPasekPredkosciValue(float value)

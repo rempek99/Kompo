@@ -15,16 +15,35 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 
+/**
+ * Klasa reprezentujaca Samochod. Posiada podstawowe funkcjonalnosći jak przyspiesznaie i hamowanie, skrecanie oraz przechowuje liste zapoisanych podrowzy
+ * @see Prowadzenie
+ * @author Dawid Jakubik
+ * @author Arkadiusz Remplewicz
+ */
 public class Samochod implements Prowadzenie{
 
+    private AktualizatorLicznikow aktualizatorLicznikow;
     int counter = 1;
     int moc_silnika;
     int moc_hamulcow;
+    /**
+     * Przechowuje o stanie silnika (uruchomiony/zgaszony)
+     */
     private boolean zaplon;
+    /**
+     * Informacja dla SymulatorUtratyPredkosci czy pojazd jest napedzany by niwelowac utraty predkosci (i/lub przyspieszac) czy nie.
+     */
     private boolean gaz;
     Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
     Chwilowy_odczyt_predkosci temp;
+    /**
+     * Zlicza dystans pokonany podczas aktualnej podrozy czyli między zgaszeniem a odpaleniem silnika
+     */
     Licznik licznik1;
+    /**
+     * Przechowuje informacje o całkowitym przebiegu pojazdu
+     */
     Licznik licznikGlowny; //stały
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
@@ -56,6 +75,7 @@ public class Samochod implements Prowadzenie{
         gaz = false;
         zaplon = false;
         symulator=new SymulatorUtratyPredkosci(this);
+        aktualizatorLicznikow=new AktualizatorLicznikow(temp,this);
     }
 
     public Licznik getLicznik1() {
@@ -90,16 +110,21 @@ public class Samochod implements Prowadzenie{
         return przejazdy;
     }
 
+    /**
+     * Pozwala na zwiekszanie predkosci pojazdu
+     * @throws Nieuruchomiony
+     */
     @Override
     public void gaz() throws Nieuruchomiony{
         if(!isZaplon())
             throw new Nieuruchomiony();
-        try {
-            licznik1.dodaj(temp.przejechane());
-            licznikGlowny.dodaj(temp.przejechane());
-        } catch (UjemnaWartosc ujemnaWartosc) {
-            ujemnaWartosc.printStackTrace();
-        }
+//        try {
+//            double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
+//            licznik1.dodaj(tmp);
+//            licznikGlowny.dodaj(tmp);
+//        } catch (UjemnaWartosc ujemnaWartosc) {
+//            ujemnaWartosc.printStackTrace();
+//        }
         try {
             predkosciomierz1.zwieksz_predkosc((float) ((moc_silnika * 0.01)-(predkosciomierz1.getPredkosc()*0.007)));
         }
@@ -114,14 +139,18 @@ public class Samochod implements Prowadzenie{
         }
     }
 
+    /**
+     * Umożliwia hamowanie pojazdem
+     */
     @Override
     public void hamulec() {
-        try {
-            licznik1.dodaj(temp.przejechane());
-            licznikGlowny.dodaj(temp.przejechane());
-        } catch (UjemnaWartosc ujemnaWartosc) {
-            ujemnaWartosc.printStackTrace();
-        }
+//        try {
+//            double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
+//            licznik1.dodaj(tmp);
+//            licznikGlowny.dodaj(tmp);
+//        } catch (UjemnaWartosc ujemnaWartosc) {
+//            ujemnaWartosc.printStackTrace();
+//        }
         try {
             predkosciomierz1.zmniejsz_predkosc((float)(moc_hamulcow * 30/predkosciomierz1.getPredkosc()));
         }
@@ -153,6 +182,10 @@ public class Samochod implements Prowadzenie{
         return prawyKierunkowskaz;
     }
 
+    /**
+     * Zapisuje do podanego jako parametr katalogu liste podróży jako plik podroze.xml
+     * @param fileDirectoryPath ścieżka do katalogu w ktorym bedzie zapisany rejestr podróży
+     */
     public void zapiszPodroze (String fileDirectoryPath)
     {
         String dest=fileDirectoryPath+"/podroze.xml";
@@ -171,6 +204,12 @@ public class Samochod implements Prowadzenie{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Wczytuje z pliku typu xml liste podróży i zastępuje nią aktualna listę
+     * @param filePath ścieżka do pliku z którego ma zostać wczytana lista podróży
+     * @throws Exception
+     */
     public void wczytajPodroze (String filePath) throws Exception
     {
         String dest=filePath;
@@ -189,11 +228,21 @@ public class Samochod implements Prowadzenie{
             e.printStackTrace();
         }
     }
+
+    /**
+     * Umożliwia wczytanie zapisu podróży z bazy danych
+     * @param nazwa_bazy_danych Nazwa bazy danych
+     * @throws SQLException
+     */
     public void wczytajPodrozeZBazy(String nazwa_bazy_danych) throws SQLException {
         ObslugaBazy a = new ObslugaBazy(nazwa_bazy_danych);
         przejazdy=a.wczytajBaze();
     }
 
+    /**
+     * Uruchamia kierunkowskazy odpowiadajace kierunkowi dokonania skrętu
+     * @param prawo Informuje czy skęt jest w prawo czy w lewo
+     */
     @Override
     public void skret(boolean prawo) {
         if(prawo)
@@ -210,6 +259,9 @@ public class Samochod implements Prowadzenie{
 
     }
 
+    /**
+     * Uruchamia silnik oraz resetuje licznik
+     */
     @Override
     public void uruchom_silnik() {
         zaplon = true;
@@ -221,19 +273,25 @@ public class Samochod implements Prowadzenie{
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }
 
+    /**
+     * Gasi silnik, dodaje do listy podrozy podróż rozpoczeta przy uruchomieniu
+     * silnika i zakonczona przy wywolaniu tej funkcji
+     */
     @Override
     public void zgas_silnik() {
         zaplon = false;
         try {
-            licznik1.dodaj(temp.przejechane());
-            licznikGlowny.dodaj(temp.przejechane());
+            double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
+            licznik1.dodaj(tmp);
+            licznikGlowny.dodaj(tmp);
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();
         }
         przejazdy.add(new Podroz(counter,licznik1.getDystans(),licznik1.getStart(),new Date()));
         counter ++;
-        predkosciomierz1.reset();
+        //predkosciomierz1.reset();
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
     }
+
 
 }

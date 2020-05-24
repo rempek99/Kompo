@@ -3,8 +3,18 @@ package AutoApp.Model;
 import java.util.Comparator;
 import AutoApp.Data.Podroz;
 
+/**
+ * Pozwala na posortowanie kolekcji obiektow typu Podroz po różnych polach (czas trwania, długość podróży ,data rozpoczęcia podróży, średnia prędkość)
+ * @author Dawid Jakubik
+ * @author Arkadiusz Remplewicz
+ */
 public class Porownaj
 implements Comparator<Podroz>{
+	/**
+	 * Pozwala na ustalenie po jakim polu ma być wykonywane sortowanie.
+	 * Rozpoznaje wartości "czas", "dlugosc", "data" i adekwatnie do tych bierze pod uwage odpowiednie pole obiektu Podroz,
+	 * dla kazdej innej wartości sortowanie nastepuje według średniej prędkośći.
+	 */
 	String klucz;
 	Porownaj(String klucz)
 	{

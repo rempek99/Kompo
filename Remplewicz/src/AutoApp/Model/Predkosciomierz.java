@@ -2,9 +2,19 @@ package AutoApp.Model;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-
+/**
+ * Przechowuje podstawowe informacje o predkościomierzu i udostępnia możliwość interakcji z nim
+ * @author Dawid Jakubik
+ * @Author Arkadiusz Remplewicz
+ */
 public class Predkosciomierz implements Naped, Resetowalny{
+    /**
+     * informacja o maksymalnej możliwej prędkości  w km/h
+     */
     int max_predkosc;
+    /**
+     * Aktualna prędkośc w km/h
+     */
     float predkosc;//  km/h
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 
@@ -33,6 +43,12 @@ public class Predkosciomierz implements Naped, Resetowalny{
         output = "Predkosc: "+predkosc+"km/h";
         return output;
     }
+
+    /**
+     * Umożliwia zwiększenie prędkości wskazywanej przez prędkościomierz
+     * @param wartosc O tę wartość zostanie zwiększona aktualna prędkość
+     * @throws UjemnaWartosc
+     */
     @Override
     public void zwieksz_predkosc(float wartosc) throws UjemnaWartosc {
         String oldValue = Float.toString(getPredkosc());
@@ -46,6 +62,12 @@ public class Predkosciomierz implements Naped, Resetowalny{
         String newValue = Float.toString(getPredkosc());
         pcs.firePropertyChange("predkosc",oldValue,newValue);
     }
+
+    /**
+     * Umożliwia zmniejszenie predkości wskazywanej przez predkosciomierz
+     * @param wartosc O tę wartośc zostanie mniejszona aktualna prędkość
+     * @throws UjemnaWartosc
+     */
     @Override
     public void zmniejsz_predkosc(float wartosc) throws UjemnaWartosc
     {
@@ -60,6 +82,9 @@ public class Predkosciomierz implements Naped, Resetowalny{
         pcs.firePropertyChange("predkosc",oldValue,newValue);
     }
 
+    /**
+     * Pozwala na zresetowanie predkościomierza
+     */
     @Override
     public void reset() {
         String oldValue = Float.toString(getPredkosc());

@@ -7,10 +7,19 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Reprezentuje instancje swiateł, umożliwia 3 akcje na nim- włącz,wyłącz i migaj
+ * @see Obsluga_Swiatla
+ * @author Dawid Jakubik
+ * @Author Arkadiusz Remplewicz
+ */
 public class Swiatlo implements Obsluga_Swiatla{
     boolean wlaczone;
     Color barwa;
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    /**
+     * Używany do symulowania migania świateł
+     */
     Timer timer = new Timer(500,new TimerListener());
     int tempBlinks = 0;
 
@@ -53,12 +62,20 @@ public class Swiatlo implements Obsluga_Swiatla{
         tempBlinks = 0;
         timer.start();
     }
+
+    /**
+     * Umożwliwia dodanie obiektu który nasłuchuje zmiany stanu świateł
+     * @param Listener Obiekt nasłuchujacy zdarzenia
+     */
     public void addSwiatloListener(PropertyChangeListener Listener)
     {
         pcs.addPropertyChangeListener(Listener);
     }
-    class TimerListener implements ActionListener {
 
+    /**
+     * Używany do symulacji migania świateł
+     */
+    class TimerListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
                 if(timer.getDelay()>100)

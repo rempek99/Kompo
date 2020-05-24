@@ -36,6 +36,7 @@ public class Controller implements ActionListener{
     private OknoTextDataBase okno3;
 
     public Controller(Samochod auto, Okienko okno) {
+        okno3=new OknoTextDataBase();
         this.auto = auto;
         this.okno = okno;
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());

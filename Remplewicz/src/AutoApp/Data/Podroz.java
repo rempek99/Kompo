@@ -78,7 +78,10 @@ public class Podroz
 		this.id = id;
 		this.dlugosc = dlugosc;
 		this.czas = (data_zakonczenia.getTime()-data_rozpoczecia.getTime())/1000;
-		this.srednia_predkosc = dlugosc / czas * 3600 ;
+		if(czas==0)
+			this.srednia_predkosc = 0;
+		else
+			this.srednia_predkosc = dlugosc / czas * 3600 ;
 		this.data_rozpoczecia = dateFormat.format(data_rozpoczecia);
 		this.data_zakonczenia = dateFormat.format(data_zakonczenia);
 	}

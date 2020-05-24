@@ -35,7 +35,7 @@ public class Samochod implements Prowadzenie{
      * Informacja dla SymulatorUtratyPredkosci czy pojazd jest napedzany by niwelowac utraty predkosci (i/lub przyspieszac) czy nie.
      */
     private boolean gaz;
-    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz;
+    Swiatlo mijania,drogowe,lewyKierunkowskaz,prawyKierunkowskaz,przeciwmgielne_przod,przeciwmgielne_tyl;
     Chwilowy_odczyt_predkosci temp;
     /**
      * Zlicza dystans pokonany podczas aktualnej podrozy czyli między zgaszeniem a odpaleniem silnika
@@ -75,6 +75,8 @@ public class Samochod implements Prowadzenie{
         przejazdy = new ArrayList<Podroz>();
         mijania = new Swiatlo(Color.yellow);
         drogowe = new Swiatlo(Color.yellow);
+        przeciwmgielne_przod = new Swiatlo(Color.yellow);
+        przeciwmgielne_tyl = new Swiatlo(Color.RED);
         lewyKierunkowskaz = new Swiatlo(Color.orange);
         prawyKierunkowskaz = new Swiatlo(Color.orange);
         gaz = false;
@@ -181,6 +183,14 @@ public class Samochod implements Prowadzenie{
 
     public Swiatlo getDrogowe() {
         return drogowe;
+    }
+
+    public Swiatlo getPrzeciwmgielne_przod() {
+        return przeciwmgielne_przod;
+    }
+
+    public Swiatlo getPrzeciwmgielne_tyl() {
+        return przeciwmgielne_tyl;
     }
 
     public Swiatlo getLewyKierunkowskaz() {

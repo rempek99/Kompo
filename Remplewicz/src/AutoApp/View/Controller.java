@@ -48,10 +48,14 @@ public class Controller implements ActionListener{
         this.okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
         this.okno.getPrzelacznik_swiatla_krotkie().addActionListener(this);
         this.okno.getPrzelacznik_swiatla_dlugie().addActionListener(this);
+        this.okno.getPrzelacznik_swiatla_przeciwmgielne_p().addActionListener(this);
+        this.okno.getPrzelacznik_swiatla_przeciwmgielne_t().addActionListener(this);
         this.auto.getMijania().addSwiatloListener(new SwiatloListener());
         this.auto.getLewyKierunkowskaz().addSwiatloListener(new SwiatloListener());
         this.auto.getPrawyKierunkowskaz().addSwiatloListener(new SwiatloListener());
         this.auto.getDrogowe().addSwiatloListener(new SwiatloListener());
+        this.auto.getPrzeciwmgielne_przod().addSwiatloListener(new SwiatloListener());
+        this.auto.getPrzeciwmgielne_tyl().addSwiatloListener(new SwiatloListener());
         this.okno.addKeyListener(new KeyboarListner());
         this.okno.setFocusable(true);
         this.okno.setInfoLabel(auto.getMoc_silnika(), auto.getMoc_hamulcow(), auto.getPredkosciomierz().getMax_predkosc());
@@ -142,6 +146,22 @@ public class Controller implements ActionListener{
                     auto.uruchom_silnik();
                 }
                 okno.repaint();
+            }
+            if(e.getKeyChar()=='J' || e.getKeyChar()=='j')
+            {
+                okno.getPrzelacznik_swiatla_krotkie().doClick();
+            }
+            if(e.getKeyChar()=='K' || e.getKeyChar()=='k')
+            {
+                okno.getPrzelacznik_swiatla_dlugie().doClick();
+            }
+            if(e.getKeyChar()=='N' || e.getKeyChar()=='n')
+            {
+                okno.getPrzelacznik_swiatla_przeciwmgielne_p().doClick();
+            }
+            if(e.getKeyChar()=='M' || e.getKeyChar()=='m')
+            {
+                okno.getPrzelacznik_swiatla_przeciwmgielne_t().doClick();
             }
             if(e.getKeyChar()==KeyEvent.VK_ESCAPE)
             {
@@ -249,6 +269,7 @@ public class Controller implements ActionListener{
             {
                 auto.getMijania().wlacz();
                 okno.getSwiatla_krotkie().setVisible(true);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(true);
                if(!auto.getDrogowe().isWlaczone())
                    okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
             }
@@ -256,6 +277,7 @@ public class Controller implements ActionListener{
             {
                 auto.getMijania().wylacz();
                 okno.getSwiatla_krotkie().setVisible(false);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(false);
                 if(!auto.getDrogowe().isWlaczone())
                     okno.ustawSwiatlo(0,auto.getMijania().getBarwa());
             }
@@ -279,6 +301,38 @@ public class Controller implements ActionListener{
                 }
             }
 
+        }
+        if(source == okno.getPrzelacznik_swiatla_przeciwmgielne_p())
+        {
+            if(okno.getPrzelacznik_swiatla_przeciwmgielne_p().isSelected())
+            {
+                auto.getPrzeciwmgielne_przod().wlacz();
+                okno.getSwiatla_przeciwmgielne_p().setVisible(true);
+                okno.getPrzelacznik_swiatla_krotkie().setEnabled(false);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_t().setEnabled(true);
+            }
+            else
+            {
+                auto.getPrzeciwmgielne_przod().wylacz();
+                okno.getSwiatla_przeciwmgielne_p().setVisible(false);
+                okno.getPrzelacznik_swiatla_krotkie().setEnabled(true);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_t().setEnabled(false);
+            }
+        }
+        if(source == okno.getPrzelacznik_swiatla_przeciwmgielne_t())
+        {
+            if(okno.getPrzelacznik_swiatla_przeciwmgielne_t().isSelected())
+            {
+                auto.getPrzeciwmgielne_tyl().wlacz();
+                okno.getSwiatla_przeciwmgielne_t().setVisible(true);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(false);
+            }
+            else
+            {
+                auto.getPrzeciwmgielne_tyl().wylacz();
+                okno.getSwiatla_przeciwmgielne_t().setVisible(false);
+                okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(true);
+            }
         }
         if(source==okno.getResetButton())
         {

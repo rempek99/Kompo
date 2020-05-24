@@ -96,12 +96,8 @@ public class Okienko extends JFrame{
         private static DecimalFormat df2 = new DecimalFormat("0.00");
         private static DecimalFormat df1 = new DecimalFormat("0.0");
 
-        JLabel swiatla_krotkie;
-        JLabel swiatla_dlugie;
-        JLabel kierunkowskaz_l;
-        JLabel kierunkowskaz_p;
-        JCheckBox przelacznik_swiatla_krotkie;
-        JCheckBox przelacznik_swiatla_dlugie;
+        JLabel swiatla_krotkie,swiatla_dlugie, kierunkowskaz_l,kierunkowskaz_p, swiatla_przeciwmgielne_p,swiatla_przeciwmgielne_t;
+        JCheckBox przelacznik_swiatla_krotkie, przelacznik_swiatla_dlugie, przelacznik_swiatla_przeciwmgielne_p, przelacznik_swiatla_przeciwmgielne_t;
 
     /**
      *     Przycisk do okna do zmiany osiagow
@@ -212,24 +208,42 @@ public class Okienko extends JFrame{
             kierunkowskaz_l.setBounds(250,150,46,46);
             kierunkowskaz_p = new JLabel(new ImageIcon("kier_p.png"));
             kierunkowskaz_p.setBounds(650,150,46,46);
+            swiatla_przeciwmgielne_p = new JLabel(new ImageIcon("przegiwmgielne_przod.png"));
+            swiatla_przeciwmgielne_p.setBounds(200,220,75,64);
+            swiatla_przeciwmgielne_t = new JLabel(new ImageIcon("przeciwmgielne_tyl.png"));
+            swiatla_przeciwmgielne_t.setBounds(660,220,75,60);
+            przelacznik_swiatla_krotkie = new JCheckBox("Œwiat³a Mijania [J]");
+            przelacznik_swiatla_dlugie = new JCheckBox("Œwiat³a Drogowe [K]");
+            przelacznik_swiatla_przeciwmgielne_p = new JCheckBox("Œwiat³a Przeciwmgielne Przednie [N]");
+            przelacznik_swiatla_przeciwmgielne_t = new JCheckBox("Œwiat³a Przeciwmgielne Tylne [M]");
+            przelacznik_swiatla_krotkie.setBounds(400,50,145,20);
+            przelacznik_swiatla_dlugie.setBounds(400,75,145,20);
+            przelacznik_swiatla_przeciwmgielne_p.setBounds(355,100,235,20);
+            przelacznik_swiatla_przeciwmgielne_t.setBounds(355,125,235,20);
             kierunkowskaz_p.setVisible(false);
             kierunkowskaz_l.setVisible(false);
             swiatla_dlugie.setVisible(false);
             swiatla_krotkie.setVisible(false);
-            przelacznik_swiatla_krotkie = new JCheckBox("Œwiat³a Mijania");
-            przelacznik_swiatla_dlugie = new JCheckBox("Œwiat³a Drogowe");
-            przelacznik_swiatla_krotkie.setBounds(320,120,125,20);
-            przelacznik_swiatla_dlugie.setBounds(495,120,125,20);
+            swiatla_przeciwmgielne_t.setVisible(false);
+            swiatla_przeciwmgielne_p.setVisible(false);
             przelacznik_swiatla_dlugie.setFocusable(false);
             przelacznik_swiatla_krotkie.setFocusable(false);
+            przelacznik_swiatla_przeciwmgielne_p.setFocusable(false);
+            przelacznik_swiatla_przeciwmgielne_p.setEnabled(false);
+            przelacznik_swiatla_przeciwmgielne_t.setFocusable(false);
+            przelacznik_swiatla_przeciwmgielne_t.setEnabled(false);
 
             predkosciomierz.add(tarcza);
             predkosciomierz.add(swiatla_krotkie,0);
             predkosciomierz.add(swiatla_dlugie,0);
             predkosciomierz.add(kierunkowskaz_l,0);
             predkosciomierz.add(kierunkowskaz_p,0);
+            predkosciomierz.add(swiatla_przeciwmgielne_p,0);
+            predkosciomierz.add(swiatla_przeciwmgielne_t,0);
             predkosciomierz.add(przelacznik_swiatla_krotkie,0);
             predkosciomierz.add(przelacznik_swiatla_dlugie,0);
+            predkosciomierz.add(przelacznik_swiatla_przeciwmgielne_p,0);
+            predkosciomierz.add(przelacznik_swiatla_przeciwmgielne_t,0);
             predkoscLabel.setBounds(330,300,400,50);
             predkoscLabel.setFont(new Font("Dialog",Font.BOLD,32));
             predkosciomierz.add(predkoscLabel,0);
@@ -263,6 +277,22 @@ public class Okienko extends JFrame{
 
     public JCheckBox getPrzelacznik_swiatla_dlugie() {
         return przelacznik_swiatla_dlugie;
+    }
+
+    public JLabel getSwiatla_przeciwmgielne_p() {
+        return swiatla_przeciwmgielne_p;
+    }
+
+    public JLabel getSwiatla_przeciwmgielne_t() {
+        return swiatla_przeciwmgielne_t;
+    }
+
+    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_p() {
+        return przelacznik_swiatla_przeciwmgielne_p;
+    }
+
+    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_t() {
+        return przelacznik_swiatla_przeciwmgielne_t;
     }
 
     public void setPredkoscLabel(float predkosc) {

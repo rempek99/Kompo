@@ -41,13 +41,13 @@ public class Okienko extends JFrame{
      */
         private JScrollPane tabelaPane;
     /**
-     *
+     *  Znajduje siê w nim z zapisanymi podró¿ami
      */
         private JPanel bottomPanel;
     /**
-     *
+     *  Gromadzi informacje o parametrach samochodu
      */
-        // Wyswietlanie Informacji
+
         private JPanel topPanel;
     /**
      *Informacje o mocy siilnika
@@ -64,7 +64,7 @@ public class Okienko extends JFrame{
     /**
      *Aktualna prêdkoœæ
      */
-        private JLabel predkoscLabel = new JLabel("Predkoœæ: ");
+        private JLabel predkoscLabel;
     /**
      *Informuje o tym czy silnik jest uruchomiony czy te¿ nie
      */
@@ -138,14 +138,15 @@ public class Okienko extends JFrame{
     }
 
     public Okienko() {
+
+            predkoscLabel = new JLabel("Predkoœæ: ");
+
             this.setTitle("AutoApp");
             setLayout(new BorderLayout());
-            JPanel topPanel = new JPanel();
+            topPanel = new JPanel();
             setSize(1000,700);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
             topPanel.add(infoLabel,BorderLayout.NORTH);
-
             zaplonCB.setBounds(450,280,50,20);
 			zaplonCB.setEnabled(false);
             topPanel.add(zaplonCB,BorderLayout.SOUTH);
@@ -298,4 +299,29 @@ public class Okienko extends JFrame{
         }
         tabelaModel.setDataVector(przejazdyTabData,tytuly);
     }
+    public void ustawSwiatlo(int value, Color color)
+    {
+        //0 - zgaszone, 1 - mijania, 2 - drogowe
+        switch (value)
+        {
+            case 0:
+            {
+                topPanel.setBackground(new Color(color.getRed(),color.getGreen(),color.getBlue(),0));
+                repaint();
+                break;
+            }
+            case 1:
+            {
+                topPanel.setBackground(new Color(color.getRed(),color.getGreen(),color.getBlue(),60));
+                repaint();
+                break;
+            }
+            case 2: {
+                topPanel.setBackground(new Color(color.getRed(), color.getGreen(), color.getBlue(), 200));
+                repaint();
+                break;
+            }
+        }
+    }
+
 }

@@ -41,6 +41,10 @@ public class OsiagiOkienko extends JFrame {
      */
     private JPanel thirdPanel;
     /**
+     * Zawiera przycisni umo¿liwiaj¹ce zmianê barwy œwiate³ mijania
+     */
+    private JPanel fourthPanel;
+    /**
      * Panel z przyciskiem "ZASTOSUJ"
      */
     private JPanel bottomPanel;
@@ -61,6 +65,10 @@ public class OsiagiOkienko extends JFrame {
      */
     private JButton zastosujButton;
     private Dictionary<Integer,JLabel> mocLabel;
+    /**
+     * Przyciski odpowiadaj¹ce za wybór barwy œwiate³ mijania
+     */
+    private JRadioButton swiatloZolte, swiatloNiebieskie, swiatloFioletowe;
 
     /**
      * Konstruktor bezparametrowy. Inicjuje zawartoœæ okna.
@@ -72,6 +80,7 @@ public class OsiagiOkienko extends JFrame {
         firstPanel = new JPanel();
         secondPanel = new JPanel();
         thirdPanel = new JPanel();
+        fourthPanel = new JPanel();
         mocWartosc = new JLabel("");
         mocWartosc.setPreferredSize(new Dimension(50,20));
         hamulceWartosc = new JLabel("");
@@ -112,6 +121,21 @@ public class OsiagiOkienko extends JFrame {
         thirdPanel.add(maxPredkoscWartosc);
         thirdPanel.add(maxPredkoscSlider);
 
+        swiatloFioletowe = new JRadioButton("FIOLETOWE");
+        swiatloNiebieskie = new JRadioButton("NIEBIESKIE");
+        swiatloZolte = new JRadioButton("¯Ó£TE");
+        swiatloNiebieskie.setSelected(false);
+        swiatloFioletowe.setSelected(false);
+        swiatloZolte.setSelected(true);
+        ButtonGroup grupa = new ButtonGroup();
+        grupa.add(swiatloZolte);
+        grupa.add(swiatloFioletowe);
+        grupa.add(swiatloNiebieskie);
+        fourthPanel.add(new JLabel("Wybierz kolor œwiate³ mijania:"));
+        fourthPanel.add(swiatloFioletowe);
+        fourthPanel.add(swiatloZolte);
+        fourthPanel.add(swiatloNiebieskie);
+
 
         zastosujButton = new JButton("ZASTOSUJ");
         zastosujButton.setPreferredSize(new Dimension(100,30));
@@ -122,6 +146,7 @@ public class OsiagiOkienko extends JFrame {
         this.add(firstPanel);
         this.add(secondPanel);
         this.add(thirdPanel);
+        this.add(fourthPanel);
         this.add(bottomPanel);
 
 
@@ -185,5 +210,14 @@ public class OsiagiOkienko extends JFrame {
     public int getMaxPredkosc()
     {
         return maxPredkoscSlider.getValue();
+    }
+
+    public Color getBarwaSwiatla() {
+        if(swiatloFioletowe.isSelected())
+            return new Color(255,0,255);
+        else if(swiatloNiebieskie.isSelected())
+            return new Color (0,0,255);
+        else
+            return new Color(255,255,0);
     }
 }

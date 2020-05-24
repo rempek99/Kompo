@@ -39,6 +39,7 @@ public class Controller implements ActionListener{
         okno3=new OknoTextDataBase();
         this.auto = auto;
         this.okno = okno;
+        this.okno3 = new OknoTextDataBase();
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
         this.auto.getLicznik1().addLicznikListener(new LicznikListener());
         this.auto.getLicznikGlowny().addLicznikListener(new LicznikListener());
@@ -138,6 +139,7 @@ public class Controller implements ActionListener{
                     okno.getZaplonCB().setText("ZGAŒ SILNIK [E]");
                     auto.uruchom_silnik();
                 }
+                okno.repaint();
             }
             if(e.getKeyChar()==KeyEvent.VK_ESCAPE)
             {
@@ -180,7 +182,6 @@ public class Controller implements ActionListener{
         }
         if (source == okno.menuWczytajPodrozeZBazyDanych)
         {
-            okno3 = new OknoTextDataBase();
             okno3.setMenu(0);
             //okno3.addZastosujButtonListener(new ZastosujButtonListener());
             okno3.setVisible(true);
@@ -188,7 +189,6 @@ public class Controller implements ActionListener{
         }
         if (source == okno.menuDodajPodrozeDoBazyDanych)
         {
-            okno3 = new OknoTextDataBase();
             okno3.setMenu(1);
             //okno3.addZastosujButtonListener(new ZastosujButtonListener());
             okno3.setVisible(true);
@@ -247,11 +247,15 @@ public class Controller implements ActionListener{
             {
                 auto.getMijania().wlacz();
                 okno.getSwiatla_krotkie().setVisible(true);
+               if(!auto.getDrogowe().isWlaczone())
+                   okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
             }
             else
             {
                 auto.getMijania().wylacz();
                 okno.getSwiatla_krotkie().setVisible(false);
+                if(!auto.getDrogowe().isWlaczone())
+                    okno.ustawSwiatlo(0,auto.getMijania().getBarwa());
             }
         }
         if (source == okno.getPrzelacznik_swiatla_dlugie())
@@ -260,11 +264,17 @@ public class Controller implements ActionListener{
             {
                 auto.getDrogowe().wlacz();
                 okno.getSwiatla_dlugie().setVisible(true);
+                okno.ustawSwiatlo(2,auto.getDrogowe().getBarwa());
             }
             else
             {
                 auto.getDrogowe().wylacz();
                 okno.getSwiatla_dlugie().setVisible(false);
+                okno.ustawSwiatlo(0,auto.getDrogowe().getBarwa());
+                if(auto.getMijania().isWlaczone())
+                {
+                    okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
+                }
             }
 
         }
@@ -338,7 +348,10 @@ public class Controller implements ActionListener{
             auto.setMoc_silnika(okno2.getMocSilnika());
             auto.setMoc_hamulcow(okno2.getMocHamulcow());
             auto.getPredkosciomierz().setMax_predkosc(okno2.getMaxPredkosc());
+            auto.getMijania().setBarwa(okno2.getBarwaSwiatla());
             okno.setPasekPredkosciMaximum(okno2.getMaxPredkosc());
+            if(okno.przelacznik_swiatla_krotkie.isSelected())
+                okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
             okno2.dispose();
 
         }

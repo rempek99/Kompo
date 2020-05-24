@@ -4,6 +4,7 @@ import AutoApp.Data.Licznik;
 import AutoApp.Data.ObslugaBazy;
 import AutoApp.Data.Podroz;
 
+import javax.swing.*;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,14 +63,19 @@ public class Samochod implements Prowadzenie{
 
 
 
-    public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc)
+    public Samochod(int moc_silnika, int moc_hamulcow, int max_predkosc, double licznikGlowny)
     {
         tempomat=new Tempomat(this);
         tempomat.wylacz();
         this.moc_silnika = moc_silnika;
         this.moc_hamulcow = moc_hamulcow;
         licznikPodrozy = new Licznik(false);
-        licznikGlowny = new Licznik(true);
+        this.licznikGlowny = new Licznik(true);
+        try {
+            this.licznikGlowny.dodaj(licznikGlowny);
+        } catch (UjemnaWartosc ujemnaWartosc) {
+            ujemnaWartosc.printStackTrace();
+        }
         licznikUzytkownika=new Licznik(false);
         predkosciomierz1 = new Predkosciomierz(max_predkosc);
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
@@ -307,5 +313,10 @@ public class Samochod implements Prowadzenie{
 
     public Swiatlo getPrzeciwmgielne_tyl() {
         return przeciwmgielne_tyl;
+    }
+    public void zapiszGlownyLicznik(String nameOfFile) throws FileNotFoundException {
+        PrintWriter print=new PrintWriter(nameOfFile);
+        print.print(licznikGlowny.getDystans());
+        print.close();
     }
 }

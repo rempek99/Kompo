@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
 
 /**
@@ -20,7 +21,7 @@ import java.sql.SQLException;
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */
-public class Controller implements ActionListener{
+public class Controller implements ActionListener, WindowListener {
     private Samochod auto;
     /**
      * G³ówne okno aplikacji
@@ -71,7 +72,66 @@ public class Controller implements ActionListener{
         this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
         this.okno.getResetPrzebiegButton().addActionListener(this);
         this.okno.getTempomatButton().addActionListener(this);
+        this.okno.addWindowListener(this);
+
     }
+
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowOpened(WindowEvent e) {
+        //not Used
+    }
+
+    /**
+     *Gdy zamykane jest okno wywoluje metode z auto ktora zapisuje stan g³ównego licznika
+     */
+    @Override
+    public void windowClosing(WindowEvent e)
+    {
+        try {
+            auto.zapiszGlownyLicznik("licznikGlowny.txt");
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        }
+    }
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowClosed(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowIconified(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowActivated(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieu¿ywane
+     */
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+//not Used
+    }
+
 
     /**
      * Odpowiada za wykrywanie zdarzeñ klawiatury (klawisze strza³ek, ESC oraz E) i wywo³anie odpowiednich metod do obs³ugi tych zdarzeñ.
@@ -173,7 +233,12 @@ public class Controller implements ActionListener{
             }
             if(e.getKeyChar()==KeyEvent.VK_ESCAPE)
             {
-                okno.dispose();
+                try {
+                    auto.zapiszGlownyLicznik("licznikGlowny.txt");
+                } catch (FileNotFoundException ex) {
+                    ex.printStackTrace();
+                }
+                System.exit(0);
             }
             if(e.getKeyCode()==KeyEvent.VK_UP)
             {

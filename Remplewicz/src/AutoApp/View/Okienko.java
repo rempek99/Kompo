@@ -6,8 +6,12 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.function.Function;
 
 /**
  * Okno symuluj¹ce deskê rozdzielcz¹.
@@ -152,15 +156,13 @@ public class Okienko extends JFrame{
     }
 
     public Okienko() {
-
             predkoscLabel = new JLabel("Predkoœæ: ");
             spalanieLabel=new JLabel("Œrednie spalanie: --,--l/100km");
-
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setTitle("AutoApp");
             setLayout(new BorderLayout());
             topPanel = new JPanel();
             setSize(1000,700);
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             infoLabel = new JLabel("Moc silnika: ");
             topPanel.add(infoLabel,BorderLayout.NORTH);
             zaplonCB = new JCheckBox("ZAP£ON [E]");
@@ -520,5 +522,7 @@ public class Okienko extends JFrame{
             }
         }
     }
+
+
 
 }

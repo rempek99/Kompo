@@ -24,6 +24,7 @@ public class AktualizatorLicznikow implements ActionListener {
         double tmp=temp.przejechane(samochod.predkosciomierz1.getPredkosc());
         try {
             samochod.licznik1.dodaj(tmp);
+            samochod.licznikTymczasowy.dodaj(tmp);
             samochod.licznikGlowny.dodaj(tmp);
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();

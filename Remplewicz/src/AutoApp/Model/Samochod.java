@@ -45,6 +45,10 @@ public class Samochod implements Prowadzenie{
      * Przechowuje informacje o całkowitym przebiegu pojazdu
      */
     Licznik licznikGlowny; //stały
+    /**
+     * Przechowuje informacje o tymczasowym przebiegu (od momentu ostatniego zresetowania przez użytkownika
+     */
+    Licznik licznikTymczasowy;
     Predkosciomierz predkosciomierz1;
     ArrayList<Podroz> przejazdy;
     SymulatorUtratyPredkosci symulator;
@@ -64,6 +68,7 @@ public class Samochod implements Prowadzenie{
         this.moc_silnika = moc_silnika;
         this.moc_hamulcow = moc_hamulcow;
         licznik1 = new Licznik(false);
+        licznikTymczasowy = new Licznik(false);
         licznikGlowny = new Licznik(true);
         predkosciomierz1 = new Predkosciomierz(max_predkosc);
         temp = new Chwilowy_odczyt_predkosci(predkosciomierz1.getPredkosc());
@@ -84,6 +89,10 @@ public class Samochod implements Prowadzenie{
 
     public Predkosciomierz getPredkosciomierz() {
         return predkosciomierz1;
+    }
+
+    public Licznik getLicznikTymczasowy() {
+        return licznikTymczasowy;
     }
 
     public void setMoc_hamulcow(int moc_hamulcow) {
@@ -283,6 +292,7 @@ public class Samochod implements Prowadzenie{
         try {
             double tmp=temp.przejechane(predkosciomierz1.getPredkosc());
             licznik1.dodaj(tmp);
+            licznikTymczasowy.dodaj(tmp);
             licznikGlowny.dodaj(tmp);
         } catch (UjemnaWartosc ujemnaWartosc) {
             ujemnaWartosc.printStackTrace();

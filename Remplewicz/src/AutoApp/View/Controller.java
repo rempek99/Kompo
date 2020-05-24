@@ -43,6 +43,7 @@ public class Controller implements ActionListener{
         this.auto.getPredkosciomierz().addPredkoscListener(new PredkoscListener());
         this.auto.getLicznik1().addLicznikListener(new LicznikListener());
         this.auto.getLicznikGlowny().addLicznikListener(new LicznikListener());
+        this.auto.getLicznikTymczasowy().addLicznikListener(new LicznikListener());
         this.okno.setLicznik1Label(auto.getLicznik1().getDystans());
         this.okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
         this.okno.getPrzelacznik_swiatla_krotkie().addActionListener(this);
@@ -63,6 +64,7 @@ public class Controller implements ActionListener{
         this.okno.menuZapiszPodroze.addActionListener(this);
         this.okno.menuWyczyscBazeDanych.addActionListener(this);
         this.okno.addOsiagiButtonListener(new OsiagiButtonListener());
+        this.okno.getResetButton().addActionListener(this);
     }
 
     /**
@@ -278,6 +280,14 @@ public class Controller implements ActionListener{
             }
 
         }
+        if(source==okno.getResetButton())
+        {
+            try {
+                auto.getLicznikTymczasowy().reset();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
 
 //        class PredkoscListener implements PropertyChangeListener{
 //
@@ -301,6 +311,7 @@ public class Controller implements ActionListener{
 
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
+            okno.setLicznik3Label(auto.getLicznikTymczasowy().getDystans());
             okno.setLicznik1Label(auto.getLicznik1().getDystans());
             okno.setLicznik2Label(auto.getLicznikGlowny().getDystans());
         }

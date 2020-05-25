@@ -3,6 +3,7 @@ package AutoApp.Model;
 import java.util.Date;
 
 /**
+ * Klasa służąca do obliczenia przejechanego dystansu w jednostce czasu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

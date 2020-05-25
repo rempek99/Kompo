@@ -35,7 +35,9 @@ class SymulatorUtratyPredkosci implements ActionListener
         {
             try {
                 float tmp=samochod.getPredkosciomierz().getPredkosc();
-                if((0.8+(tmp*0.0001))<=tmp) {
+                if (tmp < samochod.getPredkosciomierz().getMax_predkosc()*0.01)
+                    samochod.getPredkosciomierz().zmniejsz_predkosc(20);
+                else if((0.8+(tmp*0.0001))<=tmp) {
                     samochod.getPredkosciomierz().zmniejsz_predkosc((float) (0.8+(tmp*0.0001)));
                 }
                 else{

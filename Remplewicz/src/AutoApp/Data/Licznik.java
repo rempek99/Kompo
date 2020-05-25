@@ -8,7 +8,7 @@ import java.beans.PropertyChangeSupport;
 import java.util.Date;
 
 /**
- * Klasa odpowiadajaca za liczniki dystansów w samochodzie
+ * Klasa odpowiadaj¹ca za liczniki dystansów w samochodzie
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

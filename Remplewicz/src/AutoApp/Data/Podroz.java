@@ -116,7 +116,7 @@ public class Podroz
 	}
 
 	/**
-	 *
+	 * Konstruktor klasy
 	 * @param id unikalny identyfikator
 	 * @param dlugosc d³ugoœæ odbytej podró¿y wyra¿ona w kilometrach
 	 * @param data_rozpoczecia data rozpoczêcia podró¿y

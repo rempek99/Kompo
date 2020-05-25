@@ -21,9 +21,10 @@ import java.util.function.Function;
  */
 public class Okienko extends JFrame{
 
-        private JProgressBar pasekPredkosci;
-
-
+    /**
+     * Pasek postêpowy wizualizuj¹cy prêdkoœæ, z jak¹ porusza siê pojazd
+     */
+    private JProgressBar pasekPredkosci;
     /**
      * S³u¿y do resetowania przez u¿ytkownika jednego z przebiegów
      */
@@ -32,7 +33,6 @@ public class Okienko extends JFrame{
      * S³u¿y do w³¹cznia i wy³¹czania tempomatu
      */
     private JButton tempomatButton;
-    // Spis przejazdów
     /**
      * Przechowuje nag³ówki tabeli w której wyœwietlane s¹ podró¿e.
      */
@@ -46,7 +46,7 @@ public class Okienko extends JFrame{
      */
         private JTable przejazdyTab;
     /**
-     *
+     *  Model tablicy, w której przechowywane s¹ zapisy podró¿y
      */
     private  DefaultTableModel tabelaModel;
     /**
@@ -54,13 +54,12 @@ public class Okienko extends JFrame{
      */
         private JScrollPane tabelaPane;
     /**
-     *  Znajduje siê w nim z zapisanymi podró¿ami
+     *  Znajduje siê w nim tabela z zapisanymi podró¿ami
      */
         private JPanel bottomPanel;
     /**
      *  Gromadzi informacje o parametrach samochodu
      */
-
         private JPanel topPanel;
     /**
      *Informacje o mocy siilnika
@@ -75,7 +74,7 @@ public class Okienko extends JFrame{
      */
         private JLabel licznik2Label;
     /**
-     * Stan licznika który samodzielnie moze resetowan uzytkonik
+     * Stan licznika który samodzielnie moze resetowaæ uzytkonik
      */
         private JLabel licznikUzytkownikaLabel;
     /**
@@ -87,11 +86,11 @@ public class Okienko extends JFrame{
      */
         private JCheckBox zaplonCB;
     /**
-     *
+     * Pasek menu
      */
         private JMenuBar menuB;
     /**
-     *
+     * Panel gromadz¹cy prêdkoœciomierz, liczniki oraz kontrolki
      */
         private JPanel predkosciomierz;
     /**
@@ -106,25 +105,22 @@ public class Okienko extends JFrame{
      *Element sk³adowy menuBar
      */
         private  JMenuItem menuZapiszAuto,menuWczytajAuto,menuZapiszPodroze, menuWczytajPodroze,menuWyjscie,menuOProgramie,menuWczytajPodrozeZBazyDanych,menuDodajPodrozeDoBazyDanych,menuWyczyscBazeDanych;
-        private static DecimalFormat df = new DecimalFormat("0.00");
-
+    /**
+     * Obiekt definiuj¹cy format liczby zmienno przecinkowej z precyzj¹ do dwóch miejsc po przecinku
+     */
+    private static DecimalFormat df = new DecimalFormat("0.00");
+    /**
+     * Etykiety zawieraj¹ce ilustracje kontrolek samochodu
+     */
         private JLabel swiatla_krotkie,swiatla_dlugie, kierunkowskaz_l,kierunkowskaz_p, swiatla_przeciwmgielne_p,swiatla_przeciwmgielne_t;
-        private JCheckBox przelacznik_swiatla_krotkie, przelacznik_swiatla_dlugie, przelacznik_swiatla_przeciwmgielne_p, przelacznik_swiatla_przeciwmgielne_t;
-
-
+    /**
+     * Prze³¹czniki umozliwiaj¹ce sterowanie œwiat³ami samochodu
+     */
+    private JCheckBox przelacznik_swiatla_krotkie, przelacznik_swiatla_dlugie, przelacznik_swiatla_przeciwmgielne_p, przelacznik_swiatla_przeciwmgielne_t;
     /**
      *     Przycisk do okna do zmiany osiagow
      */
         private JButton osiagiButton;
-
-    /**
-     * Umo¿liwia dostêp do check boxa informujacego o uruchomieniu silnika
-     * @return obiekt JCheckBox przechowuj¹cy stan silnika (uruchomiony kub nie)
-     */
-    public JCheckBox getZaplonCB() {
-        return zaplonCB;
-    }
-
     /**
      * Umo¿liwia zmiane stanu silnika z uruchomiony na zgaszony i odwrotnie (w zale¿noœci od aktualnego stanu)
      */
@@ -135,26 +131,9 @@ public class Okienko extends JFrame{
             this.zaplonCB.setSelected(true);
     }
 
-    public JLabel getSwiatla_krotkie() {
-        return swiatla_krotkie;
-    }
-
-    public JLabel getSwiatla_dlugie() {
-        return swiatla_dlugie;
-    }
-
-    public JLabel getKierunkowskaz_l() {
-        return kierunkowskaz_l;
-    }
-
-    public JLabel getKierunkowskaz_p() {
-        return kierunkowskaz_p;
-    }
-
-    public DefaultTableModel getTabelaModel() {
-        return tabelaModel;
-    }
-
+    /**
+     * Konstruktor klasy
+     */
     public Okienko() {
             predkoscLabel = new JLabel("Predkoœæ: ");
             spalanieLabel=new JLabel("Œrednie spalanie: --,--l/100km");
@@ -298,209 +277,22 @@ public class Okienko extends JFrame{
             this.add(predkosciomierz,BorderLayout.CENTER);
         }
 
-    public JCheckBox getPrzelacznik_swiatla_krotkie() {
-        return przelacznik_swiatla_krotkie;
-    }
-
-    public JCheckBox getPrzelacznik_swiatla_dlugie() {
-        return przelacznik_swiatla_dlugie;
-    }
-
-    public JLabel getSwiatla_przeciwmgielne_p() {
-        return swiatla_przeciwmgielne_p;
-    }
-
-    public JButton getResetPrzebiegButton() {
-        return resetPrzebiegButton;
-    }
-    public void setLicznikUzytkownikaLabel(double wartosc) {
-        this.licznikUzytkownikaLabel.setText("Przebieg: "+df.format(wartosc)+" km");
-    }
-
-    public JLabel getSwiatla_przeciwmgielne_t() {
-        return swiatla_przeciwmgielne_t;
-    }
-
-    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_p() {
-        return przelacznik_swiatla_przeciwmgielne_p;
-    }
-
-    public JButton getTempomatButton() {
-        return tempomatButton;
-    }
-
-    public JProgressBar getPasekPredkosci() {
-        return pasekPredkosci;
-    }
-
-    public String[] getTytuly() {
-        return tytuly;
-    }
-
-    public Object[][] getPrzejazdyTabData() {
-        return przejazdyTabData;
-    }
-
-    public JTable getPrzejazdyTab() {
-        return przejazdyTab;
-    }
-
-    public JScrollPane getTabelaPane() {
-        return tabelaPane;
-    }
-
-    public JPanel getBottomPanel() {
-        return bottomPanel;
-    }
-
-    public JPanel getTopPanel() {
-        return topPanel;
-    }
-
-    public JLabel getInfoLabel() {
-        return infoLabel;
-    }
-
-    public JLabel getLicznik1Label() {
-        return licznik1Label;
-    }
-
-    public JLabel getLicznik2Label() {
-        return licznik2Label;
-    }
-
-    public JLabel getPredkoscLabel() {
-        return predkoscLabel;
-    }
-
-    public JMenuBar getMenuB() {
-        return menuB;
-    }
-
-    public JPanel getPredkosciomierz() {
-        return predkosciomierz;
-    }
-
-    public JLabel getSpalanieLabel() {
-        return spalanieLabel;
-    }
-
-    public JMenu getMenuPlik() {
-        return menuPlik;
-    }
-
-    public JMenu getMenuPomoc() {
-        return menuPomoc;
-    }
-
-    public JMenuItem getMenuZapiszAuto() {
-        return menuZapiszAuto;
-    }
-
-    public JMenuItem getMenuWczytajAuto() {
-        return menuWczytajAuto;
-    }
-
-    public JMenuItem getMenuZapiszPodroze() {
-        return menuZapiszPodroze;
-    }
-
-    public JMenuItem getMenuWczytajPodroze() {
-        return menuWczytajPodroze;
-    }
-
-    public JMenuItem getMenuWyjscie() {
-        return menuWyjscie;
-    }
-
-    public JMenuItem getMenuOProgramie() {
-        return menuOProgramie;
-    }
-
-    public JMenuItem getMenuWczytajPodrozeZBazyDanych() {
-        return menuWczytajPodrozeZBazyDanych;
-    }
-
-    public JMenuItem getMenuDodajPodrozeDoBazyDanych() {
-        return menuDodajPodrozeDoBazyDanych;
-    }
-
-    public JMenuItem getMenuWyczyscBazeDanych() {
-        return menuWyczyscBazeDanych;
-    }
-
-    public static DecimalFormat getDf() {
-        return df;
-    }
-
-    public JButton getOsiagiButton() {
-        return osiagiButton;
-    }
-
-    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_t() {
-        return przelacznik_swiatla_przeciwmgielne_t;
-    }
-
-    public void setPredkoscLabel(float predkosc) {
-        this.predkoscLabel.setText("Prêdkoœæ: " + df.format(predkosc)+" km/h");
-    }
-    public void setSpalanieLabel(double spalanie){
-        if(spalanie==0) {
-            this.spalanieLabel.setText("Œrednie spalanie: --,-- l/100km");
-        }else{
-            this.spalanieLabel.setText("Œrednie spalanie: "+df.format(spalanie)+" l/100km");
-        }
-
-    }
-    public void setLicznik1Label(double dystans) {
-        this.licznik1Label.setText("Aktualna podró¿: "+df.format(dystans)+" km");
-    }
-    public void setLicznik2Label(double dystans) {
-        this.licznik2Label.setText("Przebieg g³ówny: "+df.format(dystans)+" km");
-    }
-
-    void setPasekPredkosciValue(float value)
-    {
-        this.pasekPredkosci.setValue((int)value);
-    }
-
-    void setPasekPredkosciMaximum(int value){this.pasekPredkosci.setMaximum(value);}
-
+    /**
+     * Umo¿liwia nas³uchiwanie akcji wywo³anych przez przycisk zmiany osi¹gów samochodu
+     * @param osiagiButtonListener Listener obs³uguj¹cy zdarzenia
+     */
     void addOsiagiButtonListener(ActionListener osiagiButtonListener)
     {
         this.osiagiButton.addActionListener(osiagiButtonListener);
     }
 
     /**
-     * Zawiera podstawowe informacje o pojezdzie do wyœwietlenia
-     * @param moc-moc silnika
-     * @param mocHamulcow-skutecznosc hamulcow
-     * @param maxPredkosc-maksymalna do osiagniecia predkosc przez samochod
+     * Umo¿liwia wybór stanu, w jaki bêdzie wizualizowane zapalenie œwiat³a (podœwietlenie górnego panelu)
+      * @param value 0 - zgaszone, 1 - mijania, 2 - drogowe
+     * @param color barwa œwiat³a
      */
-    public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {
-        this.infoLabel.setText("Moc silnika: " + Integer.toString(moc) +
-                " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
-                " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
-    }
-
-    /**
-     * Pozwala na zmianê aktualnego spisu podró¿y na innny
-     * @param dane lista podró¿y
-     */
-    public void setTableData(ArrayList<Podroz> dane){
-        przejazdyTabData = new Object[dane.size()][5];
-        for(int i = 0; i<dane.size();i++)
-        {
-            for(int j = 0; j<5;j++)
-            {
-                przejazdyTabData[i][j] = dane.get(i).stringData(j);
-            }
-        }
-        tabelaModel.setDataVector(przejazdyTabData,tytuly);
-    }
     public void ustawSwiatlo(int value, Color color)
     {
-        //0 - zgaszone, 1 - mijania, 2 - drogowe
         switch (value)
         {
             case 0:
@@ -523,6 +315,100 @@ public class Okienko extends JFrame{
         }
     }
 
-
-
+    /**
+     * Pozwala na zmianê aktualnego spisu podró¿y na innny
+     * @param dane lista podró¿y
+     */
+    public void setTableData(ArrayList<Podroz> dane){
+        przejazdyTabData = new Object[dane.size()][5];
+        for(int i = 0; i<dane.size();i++)
+        {
+            for(int j = 0; j<5;j++)
+            {
+                przejazdyTabData[i][j] = dane.get(i).stringData(j);
+            }
+        }
+        tabelaModel.setDataVector(przejazdyTabData,tytuly);
+    }
+    /**
+     * Zawiera podstawowe informacje o pojezdzie do wyœwietlenia
+     * @param moc moc silnika
+     * @param mocHamulcow skutecznosc hamulcow
+     * @param maxPredkosc maksymalna do osiagniecia predkosc przez samochod
+     */
+    public void setInfoLabel(int moc, int mocHamulcow, int maxPredkosc) {
+        this.infoLabel.setText("Moc silnika: " + Integer.toString(moc) +
+                " Moc hamulców: " + Integer.toString(mocHamulcow) + "%"+
+                " Max Prêdkoœæ: " + Integer.toString(maxPredkosc) + "km/h");
+    }
+    /**
+     * Umo¿liwia dostêp do check boxa informujacego o uruchomieniu silnika
+     * @return obiekt JCheckBox przechowuj¹cy stan silnika (uruchomiony kub nie)
+     */
+    public JCheckBox getZaplonCB() {
+        return zaplonCB;
+    }
+    public JLabel getSwiatla_krotkie() {
+        return swiatla_krotkie;
+    }
+    public JLabel getSwiatla_dlugie() {
+        return swiatla_dlugie;
+    }
+    public JLabel getKierunkowskaz_l() {
+        return kierunkowskaz_l;
+    }
+    public JLabel getKierunkowskaz_p() {
+        return kierunkowskaz_p;
+    }
+    public DefaultTableModel getTabelaModel() {
+        return tabelaModel;
+    }
+    public JCheckBox getPrzelacznik_swiatla_krotkie() {return przelacznik_swiatla_krotkie;}
+    public JCheckBox getPrzelacznik_swiatla_dlugie() {return przelacznik_swiatla_dlugie;}
+    public JLabel getSwiatla_przeciwmgielne_p() {return swiatla_przeciwmgielne_p;}
+    public JButton getResetPrzebiegButton() {return resetPrzebiegButton;}
+    public void setLicznikUzytkownikaLabel(double wartosc) {this.licznikUzytkownikaLabel.setText("Przebieg: "+df.format(wartosc)+" km");}
+    public JLabel getSwiatla_przeciwmgielne_t() {return swiatla_przeciwmgielne_t;}
+    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_p() {return przelacznik_swiatla_przeciwmgielne_p;}
+    public JButton getTempomatButton() {return tempomatButton;}
+    public JProgressBar getPasekPredkosci() {return pasekPredkosci;}
+    public String[] getTytuly() {return tytuly;}
+    public Object[][] getPrzejazdyTabData() {return przejazdyTabData;}
+    public JTable getPrzejazdyTab() {return przejazdyTab;}
+    public JScrollPane getTabelaPane() {return tabelaPane;}
+    public JPanel getBottomPanel() {return bottomPanel;}
+    public JPanel getTopPanel() {return topPanel;}
+    public JLabel getInfoLabel() {return infoLabel;}
+    public JLabel getLicznik1Label() {return licznik1Label;}
+    public JLabel getLicznik2Label() {return licznik2Label;}
+    public JLabel getPredkoscLabel() {return predkoscLabel;}
+    public JMenuBar getMenuB() {return menuB;}
+    public JPanel getPredkosciomierz() {return predkosciomierz;}
+    public JLabel getSpalanieLabel() {return spalanieLabel;}
+    public JMenu getMenuPlik() {return menuPlik;}
+    public JMenu getMenuPomoc() {return menuPomoc;}
+    public JMenuItem getMenuZapiszAuto() {return menuZapiszAuto;}
+    public JMenuItem getMenuWczytajAuto() {return menuWczytajAuto;}
+    public JMenuItem getMenuZapiszPodroze() {return menuZapiszPodroze;}
+    public JMenuItem getMenuWczytajPodroze() {return menuWczytajPodroze;}
+    public JMenuItem getMenuWyjscie() {return menuWyjscie;}
+    public JMenuItem getMenuOProgramie() {return menuOProgramie;}
+    public JMenuItem getMenuWczytajPodrozeZBazyDanych() {return menuWczytajPodrozeZBazyDanych;}
+    public JMenuItem getMenuDodajPodrozeDoBazyDanych() {return menuDodajPodrozeDoBazyDanych;}
+    public JMenuItem getMenuWyczyscBazeDanych() {return menuWyczyscBazeDanych;}
+    public static DecimalFormat getDf() {return df;}
+    public JButton getOsiagiButton() {return osiagiButton;}
+    public JCheckBox getPrzelacznik_swiatla_przeciwmgielne_t() {return przelacznik_swiatla_przeciwmgielne_t;}
+    public void setPredkoscLabel(float predkosc) {this.predkoscLabel.setText("Prêdkoœæ: " + df.format(predkosc)+" km/h"); }
+    public void setSpalanieLabel(double spalanie) {
+        if (spalanie == 0) {
+            this.spalanieLabel.setText("Œrednie spalanie: --,-- l/100km");
+        } else {
+            this.spalanieLabel.setText("Œrednie spalanie: " + df.format(spalanie) + " l/100km");
+        }
+    }
+    public void setLicznik1Label(double dystans) {this.licznik1Label.setText("Aktualna podró¿: "+df.format(dystans)+" km");}
+    public void setLicznik2Label(double dystans) {this.licznik2Label.setText("Przebieg g³ówny: "+df.format(dystans)+" km");}
+    void setPasekPredkosciValue(float value) {this.pasekPredkosci.setValue((int)value);}
+    void setPasekPredkosciMaximum(int value){this.pasekPredkosci.setMaximum(value);}
 }

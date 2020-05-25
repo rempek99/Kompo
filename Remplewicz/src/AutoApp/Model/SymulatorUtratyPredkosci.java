@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Symuluje utratÄ™ prÄ™dkoÅ›ci przy toczeniu sie bez gazu i bez uruchomionego tempomatu
+ * Symuluje utratê prêdkoœci przy toczeniu sie bez gazu i bez uruchomionego tempomatu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  * @see Timer
@@ -13,10 +13,17 @@ import java.awt.event.ActionListener;
  */
 class SymulatorUtratyPredkosci implements ActionListener
 {
+    /**
+     * Timer odpowiedzialny za aktualizacjê stanu prêdkoœci samochodu
+     */
     private Timer timer;
+    /**
+     * Referencja do pojazdu, który obs³uguje
+     */
     private Samochod samochod;
 
     /**
+     * Konstruktor klasy
      * @param samochod Pojazd dla ktorego bedzie symulowana utrata predkosci
      */
     public SymulatorUtratyPredkosci(Samochod samochod) {
@@ -24,10 +31,8 @@ class SymulatorUtratyPredkosci implements ActionListener
         timer.start();
         this.samochod=samochod;
     }
-
     /**
-     * Cyklicznie wywoÅ‚ywana metoda ktÃ³ra zmniejsza predkoÅ›Ä‡ pojazdu gdy nie jest wciÅ›niety gaz i gdy jest wyÅ‚Ä…czony tempomat
-
+     * Cyklicznie wywo³ywana metoda która zmniejsza predkoœæ pojazdu gdy nie jest wciœniety gaz i gdy jest wy³¹czony tempomat
      */
     @Override
     public void actionPerformed(ActionEvent e) {

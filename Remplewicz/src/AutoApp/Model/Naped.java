@@ -1,7 +1,7 @@
 package AutoApp.Model;
 
 /**
- * Interfefs implementujÄ…cy metody sterujÄ…ce prÄ™dkoÅ›ciÄ… pojazdu
+ * Interfefs implementuj¹cy metody steruj¹ce prêdkoœci¹ pojazdu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

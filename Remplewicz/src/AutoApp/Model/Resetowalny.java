@@ -1,7 +1,7 @@
 package AutoApp.Model;
 
 /**
- * Interfejs umoÅ¼liwiajÄ…cy implementacjÄ™ metody resetujÄ…cej parametry obiektu
+ * Interfejs umo¿liwiaj¹cy implementacjê metody resetuj¹cej parametry obiektu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

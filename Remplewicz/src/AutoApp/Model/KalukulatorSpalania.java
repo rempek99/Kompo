@@ -11,17 +11,32 @@ import java.util.Date;
 import static java.lang.Math.*;
 
 /**
- * Magazynuje informacje o spalaniu z ostatnich 5min pracy silnika i na ich podstawie oblicza Å›rednie spalanie
+ * Magazynuje informacje o spalaniu z ostatnich 5min pracy silnika i na ich podstawie oblicza œrednie spalanie
+ * @author Arkadiusz Remplewicz
+ * @author Dawid Jakubik
  */
 public class KalukulatorSpalania implements ActionListener {
     /**
-     * Przechowuje poszczegÃ³lne zapisy raportu spalania
+     * Przechowuje poszczególne zapisy raportu spalania
      */
     private ArrayList<RaportSpalania> raport;
+    /**
+     * Przechowuje wartoœæ stanu licznika
+     */
     private double stanLicznika;
+    /**
+     * Referencja na pojazd, który obs³uguje
+     */
     private Samochod samochod;
+    /**
+     * Timer umo¿liwiaj¹cy cykliczne wykonywanie odczytów
+     */
     private Timer timer;
 
+    /**
+     * Konstruktor klasy
+     * @param samochod referencja na pojazd, który obs³uguje
+     */
     public KalukulatorSpalania(Samochod samochod) {
         this.samochod=samochod;
         stanLicznika=samochod.getLicznikGlowny().getDystans();
@@ -31,7 +46,7 @@ public class KalukulatorSpalania implements ActionListener {
     }
 
     /**
-     * Zwraca Å›rednie spalanie w ostatnich 5 min jako iloÅ›Ä‡ litrÃ³w na 100 kilometrÃ³w.
+     * Zwraca œrednie spalanie na podstawie 5 ostatnich minut jako iloœæ litrów na 100 kilometrów.
      * @return Srednie spalanie w ostanich 5 min
      */
     public double  getSrednieSpalanie(){
@@ -52,6 +67,11 @@ public class KalukulatorSpalania implements ActionListener {
         }
         return ret/2;
     }
+
+    /**
+     * Metoda wykonywana cyklicznie, obs³uguje zdarzenie up³ywu jednostki czasu, rejestruje spalone paliwo, generuje raporty
+     * @param e zdarzenie wywo³ane przez timer
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(samochod.isZaplon()) {

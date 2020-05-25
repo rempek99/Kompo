@@ -8,35 +8,49 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
 /**
- * Reprezentuje instancje swiateÅ‚, umoÅ¼liwia 3 akcje na nim- wÅ‚Ä…cz,wyÅ‚Ä…cz i migaj
+ * Reprezentuje instancje swiate³, umo¿liwia 3 akcje na nim- w³¹cz,wy³¹cz i migaj
  * @see Obsluga_Swiatla
  * @author Dawid Jakubik
- * @Author Arkadiusz Remplewicz
+ * @author Arkadiusz Remplewicz
  */
 public class Swiatlo implements Obsluga_Swiatla{
+    /**
+     * Wartoœæ logiczna okreœlaj¹ca stan œwia³a
+     */
     boolean wlaczone;
+    /**
+     * Wartoœæ okreœlaj¹ca barwê œwiat³a
+     * @see Color
+     */
     Color barwa;
+    /**
+     * Obiekt umo¿liwiaj¹cy kontrolowanie stanu licznika i powiadamiane o zmianu jego stanu
+     * @see PropertyChangeSupport
+     * @see PropertyChangeListener
+     */
     private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
     /**
-     * UÅ¼ywany do symulowania migania Å›wiateÅ‚
+     * U¿ywany do symulowania migania œwiate³
      */
     Timer timer = new Timer(500,new TimerListener());
-    int tempBlinks = 0;
+    /**
+     * Wartoœæ tymczasowa, odpowiadaj¹ca za iloœæ migniêæ swiat³a
+     */
+    int tempBlinks;
 
+    /**
+     * Konstruktor klasy
+     * @param barwa okreœla barwê œwiat³a
+     */
     public Swiatlo(Color barwa)
     {
         this.wlaczone = false;
         this.barwa = barwa;
     }
 
-
-    public Color getBarwa() {
-        return barwa;
-    }
-
-    public void setBarwa(Color barwa) {
-        this.barwa = barwa;
-    }
+    /**
+     * Zmienia stan œwiat³a na wy³¹czone
+     */
     @Override
     public void wylacz() {
         String oldValue = "true";
@@ -44,7 +58,9 @@ public class Swiatlo implements Obsluga_Swiatla{
         String newValue = "false";
         pcs.firePropertyChange("wlaczone",oldValue,newValue);
     }
-
+    /**
+     * Zmienia stan œwiat³a na w³¹czone
+     */
     @Override
     public void wlacz() {
         String oldValue = "false";
@@ -53,27 +69,24 @@ public class Swiatlo implements Obsluga_Swiatla{
         pcs.firePropertyChange("wlaczone",oldValue,newValue);
     }
 
-    public boolean isWlaczone() {
-        return wlaczone;
-    }
-
+    /**
+     * Steruje stanem œwiat³a, inicjuje jego miganie
+     */
     @Override
     public void migaj() {
         tempBlinks = 0;
         timer.start();
     }
-
     /**
-     * UmoÅ¼wliwia dodanie obiektu ktÃ³ry nasÅ‚uchuje zmiany stanu Å›wiateÅ‚
-     * @param Listener Obiekt nasÅ‚uchujacy zdarzenia
+     * Umo¿wliwia dodanie obiektu który nas³uchuje zmiany stanu œwiate³
+     * @param Listener Obiekt nas³uchujacy zdarzenia
      */
     public void addSwiatloListener(PropertyChangeListener Listener)
     {
         pcs.addPropertyChangeListener(Listener);
     }
-
     /**
-     * UÅ¼ywany do symulacji migania Å›wiateÅ‚
+     * U¿ywany do symulacji migania œwiate³
      */
     class TimerListener implements ActionListener {
         @Override
@@ -91,4 +104,8 @@ public class Swiatlo implements Obsluga_Swiatla{
                 }
         }
     }
+
+    public Color getBarwa() {return barwa;}
+    public void setBarwa(Color barwa) {this.barwa = barwa;}
+    public boolean isWlaczone() {return wlaczone;}
 }

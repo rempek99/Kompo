@@ -3,29 +3,39 @@ package AutoApp.Model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 /**
- * Przechowuje podstawowe informacje o predkoÅ›ciomierzu i udostÄ™pnia moÅ¼liwoÅ›Ä‡ interakcji z nim
+ * Przechowuje podstawowe informacje o predkoœciomierzu i udostêpnia mo¿liwoœæ interakcji z nim
  * @author Dawid Jakubik
- * @Author Arkadiusz Remplewicz
+ * @author Arkadiusz Remplewicz
  */
 public class Predkosciomierz implements Naped, Resetowalny{
     /**
-     * informacja o maksymalnej moÅ¼liwej prÄ™dkoÅ›ci  w km/h
+     * informacja o maksymalnej mo¿liwej prêdkoœci  w km/h
      */
-    int max_predkosc;
+    private int max_predkosc;
     /**
-     * Aktualna prÄ™dkoÅ›c w km/h
+     * Aktualna prêdkoœc w km/h
      */
-    float predkosc;//  km/h
-    private PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+    private float predkosc;//  km/h
+    /**
+           * Obiekt umo¿liwiaj¹cy kontrolowanie stanu licznika i powiadamiane o zmianu jego stanu
+           * @see PropertyChangeSupport
+           * @see PropertyChangeListener
+     */
+    private PropertyChangeSupport pcs;
 
     public int getMax_predkosc() {
         return max_predkosc;
     }
 
+    /**
+     * Konstruktor klasy
+     * @param max_predkosc zakres prêdkoœciomierza
+     */
     public Predkosciomierz(int max_predkosc)
     {
+        this.pcs = new PropertyChangeSupport(this);
         this.max_predkosc = max_predkosc;
-        predkosc = 0;
+        this.predkosc = 0;
     }
 
     public void setMax_predkosc(int max_predkosc) {
@@ -45,9 +55,9 @@ public class Predkosciomierz implements Naped, Resetowalny{
     }
 
     /**
-     * UmoÅ¼liwia zwiÄ™kszenie prÄ™dkoÅ›ci wskazywanej przez prÄ™dkoÅ›ciomierz
-     * @param wartosc O tÄ™ wartoÅ›Ä‡ zostanie zwiÄ™kszona aktualna prÄ™dkoÅ›Ä‡
-     * @throws UjemnaWartosc
+     * Umo¿liwia zwiêkszenie prêdkoœci wskazywanej przez prêdkoœciomierz
+     * @param wartosc O tê wartoœæ zostanie zwiêkszona aktualna prêdkoœæ
+     * @throws UjemnaWartosc rzucany w przypadku, kiedy nastêpuje próba dodania ujemnej wartoœci do prêdkoœciomierza
      */
     @Override
     public void zwieksz_predkosc(float wartosc) throws UjemnaWartosc {
@@ -64,9 +74,9 @@ public class Predkosciomierz implements Naped, Resetowalny{
     }
 
     /**
-     * UmoÅ¼liwia zmniejszenie predkoÅ›ci wskazywanej przez predkosciomierz
-     * @param wartosc O tÄ™ wartoÅ›c zostanie mniejszona aktualna prÄ™dkoÅ›Ä‡
-     * @throws UjemnaWartosc
+     * Umo¿liwia zmniejszenie predkoœci wskazywanej przez predkosciomierz
+     * @param wartosc O tê wartoœc zostanie zmniejszona aktualna prêdkoœæ
+     * @throws UjemnaWartosc rzucany w przypadku, kiedy nastêpuje próba dodania ujemnej wartoœci do prêdkoœciomierza
      */
     @Override
     public void zmniejsz_predkosc(float wartosc) throws UjemnaWartosc
@@ -83,7 +93,7 @@ public class Predkosciomierz implements Naped, Resetowalny{
     }
 
     /**
-     * Pozwala na zresetowanie predkoÅ›ciomierza
+     * Pozwala na zresetowanie predkoœciomierza - ustawia wskazywan¹ przez niego prêdkoœæ na 0
      */
     @Override
     public void reset() {
@@ -93,6 +103,10 @@ public class Predkosciomierz implements Naped, Resetowalny{
         pcs.firePropertyChange("predkosc",oldValue,newValue);
     }
 
+    /**
+     * Umo¿liwia nas³uchiwanie zmiany stanu prêdkoœciomierza
+     * @param Listener listener, który odbiera zdarzenia
+     */
     public void addPredkoscListener(PropertyChangeListener Listener)
     {
         pcs.addPropertyChangeListener(Listener);

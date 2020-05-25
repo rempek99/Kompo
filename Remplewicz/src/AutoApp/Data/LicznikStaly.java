@@ -1,11 +1,14 @@
 package AutoApp.Data;
 
 /**
- * WyjƒÖtek informujƒÖcy o braku mo≈ºliwo≈õci zresetowania licznika typu sta≈Çego
+ * Wyjπtek informujπcy o braku moøliwoúci zresetowania licznika typu sta≥ego
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */
 public class LicznikStaly extends Exception {
+    /**
+     * Konstruktor klasy
+     */
     LicznikStaly()
     {
         super("Nie mozna zresetowac stalego licznika");

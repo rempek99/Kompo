@@ -1,7 +1,7 @@
 package AutoApp.Model;
 
 /**
- * Interfejs umoÅ¼liwiajÄ…cy implementacjÄ™ metod odpowiadajÄ…cych za prowadzenie pojazdu
+ * Interfejs umo¿liwiaj¹cy implementacjê metod odpowiadaj¹cych za prowadzenie pojazdu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

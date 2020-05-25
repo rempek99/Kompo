@@ -1,7 +1,7 @@
 package AutoApp.Model;
 
 /**
- * Interfejs umoÅ¼liwiajÄ…cy implementacjÄ™ metod odpowiadajÄ…cych za sterowanie Å›wiatÅ‚ami
+ * Interfejs umo¿liwiaj¹cy implementacjê metod odpowiadaj¹cych za sterowanie œwiat³ami
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */

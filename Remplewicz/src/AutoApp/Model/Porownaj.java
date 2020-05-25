@@ -4,18 +4,23 @@ import java.util.Comparator;
 import AutoApp.Data.Podroz;
 
 /**
- * Pozwala na posortowanie kolekcji obiektow typu Podroz po rÃ³Å¼nych polach (czas trwania, dÅ‚ugoÅ›Ä‡ podrÃ³Å¼y ,data rozpoczÄ™cia podrÃ³Å¼y, Å›rednia prÄ™dkoÅ›Ä‡)
+ * Pozwala na posortowanie kolekcji obiektow typu Podroz po ró¿nych polach (czas trwania, d³ugoœæ podró¿y ,data rozpoczêcia podró¿y, œrednia prêdkoœæ)
  * @author Dawid Jakubik
  * @author Arkadiusz Remplewicz
  */
 public class Porownaj
 implements Comparator<Podroz>{
 	/**
-	 * Pozwala na ustalenie po jakim polu ma byÄ‡ wykonywane sortowanie.
-	 * Rozpoznaje wartoÅ›ci "czas", "dlugosc", "data" i adekwatnie do tych bierze pod uwage odpowiednie pole obiektu Podroz,
-	 * dla kazdej innej wartoÅ›ci sortowanie nastepuje wedÅ‚ug Å›redniej prÄ™dkoÅ›Ä‡i.
+	 * Pozwala na ustalenie po jakim polu ma byæ wykonywane sortowanie.
+	 * Rozpoznaje wartoœci "czas", "dlugosc", "data" i adekwatnie do tych bierze pod uwage odpowiednie pole obiektu Podroz,
+	 * dla kazdej innej wartoœci sortowanie nastepuje wed³ug œredniej prêdkoœæi.
 	 */
-	String klucz;
+	private String klucz;
+
+	/**
+	 * Konstruktor klasy
+	 * @param klucz klucz, wg którego elementy zostan¹ posortowane (czas,dlugosc,data,sr_predkosc)
+	 */
 	Porownaj(String klucz)
 	{
 		this.klucz = klucz;

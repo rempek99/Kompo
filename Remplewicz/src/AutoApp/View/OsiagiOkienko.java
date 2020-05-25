@@ -13,7 +13,6 @@ import java.util.Dictionary;
  * Tworzy okno dialogowe, które umozliwia zmianê parametrów samochodu
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
- *
  */
 public class OsiagiOkienko extends JFrame {
     /**
@@ -64,12 +63,10 @@ public class OsiagiOkienko extends JFrame {
      * Przycisk s³u¿¹cy do akceptacji wprowadzonych zmian
      */
     private JButton zastosujButton;
-    private Dictionary<Integer,JLabel> mocLabel;
     /**
      * Przyciski odpowiadaj¹ce za wybór barwy œwiate³ mijania
      */
     private JRadioButton swiatloZolte, swiatloNiebieskie, swiatloFioletowe;
-
     /**
      * Konstruktor bezparametrowy. Inicjuje zawartoœæ okna.
      */
@@ -155,9 +152,7 @@ public class OsiagiOkienko extends JFrame {
     /**
      * Klasa odpowiadaj¹ca za reakcje na wprowadzenie zmian w interfejsie poprzez suwaki przez u¿ytkownika.
      */
-
     class WartoscChangeListener implements ChangeListener{
-
         @Override
         public void stateChanged(ChangeEvent e) {
             if(e.getSource()==mocSlider)
@@ -174,7 +169,6 @@ public class OsiagiOkienko extends JFrame {
             }
         }
     }
-
     /**
      * Umozliwia dodanie ActionListener do przycisku "zastosujButton"
      * @see ActionListener
@@ -185,7 +179,6 @@ public class OsiagiOkienko extends JFrame {
     {
         zastosujButton.addActionListener(zastosujButtonListener);
     }
-
     /**
      * Standardowy getter do wartosci wskazywanej przez mocSlider
      * @return wartosc typu int zale¿n¹ od aktualnego ustawienia suwaka mocSlider
@@ -211,7 +204,6 @@ public class OsiagiOkienko extends JFrame {
     {
         return maxPredkoscSlider.getValue();
     }
-
     public Color getBarwaSwiatla() {
         if(swiatloFioletowe.isSelected())
             return new Color(255,0,255);

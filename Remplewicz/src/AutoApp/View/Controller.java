@@ -15,13 +15,15 @@ import java.sql.SQLException;
 /**
  *  Klasa odpowiadaj¹ca za synchronizacjê informacji wyœwietlanych przez Okienko oraz zawartych w Samochod.
  *  Nas³uchuje akcji ze strony u¿ytkowinika dokonanych w Okienko i wywo³uje odpowiednie metody klas sk³adowych.
- *
  * @see Samochod
  * @see Okienko
  * @author Arkadiusz Remplewicz
  * @author Dawid Jakubik
  */
 public class Controller implements ActionListener, WindowListener {
+    /**
+     * Obs³ugiwany obiekt klasy Samochod
+     */
     private Samochod auto;
     /**
      * G³ówne okno aplikacji
@@ -36,6 +38,11 @@ public class Controller implements ActionListener, WindowListener {
      */
     private OknoTextDataBase okno3;
 
+    /**
+     * Konstruktor klasy
+     * @param auto Obs³ugiwany obiekt klasy Samochod
+     * @param okno G³ówne okno aplikacji
+     */
     public Controller(Samochod auto, Okienko okno) {
         new SpalanieRefresher();
         okno3=new OknoTextDataBase();
@@ -73,19 +80,9 @@ public class Controller implements ActionListener, WindowListener {
         this.okno.getResetPrzebiegButton().addActionListener(this);
         this.okno.getTempomatButton().addActionListener(this);
         this.okno.addWindowListener(this);
-
     }
-
     /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowOpened(WindowEvent e) {
-        //not Used
-    }
-
-    /**
-     *Gdy zamykane jest okno wywoluje metode z auto ktora zapisuje stan g³ównego licznika
+     *Gdy zamykane jest okno wywoluje metodê z auto, która zapisuje stan g³ównego licznika
      */
     @Override
     public void windowClosing(WindowEvent e)
@@ -96,56 +93,18 @@ public class Controller implements ActionListener, WindowListener {
             ex.printStackTrace();
         }
     }
-    /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowClosed(WindowEvent e) {
-//not Used
-    }
-    /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowIconified(WindowEvent e) {
-//not Used
-    }
-    /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-//not Used
-    }
-    /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowActivated(WindowEvent e) {
-//not Used
-    }
-    /**
-     * Nieu¿ywane
-     */
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-//not Used
-    }
-
-
-    /**
+     /**
      * Odpowiada za wykrywanie zdarzeñ klawiatury (klawisze strza³ek, ESC oraz E) i wywo³anie odpowiednich metod do obs³ugi tych zdarzeñ.
      * Mo¿e wyœwietlaæ uwagi w g³ównym oknie aplikacji
+      * @see KeyboarListner
      */
     class KeyboarListner implements KeyListener{
         public KeyboarListner() {
         }
-
         @Override
         public void keyTyped(KeyEvent e) {
             //not used
         }
-
         @Override
         public void keyPressed(KeyEvent e) {
 
@@ -188,7 +147,6 @@ public class Controller implements ActionListener, WindowListener {
                     JOptionPane.showMessageDialog(okno,"Najpierw uruchom silnik (E)\n");
                 }
             }
-
         }
         @Override
         public void keyReleased(KeyEvent e) {
@@ -246,7 +204,6 @@ public class Controller implements ActionListener, WindowListener {
             }
         }
     }
-
     /**
      * Odpowiada za reakcje na akcje u¿ytkownika maj¹ce miejsce w obrêbie paska menu oraz w³¹czenie i wy³¹czenie œwiate³.
      * @param e Zród³o zdarzenia
@@ -282,7 +239,6 @@ public class Controller implements ActionListener, WindowListener {
             }catch(NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this.okno, "Niepoprawna wartoœæ!!\nPodaj wartoœæ z przedzia³u od 0 do V-max typu liczbowego", "WARNING", JOptionPane.WARNING_MESSAGE);
             }
-
         }
         if(source==okno.getResetPrzebiegButton())
         {
@@ -413,7 +369,6 @@ public class Controller implements ActionListener, WindowListener {
                     okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
                 }
             }
-
         }
         if(source == okno.getPrzelacznik_swiatla_przeciwmgielne_p())
         {
@@ -447,15 +402,12 @@ public class Controller implements ActionListener, WindowListener {
                 okno.getPrzelacznik_swiatla_przeciwmgielne_p().setEnabled(true);
             }
         }
-
-//        class PredkoscListener implements PropertyChangeListener{
-//
-//            @Override
-//            public void propertyChange(PropertyChangeEvent evt) {
-//                okno.setPredkoscLabel(auto.getPredkosciomierz().getPredkosc());
-//            }
-//        }
     }
+
+    /**
+     * Klasa odpowiedzialna za aktualizacjê wyœwietlanej wartoœci œredniego spalania pojazdu
+     * @see ActionListener
+     */
     private class SpalanieRefresher implements ActionListener
     {
         private Timer timer;
@@ -469,6 +421,10 @@ public class Controller implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Klasa odpowiedzialna za aktualizacjê wyœwietlanej wartoœci prêdkoœci samochodu
+     * @see PropertyChangeListener
+     */
     class PredkoscListener implements PropertyChangeListener {
 
         @Override
@@ -478,6 +434,10 @@ public class Controller implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Klasa odpowiedzialna za aktualizacjê wyœwietlanej wartoœci liczników samochodu
+     * @see PropertyChangeListener
+     */
     class LicznikListener implements PropertyChangeListener{
 
         @Override
@@ -488,8 +448,11 @@ public class Controller implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Klasa odpowiedzialna za aktualizacjê wyœwietlanego stanu œwiate³ samochodu
+     * @see PropertyChangeListener
+     */
     class SwiatloListener implements  PropertyChangeListener{
-
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if(evt.getSource()==auto.getMijania())
@@ -511,6 +474,10 @@ public class Controller implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Klasa odpowiedzialna za inicjalizacjê okna zmiany parametrów samochodu
+     * @see ActionListener
+     */
     class OsiagiButtonListener implements ActionListener{
 
         @Override
@@ -521,6 +488,10 @@ public class Controller implements ActionListener, WindowListener {
         }
     }
 
+    /**
+     * Klasa odpowiedzialna za aktualizacjê wybranych przez u¿ytkownika parametrów samochodu
+     * @see ActionListener
+     */
     class ZastosujButtonListener implements ActionListener{
 
         @Override
@@ -535,9 +506,49 @@ public class Controller implements ActionListener, WindowListener {
             if(okno.getPrzelacznik_swiatla_krotkie().isSelected())
                 okno.ustawSwiatlo(1,auto.getMijania().getBarwa());
             okno2.dispose();
-
         }
     }
 
-
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowOpened(WindowEvent e) {
+        //not Used
+    }
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowClosed(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowIconified(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowActivated(WindowEvent e) {
+//not Used
+    }
+    /**
+     * Nieobs³ugiwane
+     */
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+//not Used
+    }
 }

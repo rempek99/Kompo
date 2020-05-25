@@ -256,10 +256,13 @@ public class Controller implements ActionListener, WindowListener {
         if(source==okno.getTempomatButton())
         {
             try {
-                double pr;
+                double pr=0;
                 String in="",ms="Ustaw predkosc";
-                in=JOptionPane.showInputDialog(ms);
-                pr=Double.parseDouble(in);
+                if (!auto.getTempomat().isWlaczony()){
+                    in=JOptionPane.showInputDialog(ms);
+                    pr=Double.parseDouble(in);
+                }
+
                 if (auto.getTempomat().isWlaczony()) {
                     auto.getTempomat().wylacz();
                     okno.getTempomatButton().setText("tempomat OFF");

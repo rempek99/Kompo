@@ -50,15 +50,18 @@ public class KalukulatorSpalania implements ActionListener {
         if((spal==0)||(dyst==0)||(ret>60)) {
             return 0;
         }
-        return ret;
+        return ret/2;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         if(samochod.isZaplon()) {
-                double t1,t3;
+                double t1,t2,t3;
+                t2=samochod.getPredkosciomierz().getPredkosc();
                 t1=samochod.getLicznikGlowny().getDystans()-stanLicznika;
                 t3 = 0.02;
+                t3+=pow(t2,5)*0.008;
                 if(samochod.isGaz()){
+
                     t3=t3+(double)(samochod.getMoc_silnika())/500;
                 }
                 raport.add(new RaportSpalania(t1,t3));
